@@ -106,23 +106,27 @@
   .login-footer { margin-top: 20px; font-size: 11px; color: #94a3b8; }
 
   /* ===== Project Grid (Layer 1) ===== */
-  .project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; max-width: 1200px; margin: 40px auto; padding: 0 24px; }
+  .project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 20px; max-width: 1400px; margin: 20px auto; padding: 0 24px; }
   .project-card {
-    background: #fff; border-radius: 16px; padding: 24px; cursor: pointer;
+    background: #fff; border-radius: 16px; padding: 20px; cursor: pointer;
     box-shadow: 0 1px 3px rgba(0,0,0,0.06); transition: all 0.25s;
     border: 2px solid transparent;
     position: relative; overflow: hidden;
   }
   .project-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.10); border-color: #2563eb; }
-  .project-card .dot-outer { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 12px; }
-  .project-card h3 { font-size: 17px; font-weight: 600; margin-bottom: 4px; }
-  .project-card .p-sub { font-size: 12px; color: #94a3b8; margin-bottom: 14px; }
-  .project-card .p-stats { display: flex; gap: 16px; margin-bottom: 12px; }
-  .project-card .p-stat { }
-  .project-card .p-stat-label { font-size: 11px; color: #94a3b8; }
-  .project-card .p-stat-val { font-size: 20px; font-weight: 700; }
-  .project-card .p-bottom { display: flex; justify-content: space-between; align-items: center; }
-  .project-page-title { font-size: 14px; font-weight: 500; margin-bottom: 8px; }
+  .project-card .p-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .project-card .p-emoji { font-size: 24px; }
+  .project-card .p-title-area { flex: 1; }
+  .project-card .p-title-area h3 { font-size: 15px; font-weight: 600; }
+  .project-card .p-meta { font-size: 11px; color: #94a3b8; display: flex; gap: 12px; flex-wrap: wrap; }
+  .project-card .assess-table { width: 100%; font-size: 12px; border-collapse: collapse; margin-top: 4px; }
+  .project-card .assess-table th { padding: 6px 8px; font-size: 11px; color: #94a3b8; font-weight: 500; text-align: left; border-bottom: 1px solid #f1f5f9; background: transparent; }
+  .project-card .assess-table td { padding: 6px 8px; border-bottom: 1px solid #f1f5f9; font-size: 12px; }
+  .project-card .assess-table tr:last-child td { border-bottom: none; }
+  .project-card .p-footer { margin-top: 10px; text-align: right; font-size: 12px; color: #2563eb; font-weight: 500; }
+  .p-ratebar { display: inline-flex; align-items: center; gap: 4px; }
+  .p-ratebar .rb { width: 48px; height: 5px; border-radius: 3px; background: #e2e8f0; overflow: hidden; display: inline-block; }
+  .p-ratebar .rb-fill { height: 100%; border-radius: 3px; }
 
   /* ===== Responsive ===== */
   @media (max-width: 768px) {
@@ -262,6 +266,13 @@ const projects = {
       { label: '99元售卡', value: '47.7%', sub: '260 / 545 张', color: '#eab308', dot: 'dot-yellow' },
       { label: '全员破零率', value: '73.1%', sub: '87 / 119 人', color: '#22c55e', dot: 'dot-green' }
     ],
+    assessmentItems: [
+      { label: '燃热', target: '709台', actual: '380台', rate: 53.6 },
+      { label: '洗碗机', target: '879台', actual: '553台', rate: 62.9 },
+      { label: 'i1pro', target: '123套', actual: '35套', rate: 28.5 },
+      { label: '99元售卡', target: '545张', actual: '260张', rate: 47.7 },
+      { label: '全员破零', target: '119人', actual: '87人', rate: 73.1 }
+    ],
     strategy: buildStrategyHTML_sz,
     execution: buildExecutionHTML_sz,
     report: buildReportHTML
@@ -281,6 +292,13 @@ const projects = {
       { label: '零进度城市', value: '8', sub: '需紧急跟进', color: '#ef4444', dot: 'dot-red' },
       { label: '四类认证通关', value: '87%', sub: '3,842人通过', color: '#eab308', dot: 'dot-yellow' }
     ],
+    assessmentItems: [
+      { label: '全国目标', target: '500套', actual: '387套', rate: 77.4 },
+      { label: '参与城市', target: '97城', actual: '97城', rate: 100 },
+      { label: '优秀爆区', target: '—', actual: '21个', rate: 21.6 },
+      { label: '四类认证', target: '4,420人', actual: '3,842人', rate: 87.0 },
+      { label: '零进度城市', target: '0', actual: '8城', rate: 0 }
+    ],
     strategy: buildStrategyHTML_i1pro,
     execution: buildExecutionHTML_i1pro,
     report: buildReportHTML
@@ -299,6 +317,13 @@ const projects = {
       { label: '太原成交', value: '28w', sub: '已启动多门店', color: '#eab308', dot: 'dot-yellow' },
       { label: '北京直播', value: '14倍', sub: 'ROI ¥624→¥8,798', color: '#eab308', dot: 'dot-yellow' },
       { label: '石家庄成交', value: '7w', sub: '引流中', color: '#eab308', dot: 'dot-yellow' }
+    ],
+    assessmentItems: [
+      { label: '成都成交', target: '50w+', actual: '247w', rate: 100 },
+      { label: '南昌ROI', target: '20:1', actual: '27:1', rate: 100 },
+      { label: '太原成交', target: '50w', actual: '28w', rate: 56.0 },
+      { label: '北京ROI', target: '20:1', actual: '14:1', rate: 70.0 },
+      { label: '石家庄成交', target: '50w', actual: '7w', rate: 14.0 }
     ],
     strategy: buildStrategyHTML_colmo,
     execution: buildExecutionHTML_colmo,
@@ -372,34 +397,47 @@ function renderProjectList() {
     if (p.status.includes('暂停')) statusColor = '#ef4444';
     if (p.status.includes('完成')) statusColor = '#64748b';
     
-    // Calculate avg KPI for progress
-    let avgVal = 0;
-    p.kpis.forEach(k => {
-      const num = parseFloat(k.value.replace(/[^0-9.]/g, ''));
-      if (!isNaN(num)) avgVal += num;
+    // Build assessment items table rows
+    let assessRows = '';
+    p.assessmentItems.forEach(item => {
+      let rateColor = '#ef4444';
+      let rateLabel = '🔴';
+      if (item.rate >= 80) { rateColor = '#22c55e'; rateLabel = '🟢'; }
+      else if (item.rate >= 60) { rateColor = '#eab308'; rateLabel = '🟡'; }
+      else if (item.rate === 0) { rateLabel = '⚪'; rateColor = '#94a3b8'; }
+      
+      const barWidth = Math.min(item.rate, 100);
+      assessRows += `
+        <tr>
+          <td style="font-weight:500;">${item.label}</td>
+          <td style="color:#64748b;">${item.target}</td>
+          <td>${item.actual}</td>
+          <td>
+            <div class="p-ratebar">
+              <span style="font-weight:600;color:${rateColor};min-width:38px;">${item.rate}%</span>
+              <span class="rb"><span class="rb-fill" style="width:${barWidth}%;background:${rateColor};"></span></span>
+            </div>
+          </td>
+        </tr>
+      `;
     });
-    avgVal = avgVal / p.kpis.length;
-    const progressColor = avgVal >= 70 ? '#22c55e' : avgVal >= 50 ? '#eab308' : '#ef4444';
-    const progressWidth = Math.min(avgVal, 100);
-    
+
     card.innerHTML = `
-      <div class="dot-outer" style="background:${p.color}20;color:${p.color};">${p.emoji}</div>
-      <h3>${p.name}</h3>
-      <div class="p-sub">${p.period} · <span style="color:${statusColor};font-weight:600;">${p.status}</span></div>
-      <div class="p-stats">
-        <div class="p-stat">
-          <div class="p-stat-label">综合达成</div>
-          <div class="p-stat-val" style="color:${progressColor}">${avgVal.toFixed(1)}%</div>
-        </div>
-        <div class="p-stat">
-          <div class="p-stat-label">KPI数</div>
-          <div class="p-stat-val">${p.kpis.length}</div>
+      <div class="p-header">
+        <div class="p-emoji">${p.emoji}</div>
+        <div class="p-title-area">
+          <h3>${p.name}</h3>
+          <div class="p-meta">
+            <span>📅 ${p.period}</span>
+            <span style="color:${statusColor};">● ${p.status}</span>
+          </div>
         </div>
       </div>
-      <div class="progress-bar"><div class="progress-fill" style="width:${progressWidth}%;background:${progressColor};"></div></div>
-      <div class="p-bottom" style="margin-top:12px;">
-        <span style="font-size:12px;color:#2563eb;font-weight:500;">查看详情 ›</span>
-      </div>
+      <table class="assess-table">
+        <tr><th style="width:26%;">考核项</th><th style="width:20%;">应达成</th><th style="width:18%;">实际</th><th style="width:36%;">达成率</th></tr>
+        ${assessRows}
+      </table>
+      <div class="p-footer">查看完整看版 ›</div>
     `;
     container.appendChild(card);
   });
