@@ -124,6 +124,25 @@
   .project-card .assess-table td { padding: 6px 8px; border-bottom: 1px solid #f1f5f9; font-size: 12px; }
   .project-card .assess-table tr:last-child td { border-bottom: none; }
   .project-card .p-footer { margin-top: 10px; text-align: right; font-size: 12px; color: #2563eb; font-weight: 500; }
+
+  /* ===== Project Summary Table (Layer 1 top) ===== */
+  .summary-wrap { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+  .summary-table-wrap { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .summary-table-wrap .st-header { padding: 14px 20px; font-size: 14px; font-weight: 600; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; gap: 8px; }
+  .summary-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .summary-table th { padding: 10px 10px; background: #f8fafc; color: #475569; font-weight: 600; font-size: 11px; border-bottom: 2px solid #e2e8f0; white-space: nowrap; text-align: center; }
+  .summary-table th:first-child { text-align: left; padding-left: 20px; }
+  .summary-table td { padding: 10px 10px; border-bottom: 1px solid #f1f5f9; text-align: center; vertical-align: middle; }
+  .summary-table td:first-child { text-align: left; padding-left: 20px; font-weight: 600; font-size: 13px; }
+  .summary-table tr:last-child td { border-bottom: none; }
+  .summary-table tr:hover td { background: #f8fafc; }
+  .summary-table .sm-badge { display: inline-block; padding: 1px 8px; border-radius: 8px; font-size: 11px; font-weight: 600; }
+  .sum-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; }
+  .summary-table .sm-rate { font-weight: 600; }
+  .summary-table .sm-bar { display: inline-block; width: 44px; height: 5px; border-radius: 3px; background: #e2e8f0; overflow: hidden; vertical-align: middle; margin-left: 4px; }
+  .summary-table .sm-bar-fill { height: 100%; border-radius: 3px; }
+  .summary-table .sm-proj-name { cursor: pointer; }
+  .summary-table .sm-proj-name:hover { color: #2563eb; text-decoration: underline; }
   .p-ratebar { display: inline-flex; align-items: center; gap: 4px; }
   .p-ratebar .rb { width: 48px; height: 5px; border-radius: 3px; background: #e2e8f0; overflow: hidden; display: inline-block; }
   .p-ratebar .rb-fill { height: 100%; border-radius: 3px; }
@@ -174,12 +193,23 @@
 <!-- ===== PAGE L1: 项目选择 (Layer 1) ===== -->
 <!-- ======================================================================== -->
 <div id="pageL1" class="page active">
-  <div style="max-width:1200px;margin:0 auto;">
-    <div style="margin:20px 24px 0;">
+  <div style="max-width:1400px;margin:0 auto;">
+    <!-- Header -->
+    <div style="margin:16px 24px 0;">
       <div style="font-size:22px;font-weight:700;margin-bottom:4px;">全部项目</div>
-      <div style="font-size:13px;color:#64748b;">选择项目查看策略一页纸与执行落地看版</div>
+      <div style="font-size:13px;color:#64748b;">点击项目名称查看策略一页纸与执行落地看版</div>
     </div>
-    <div id="projectList" class="project-grid"></div>
+        
+    <!-- Summary Table -->
+    <div class="summary-wrap" style="margin-top:16px;">
+      <div class="summary-table-wrap" id="summaryTableWrap">
+        <div class="st-header">📊 项目总览表</div>
+        <div id="summaryTableBody"></div>
+      </div>
+    </div>
+        
+    <!-- Project Cards -->
+    <div id="projectList" class="project-grid" style="margin-top:4px;"></div>
   </div>
 </div>
 
@@ -343,6 +373,7 @@ function showProjectList() {
   document.getElementById('navTitle').textContent = 'BB交付中心 · 看版';
   document.getElementById('navSubtitle').innerHTML = '<span style="font-size:12px;color:#94a3b8;">服务商：贝帮信息科技有限公司</span>';
   document.getElementById('navBreadcrumb').textContent = '';
+  renderSummaryTable();
   renderProjectList();
 }
 
@@ -382,6 +413,85 @@ function switchDetailTab(id) {
 // ======================================================================
 // ===== RENDER PROJECT LIST (Layer 1) =====
 // ======================================================================
+// ======================================================================
+// ===== RENDER SUMMARY TABLE (Layer 1 top) =====
+// ======================================================================
+function renderSummaryTable() {
+  const container = document.getElementById('summaryTableBody');
+  const pids = Object.keys(projects);
+  
+  // Collect all unique assessment labels
+  const allLabels = [];
+  const seen = {};
+  pids.forEach(pid => {
+    projects[pid].assessmentItems.forEach(item => {
+      if (!seen[item.label]) {
+        seen[item.label] = true;
+        allLabels.push(item.label);
+      }
+    });
+  });
+  // Limit to first 6 columns to avoid overflow
+  const displayLabels = allLabels.slice(0, 6);
+  const hasMore = allLabels.length > 6;
+  
+  let html = '<table class="summary-table"><thead><tr>';
+  html += '<th style="width:18%;">项目</th>';
+  html += '<th style="width:14%;">周期</th>';
+  html += '<th style="width:9%;">状态</th>';
+  html += '<th style="width:10%;">综合达成</th>';
+  // Assessment columns
+  displayLabels.forEach(label => {
+    html += '<th>' + label + '</th>';
+  });
+  if (hasMore) html += '<th style="color:#94a3b8;">…</th>';
+  html += '</tr></thead><tbody>';
+  
+  pids.forEach(pid => {
+    const p = projects[pid];
+    const items = p.assessmentItems;
+    
+    // Calculate average rate (skip 0-rate items that indicate non-target metrics)
+    let totalRate = 0, countRate = 0;
+    items.forEach(item => {
+      if (item.rate > 0) { totalRate += item.rate; countRate++; }
+    });
+    const avgRate = countRate > 0 ? (totalRate / countRate) : 0;
+    let avgColor = '#ef4444';
+    if (avgRate >= 80) avgColor = '#22c55e';
+    else if (avgRate >= 60) avgColor = '#eab308';
+    
+    // Status badge
+    let statusBadge = '';
+    if (p.status.includes('进行中')) statusBadge = '<span class="sm-badge" style="background:#dbeafe;color:#2563eb;">进行中</span>';
+    else if (p.status.includes('完成')) statusBadge = '<span class="sm-badge" style="background:#dcfce7;color:#16a34a;">已完成</span>';
+    else statusBadge = '<span class="sm-badge" style="background:#f1f5f9;color:#64748b;">' + p.status.replace(/[^a-zA-Z\u4e00-\u9fa5]/g,'') + '</span>';
+    
+    html += '<tr>';
+    html += '<td><span class="sm-proj-name" onclick="showProjectDetail(\'' + pid + '\')">' + p.emoji + ' ' + p.name + '</span></td>';
+    html += '<td style="color:#64748b;font-size:11px;">' + p.period + '</td>';
+    html += '<td>' + statusBadge + '</td>';
+    html += '<td><span class="sm-rate" style="color:' + avgColor + ';">' + avgRate.toFixed(1) + '%</span></td>';
+    
+    displayLabels.forEach(label => {
+      const found = items.find(item => item.label === label);
+      if (found) {
+        let c = '#ef4444';
+        if (found.rate >= 80) c = '#22c55e';
+        else if (found.rate >= 60) c = '#eab308';
+        html += '<td><span class="sm-rate" style="color:' + c + ';">' + found.rate + '%</span><span class="sm-bar"><span class="sm-bar-fill" style="width:' + Math.min(found.rate,100) + '%;background:' + c + ';"></span></span></td>';
+      } else {
+        html += '<td style="color:#d1d5db;">—</td>';
+      }
+    });
+    if (hasMore) html += '<td style="color:#d1d5db;">…</td>';
+    html += '</tr>';
+  });
+  
+  html += '</tbody></table>';
+  container.innerHTML = html;
+}
+
 function renderProjectList() {
   const container = document.getElementById('projectList');
   container.innerHTML = '';
