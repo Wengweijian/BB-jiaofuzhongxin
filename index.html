@@ -9,20 +9,23 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #f0f2f5; color: #1f2937; }
   
-  /* Top Nav */
+  /* ===== Top Nav ===== */
   .top-nav { background: #1a1a2e; color: #fff; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; }
   .top-nav h1 { font-size: 18px; font-weight: 600; }
   .top-nav .subtitle { font-size: 12px; color: #94a3b8; }
+  .top-nav .back-btn { font-size: 12px; color: #94a3b8; cursor: pointer; text-decoration: underline; }
+  .top-nav .back-btn:hover { color: #fff; }
+  
   .nav-tabs { display: flex; background: #fff; border-bottom: 1px solid #e2e8f0; padding: 0 24px; gap: 0; }
   .nav-tab { padding: 14px 24px; font-size: 14px; font-weight: 500; color: #64748b; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; }
   .nav-tab:hover { color: #1a1a2e; }
   .nav-tab.active { color: #2563eb; border-bottom-color: #2563eb; background: #f8fafc; }
   
-  /* Main Content */
+  /* ===== Main ===== */
   .page { display: none; padding: 20px 24px; max-width: 1440px; margin: 0 auto; }
   .page.active { display: block; }
   
-  /* KPI Cards Row */
+  /* ===== KPI Cards ===== */
   .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 20px; }
   .kpi-card { background: #fff; border-radius: 12px; padding: 18px 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
   .kpi-label { font-size: 12px; color: #94a3b8; margin-bottom: 6px; }
@@ -31,11 +34,11 @@
   .kpi-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
   .dot-green { background: #22c55e; } .dot-yellow { background: #eab308; } .dot-red { background: #ef4444; }
   
-  /* Sections */
+  /* ===== Sections ===== */
   .section { background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
   .section-title { font-size: 15px; font-weight: 600; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 8px; }
   
-  /* Tables */
+  /* ===== Tables ===== */
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
   th { text-align: left; padding: 10px 12px; background: #f8fafc; color: #475569; font-weight: 600; border-bottom: 2px solid #e2e8f0; }
   td { padding: 10px 12px; border-bottom: 1px solid #f1f5f9; }
@@ -46,16 +49,16 @@
   .badge-yellow { background: #fef9c3; color: #a16207; }
   .badge-red { background: #fee2e2; color: #dc2626; }
   
-  /* Progress Bar */
+  /* ===== Progress Bar ===== */
   .progress-bar { height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; margin-top: 4px; }
   .progress-fill { height: 100%; border-radius: 4px; transition: width 0.5s; }
   .fill-green { background: #22c55e; } .fill-yellow { background: #eab308; } .fill-red { background: #ef4444; }
   
-  /* Grid layouts */
+  /* ===== Grid ===== */
   .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
   .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
   
-  /* Funnel */
+  /* ===== Funnel ===== */
   .funnel { display: flex; flex-direction: column; align-items: center; gap: 6px; }
   .funnel-step { width: 100%; background: #2563eb; color: #fff; text-align: center; padding: 12px; border-radius: 8px; font-weight: 600; }
   .funnel-step:nth-child(1) { background: #2563eb; width: 100%; }
@@ -63,23 +66,16 @@
   .funnel-step:nth-child(3) { background: #60a5fa; width: 50%; font-size: 12px; }
   .funnel-arrow { color: #94a3b8; font-size: 18px; }
   
-  /* Report Template */
+  /* ===== Reports ===== */
   .report-form { max-width: 700px; margin: 0 auto; }
   .form-group { margin-bottom: 16px; }
   .form-label { font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px; display: block; }
   .form-input { width: 100%; padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 13px; }
   .form-checkbox { display: flex; align-items: center; gap: 8px; padding: 6px 0; }
   
-  /* Two column */
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
   
-  @media (max-width: 768px) {
-    .kpi-row { grid-template-columns: repeat(2, 1fr); }
-    .grid-2, .grid-3, .two-col { grid-template-columns: 1fr; }
-    .nav-tab { padding: 12px 14px; font-size: 13px; }
-  }
-
-  /* ===== Login Screen ===== */
+  /* ===== LOGIN ===== */
   .login-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
@@ -108,11 +104,38 @@
   .login-btn:hover { background: #1d4ed8; }
   .login-error { color: #ef4444; font-size: 13px; margin-top: 12px; display: none; }
   .login-footer { margin-top: 20px; font-size: 11px; color: #94a3b8; }
+
+  /* ===== Project Grid (Layer 1) ===== */
+  .project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; max-width: 1200px; margin: 40px auto; padding: 0 24px; }
+  .project-card {
+    background: #fff; border-radius: 16px; padding: 24px; cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06); transition: all 0.25s;
+    border: 2px solid transparent;
+    position: relative; overflow: hidden;
+  }
+  .project-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.10); border-color: #2563eb; }
+  .project-card .dot-outer { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 12px; }
+  .project-card h3 { font-size: 17px; font-weight: 600; margin-bottom: 4px; }
+  .project-card .p-sub { font-size: 12px; color: #94a3b8; margin-bottom: 14px; }
+  .project-card .p-stats { display: flex; gap: 16px; margin-bottom: 12px; }
+  .project-card .p-stat { }
+  .project-card .p-stat-label { font-size: 11px; color: #94a3b8; }
+  .project-card .p-stat-val { font-size: 20px; font-weight: 700; }
+  .project-card .p-bottom { display: flex; justify-content: space-between; align-items: center; }
+  .project-page-title { font-size: 14px; font-weight: 500; margin-bottom: 8px; }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 768px) {
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .grid-2, .grid-3, .two-col { grid-template-columns: 1fr; }
+    .nav-tab { padding: 12px 14px; font-size: 13px; }
+    .project-grid { grid-template-columns: 1fr; padding: 0 16px; }
+  }
 </style>
 </head>
 <body>
 
-<!-- ===== LOGIN OVERLAY ===== -->
+<!-- ===== LOGIN ===== -->
 <div id="loginOverlay" class="login-overlay">
   <div class="login-box">
     <div class="login-logo">📋</div>
@@ -126,262 +149,68 @@
   </div>
 </div>
 
-<!-- ===== DASHBOARD CONTENT ===== -->
+<!-- ===== DASHBOARD ===== -->
 <div id="dashboardContent" style="display:none;">
 
+<!-- ===== TOP NAV ===== -->
 <div class="top-nav">
   <div>
-    <h1>深圳老板电器618 · 燃洗提升项目看版</h1>
-    <div class="subtitle">项目周期：5.21 - 6.30 ｜ 服务商：贝帮信息科技有限公司</div>
-  </div>
-  <div style="font-size:12px;color:#94a3b8;">📋 AI交付总监 · 数据驱动 <a href="#" onclick="logout()" style="color:#94a3b8;margin-left:12px;text-decoration:underline;">退出</a></div>
-</div>
-
-<div class="nav-tabs">
-  <div class="nav-tab active" onclick="switchTab('page1')">📋 策略一页纸</div>
-  <div class="nav-tab" onclick="switchTab('page2')">📊 执行落地看版</div>
-  <div class="nav-tab" onclick="switchTab('page3')">📝 执行老师汇报通路</div>
-</div>
-
-<!-- ======= PAGE 1: 策略一页纸看版 ======= -->
-<div id="page1" class="page active">
-
-  <div class="kpi-row">
-    <div class="kpi-card">
-      <div class="kpi-label">燃热达成</div>
-      <div class="kpi-value" style="color:#ef4444;">53.6%</div>
-      <div class="kpi-sub">380 / 709 台 <span class="kpi-dot dot-red"></span>同比-12.5%</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-label">洗碗机达成</div>
-      <div class="kpi-value" style="color:#eab308;">62.9%</div>
-      <div class="kpi-sub">553 / 879 台 <span class="kpi-dot dot-yellow"></span>同比-14.3%</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-label">i1pro达成</div>
-      <div class="kpi-value" style="color:#ef4444;">28.5%</div>
-      <div class="kpi-sub">35 / 123 套 <span class="kpi-dot dot-red"></span>严重缺口</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-label">99元售卡</div>
-      <div class="kpi-value" style="color:#eab308;">47.7%</div>
-      <div class="kpi-sub">260 / 545 张 <span class="kpi-dot dot-yellow"></span>成交193张·转化率74.2%</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-label">全员破零率</div>
-      <div class="kpi-value" style="color:#22c55e;">73.1%</div>
-      <div class="kpi-sub">87 / 119 人 已破零 <span class="kpi-dot dot-yellow"></span></div>
+    <h1 id="navTitle">BB交付中心 · 看版</h1>
+    <div id="navSubtitle" class="subtitle" style="display:flex;align-items:center;gap:8px;">
+      <span style="font-size:12px;color:#94a3b8;">服务商：贝帮信息科技有限公司</span>
     </div>
   </div>
-
-  <div class="grid-2">
-    <div class="section">
-      <div class="section-title">项目逻辑</div>
-      <table>
-        <tr><th style="width:80px;">步骤</th><th>内容</th></tr>
-        <tr><td>①</td><td><strong>客户定位：</strong>深圳全市老板电器经销商 → 提升燃洗配套率</td></tr>
-        <tr><td>②</td><td><strong>现状评估：</strong>燃热同比-12.5% 洗碗机同比-14.3%<br>KA和专卖店双降，家装逆势增长(+21.7%)</td></tr>
-        <tr><td>③</td><td><strong>理想标准：</strong>燃洗配套率≥80% ｜ 三件套占比提升 ｜ 全员破零率≥90%</td></tr>
-        <tr><td>④</td><td><strong>策略方法：</strong>99元预售卡(送黄金+抽茅台) ｜ 四阶段30-20-30-20节奏 ｜ 燃热三一级标识 ｜ 异业+设计师培训</td></tr>
-        <tr><td>⑤</td><td><strong>关键指标：</strong>燃热53%🔴 洗碗63%🟡 i1pro29%🔴 售卡48%🟡 破零73%🟡</td></tr>
-        <tr><td>⑥</td><td><strong>排期分工：</strong>3大渠道 ｜ 7位管干 ｜ 10+业务店总 ｜ 119名门店一线</td></tr>
-        <tr><td>⑦</td><td><strong>跟盯复盘：</strong>4轮阶段总结会 ｜ 每日群内捷报 ｜ 管干负激励(生鸡蛋+黄连粉)</td></tr>
-      </table>
-    </div>
-
-    <div class="section">
-      <div class="section-title">渠道达成矩阵</div>
-      <table>
-        <tr><th>渠道</th><th>管干</th><th>燃热</th><th>洗碗机</th><th>i1pro</th><th>售卡</th></tr>
-        <tr><td>专卖店</td><td>李洋&肖洁</td><td><span class="badge badge-yellow">52.6%</span></td><td><span class="badge badge-yellow">66.3%</span></td><td><span class="badge badge-red">27.7%</span></td><td>118张</td></tr>
-        <tr><td>KA(京东)</td><td>彭刚</td><td><span class="badge badge-red">39.9%</span></td><td><span class="badge badge-red">44.0%</span></td><td><span class="badge badge-red">30.4%</span></td><td>44张</td></tr>
-        <tr><td>KA(苏宁/顺电)</td><td>卢家宝/黄远兵</td><td><span class="badge badge-red">30.5%</span></td><td><span class="badge badge-red">22.0%</span></td><td><span class="badge badge-yellow">55.0%</span></td><td>22张</td></tr>
-        <tr><td style="font-weight:600;">家装</td><td>司马世泽</td><td><span class="badge badge-green">78.7%</span></td><td><span class="badge badge-green">109.9%</span></td><td><span class="badge badge-yellow">53.3%</span></td><td>53张</td></tr>
-      </table>
-      <div style="margin-top:12px;font-size:12px;color:#64748b;">🟢达标率≥80% &nbsp; 🟡60-80% &nbsp; 🔴&lt;60%</div>
-    </div>
-  </div>
-
-  <div class="grid-2">
-    <div class="section">
-      <div class="section-title">售卡转化漏斗</div>
-      <div class="funnel">
-        <div class="funnel-step">99元预售卡售出 260 张</div>
-        <div class="funnel-arrow">⬇ 转化率 74.2%</div>
-        <div class="funnel-step" style="background:#3b82f6;">成交 193 单</div>
-        <div class="funnel-arrow">⬇</div>
-        <div class="funnel-step" style="background:#60a5fa;padding:8px;">燃热配套 → 洗碗机配套 → i1pro配套</div>
-      </div>
-    </div>
-    <div class="section">
-      <div class="section-title">售卡来源分布</div>
-      <table>
-        <tr><th>来源</th><th>售卡数</th><th>占比</th></tr>
-        <tr><td>🏪 自然进店</td><td>114</td><td>43.8%</td></tr>
-        <tr><td>🏠 家装</td><td>50</td><td>19.2%</td></tr>
-        <tr><td>🤝 异业</td><td>37</td><td>14.2%</td></tr>
-        <tr><td>✏️ 设计师</td><td>31</td><td>11.9%</td></tr>
-        <tr><td>👥 老客户</td><td>24</td><td>9.2%</td></tr>
-        <tr><td>🏘️ 小区</td><td>4</td><td>1.5%</td></tr>
-      </table>
-    </div>
-  </div>
-
-  <div class="grid-2">
-    <div class="section">
-      <div class="section-title" style="color:#ef4444;">核心问题</div>
-      <div style="display:flex;flex-direction:column;gap:10px;">
-        <div style="padding:10px 14px;background:#fef2f2;border-radius:8px;border-left:4px solid #ef4444;"><strong>1. KA燃热破零不足</strong><br>KA 54人中仅37人破零（68.5%），14人全程未开单</div>
-        <div style="padding:10px 14px;background:#fef2f2;border-radius:8px;border-left:4px solid #ef4444;"><strong>2. i1pro极度低</strong><br>全渠道仅35套，达成率28.5%，是最大短板</div>
-        <div style="padding:10px 14px;background:#fef2f2;border-radius:8px;border-left:4px solid #ef4444;"><strong>3. 整体同比下降</strong><br>全渠道燃热同比-12.5%，洗碗机同比-14.3%</div>
-        <div style="padding:10px 14px;background:#fef2f2;border-radius:8px;border-left:4px solid #ef4444;"><strong>4. 售卡转化断层</strong><br>67张未成交(25.8%)，需追访跟进</div>
-      </div>
-    </div>
-    <div class="section">
-      <div class="section-title" style="color:#22c55e;">标杆 & 亮点</div>
-      <div style="display:flex;flex-direction:column;gap:10px;">
-        <div style="padding:10px 14px;background:#f0fdf4;border-radius:8px;border-left:4px solid #22c55e;"><strong>🏆 家装渠道全面达标</strong><br>司马世泽团队：燃热78.7% 洗碗机109.9% 破零100%</div>
-        <div style="padding:10px 14px;background:#f0fdf4;border-radius:8px;border-left:4px solid #22c55e;"><strong>🏆 个人标杆</strong><br>燃热：王少音7台、廖建祥11台、吴丽君7台</div>
-        <div style="padding:10px 14px;background:#f0fdf4;border-radius:8px;border-left:4px solid #22c55e;"><strong>🏆 门店标杆</strong><br>宝安华美居：燃热30台+洗碗机30台+i1pro15台</div>
-        <div style="padding:10px 14px;background:#f0fdf4;border-radius:8px;border-left:4px solid #22c55e;"><strong>🏆 售卡转化率高</strong><br>260张售卡→193单成交，转化率74.2%</div>
-      </div>
-    </div>
+  <div style="font-size:12px;color:#94a3b8;">
+    <span id="navBreadcrumb"></span> 📋 AI交付总监
+    <a href="#" onclick="logout()" style="color:#94a3b8;margin-left:12px;text-decoration:underline;">退出</a>
   </div>
 </div>
 
-<!-- ======= PAGE 2: 执行落地看版 ======= -->
-<div id="page2" class="page">
-
-  <div class="section">
-    <div class="section-title">📊 今日数据看版</div>
-    <div class="kpi-row">
-      <div class="kpi-card" style="text-align:center;"><div class="kpi-label">今日开单</div><div class="kpi-value" style="font-size:32px;">—</div><div class="kpi-sub">待执行老师上报</div></div>
-      <div class="kpi-card" style="text-align:center;"><div class="kpi-label">今日售卡</div><div class="kpi-value" style="font-size:32px;">—</div><div class="kpi-sub">待执行老师上报</div></div>
-      <div class="kpi-card" style="text-align:center;"><div class="kpi-label">累计破零人数</div><div class="kpi-value" style="font-size:32px;">87</div><div class="kpi-sub">目标占比 73.1%</div></div>
-      <div class="kpi-card" style="text-align:center;"><div class="kpi-label">售卡转化率</div><div class="kpi-value" style="font-size:32px;">74.2%</div><div class="kpi-sub">193/260张已成交</div></div>
+<!-- ======================================================================== -->
+<!-- ===== PAGE L1: 项目选择 (Layer 1) ===== -->
+<!-- ======================================================================== -->
+<div id="pageL1" class="page active">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div style="margin:20px 24px 0;">
+      <div style="font-size:22px;font-weight:700;margin-bottom:4px;">全部项目</div>
+      <div style="font-size:13px;color:#64748b;">选择项目查看策略一页纸与执行落地看版</div>
     </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">各渠道进度条</div>
-    <table>
-      <tr><th>渠道</th><th>燃热达成</th><th>进度</th><th>洗碗机达成</th><th>进度</th><th>i1pro</th><th>售卡</th></tr>
-      <tr><td>专卖店（李洋&肖洁）</td><td><strong>187</strong> / 376</td><td><div class="progress-bar"><div class="progress-fill fill-red" style="width:49.7%"></div></div>49.7%</td><td><strong>249</strong> / 381</td><td><div class="progress-bar"><div class="progress-fill fill-yellow" style="width:65.4%"></div></div>65.4%</td><td>13/52</td><td>118张</td></tr>
-      <tr><td>KA 京东（彭刚）</td><td><strong>35</strong> / 42</td><td><div class="progress-bar"><div class="progress-fill fill-green" style="width:83.3%"></div></div>83.3%</td><td><strong>115</strong> / 98</td><td><div class="progress-bar"><div class="progress-fill fill-green" style="width:117%"></div></div>117.3%</td><td>2/21</td><td>44张</td></tr>
-      <tr><td>KA 苏宁/顺电（卢家宝/黄远兵）</td><td><strong>62</strong> / 201</td><td><div class="progress-bar"><div class="progress-fill fill-red" style="width:30.8%"></div></div>30.8%</td><td><strong>78</strong> / 343</td><td><div class="progress-bar"><div class="progress-fill fill-red" style="width:22.7%"></div></div>22.7%</td><td>12/29</td><td>22张</td></tr>
-      <tr><td>家装（司马世泽）</td><td><strong>96</strong> / 122</td><td><div class="progress-bar"><div class="progress-fill fill-green" style="width:78.7%"></div></div>78.7%</td><td><strong>111</strong> / 101</td><td><div class="progress-bar"><div class="progress-fill fill-green" style="width:110%"></div></div>109.9%</td><td>8/15</td><td>53张</td></tr>
-    </table>
-  </div>
-
-  <div class="section">
-    <div class="section-title">🏪 核心门店达成明细（Top 20）</div>
-    <div style="overflow-x:auto;">
-    <table>
-      <tr><th>门店</th><th>管干</th><th>燃热</th><th>洗碗机</th><th>i1pro</th><th>售卡</th><th>综合</th></tr>
-      <tr><td>南山京东</td><td>彭刚/冯志</td><td>20/24</td><td>73/36</td><td>0/12</td><td>93张</td><td><span class="badge badge-yellow">🟡</span></td></tr>
-      <tr><td>宝安华美居</td><td>余维斌</td><td>13/68</td><td>30/51</td><td>2/6</td><td>45张</td><td><span class="badge badge-red">🔴</span></td></tr>
-      <tr><td>龙华万众城</td><td>唐敏球</td><td>10/42</td><td>20/56</td><td>4/10</td><td>34张</td><td><span class="badge badge-red">🔴</span></td></tr>
-      <tr><td>宝能第一空间</td><td>李丹</td><td>14/13</td><td>18/17</td><td>0/5</td><td>32张</td><td><span class="badge badge-green">🟢</span></td></tr>
-      <tr><td>群星京东</td><td>彭刚/冯志</td><td>6/7</td><td>24/36</td><td>2/8</td><td>32张</td><td><span class="badge badge-yellow">🟡</span></td></tr>
-      <tr><td>罗湖百安居</td><td>卢家宝</td><td>12/26</td><td>11/40</td><td>3/6</td><td>26张</td><td><span class="badge badge-red">🔴</span></td></tr>
-      <tr><td>龙岗国安居</td><td>彭泽新</td><td>8/10</td><td>13/23</td><td>4/5</td><td>25张</td><td><span class="badge badge-green">🟢</span></td></tr>
-      <tr><td>欧洲城香江家居</td><td>李麟</td><td>8/32</td><td>13/37</td><td>2/8</td><td>23张</td><td><span class="badge badge-red">🔴</span></td></tr>
-      <tr><td>西丽百安居</td><td>卢家宝</td><td>8/16</td><td>9/36</td><td>3/4</td><td>20张</td><td><span class="badge badge-red">🔴</span></td></tr>
-      <tr><td>沙井京东</td><td>彭刚</td><td>6/8</td><td>13/22</td><td>0/2</td><td>19张</td><td><span class="badge badge-yellow">🟡</span></td></tr>
-    </table>
-    </div>
-    <div style="margin-top:8px;font-size:12px;color:#64748b;">🟢达成率≥80% &nbsp; 🟡60-80% &nbsp; 🔴&lt;60% &nbsp; 燃热数据格式：达成/目标</div>
-  </div>
-
-  <div class="grid-2">
-    <div class="section">
-      <div class="section-title" style="color:#ef4444;">⚠️ 预警事项</div>
-      <div style="display:flex;flex-direction:column;gap:8px;">
-        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;"><span>🔴 KA燃热未破零人数</span><span style="font-weight:600;">17人</span></div>
-        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;"><span>🟡 专卖店i1pro挂零</span><span style="font-weight:600;">多门店0套</span></div>
-        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;"><span>🟡 售卡未核销</span><span style="font-weight:600;">67张</span></div>
-        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;"><span>🔴 顺电渠道全线挂零</span><span style="font-weight:600;">14家门店</span></div>
-      </div>
-    </div>
-    <div class="section">
-      <div class="section-title">🏅 今日龙虎榜</div>
-      <div style="display:flex;flex-direction:column;gap:8px;">
-        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;"><span>🥇 燃热先锋</span><span>王少音 7台 / 廖建祥 11台</span></div>
-        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;"><span>🥇 洗碗机先锋</span><span>赵建林 21台 / 郑美兰 11台</span></div>
-        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;"><span>🥇 售卡TOP</span><span>南山京东 93张</span></div>
-        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;"><span>🥇 家装破零率100%</span><span>全员11人破零</span></div>
-      </div>
-    </div>
+    <div id="projectList" class="project-grid"></div>
   </div>
 </div>
 
-<!-- ======= PAGE 3: 执行老师汇报通路 ======= -->
-<div id="page3" class="page">
-  <div class="section">
-    <div class="section-title">📋 执行老师每日汇报模板</div>
-    <div class="report-form">
-      <div style="display:flex;gap:16px;margin-bottom:16px;">
-        <div style="flex:1;"><div class="form-label">日期</div><div class="form-input">2026年__月__日</div></div>
-        <div style="flex:1;"><div class="form-label">姓名</div><div class="form-input">____________</div></div>
-        <div style="flex:1;"><div class="form-label">渠道</div><div class="form-input">专卖店 / KA / 家装</div></div>
-      </div>
-      <div class="form-label">一、今日数据</div>
-      <table>
-        <tr><th>产品</th><th>今日目标</th><th>今日实际</th><th>累计达成</th></tr>
-        <tr><td>燃热销售（台）</td><td>___</td><td>___</td><td>___</td></tr>
-        <tr><td>洗碗机销售（台）</td><td>___</td><td>___</td><td>___</td></tr>
-        <tr><td>i1pro销售（套）</td><td>___</td><td>___</td><td>___</td></tr>
-        <tr><td>售卡（张）</td><td>___</td><td>___</td><td>___</td></tr>
-        <tr><td>新增客户</td><td>___</td><td>___</td><td>___</td></tr>
-      </table>
-      <div class="form-label" style="margin-top:16px;">二、今日动作执行</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
-        <div class="form-checkbox">☐ 9:00前下发当日工作指令</div>
-        <div class="form-checkbox">☐ 水印相机打卡/晨会</div>
-        <div class="form-checkbox">☐ 客户体验燃热___次</div>
-        <div class="form-checkbox">☐ 客户体验洗碗机___次</div>
-        <div class="form-checkbox">☐ 异业/设计师拜访___家</div>
-        <div class="form-checkbox">☐ 售卡___张（附截图）</div>
-        <div class="form-checkbox">☐ 群内发战报</div>
-        <div class="form-checkbox">☐ 21:00前完成总结复盘</div>
-      </div>
-      <div class="form-label" style="margin-top:16px;">三、今日聚焦问题</div>
-      <div class="form-input" style="min-height:60px;">________________________</div>
-      <div class="form-label" style="margin-top:16px;">四、明日工作计划</div>
-      <div class="form-input" style="min-height:60px;">________________________</div>
-    </div>
+<!-- ======================================================================== -->
+<!-- ===== PAGE L2: 项目详情 (Layer 2) ===== -->
+<!-- ======================================================================== -->
+<div id="pageL2" class="page">
+
+  <!-- ===== TABS ===== -->
+  <div class="nav-tabs" id="detailTabs">
+    <div class="nav-tab active" onclick="switchDetailTab('tab1')">📋 策略一页纸</div>
+    <div class="nav-tab" onclick="switchDetailTab('tab2')">📊 执行落地看版</div>
+    <div class="nav-tab" onclick="switchDetailTab('tab3')">📝 执行老师汇报通路</div>
   </div>
 
-  <div class="grid-2">
-    <div class="section">
-      <div class="section-title">汇报规范</div>
-      <ul style="font-size:13px;line-height:1.8;padding-left:20px;color:#374151;">
-        <li>每日 9:00 前下发当日工作指令至门店群</li>
-        <li>每日 21:00 前完成汇总并发送至交付管理群</li>
-        <li>水印相机照片需含门店名称+日期</li>
-        <li>售卡截图需含客户信息+VIP卡号</li>
-        <li>群内互动不少于30条/日</li>
-        <li>与核心对接人每日沟通不少于1次</li>
-      </ul>
-    </div>
-    <div class="section">
-      <div class="section-title">负激励规则</div>
-      <ul style="font-size:13px;line-height:1.8;padding-left:20px;color:#374151;">
-        <li>燃热未破零 → 抄写指定话术2遍</li>
-        <li>燃洗综合达成&lt;80% → 例会吃生鸡蛋+黄连粉</li>
-        <li>连续两场评分&lt;80% → 降职处理</li>
-        <li>管干未按标准反馈活动落地 → 群内通报</li>
-        <li>数据造假 → 一票否决</li>
-        <li>每日必做项达标率&lt;80% → 管干执行负激励</li>
-      </ul>
-    </div>
+  <!-- ===== TAB 1: 策略一页纸 ===== -->
+  <div id="tab1" class="page active">
+    <div id="strategyContent"></div>
+  </div>
+
+  <!-- ===== TAB 2: 执行落地看版 ===== -->
+  <div id="tab2" class="page">
+    <div id="executionContent"></div>
+  </div>
+
+  <!-- ===== TAB 3: 执行老师汇报通路 ===== -->
+  <div id="tab3" class="page">
+    <div id="reportContent"></div>
   </div>
 </div>
 
 </div><!-- /dashboardContent -->
 
 <script>
-// ===== Password Protection =====
+// ===== PASSWORD =====
 const PASSWORD = 'beibang2026';
 const SESSION_KEY = 'bb_dashboard_auth';
 
@@ -392,13 +221,6 @@ const SESSION_KEY = 'bb_dashboard_auth';
     document.getElementById('dashboardContent').style.display = 'block';
   }
 })();
-
-function switchTab(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  event.target.classList.add('active');
-}
 
 function checkPassword() {
   const pw = document.getElementById('loginPassword').value;
@@ -421,7 +243,633 @@ function logout() {
   document.getElementById('loginPassword').value = '';
   document.getElementById('loginPassword').focus();
 }
-</script>
 
+// ======================================================================
+// ===== DATA: ALL PROJECTS =====
+// ======================================================================
+const projects = {
+  'sz-lg618': {
+    id: 'sz-lg618',
+    name: '深圳老板电器618·燃洗提升项目',
+    period: '5.21 - 6.30',
+    status: '已完成✅',
+    emoji: '🔥',
+    color: '#2563eb',
+    kpis: [
+      { label: '燃热达成', value: '53.6%', sub: '380 / 709 台', color: '#ef4444', dot: 'dot-red' },
+      { label: '洗碗机达成', value: '62.9%', sub: '553 / 879 台', color: '#eab308', dot: 'dot-yellow' },
+      { label: 'i1pro达成', value: '28.5%', sub: '35 / 123 套', color: '#ef4444', dot: 'dot-red' },
+      { label: '99元售卡', value: '47.7%', sub: '260 / 545 张', color: '#eab308', dot: 'dot-yellow' },
+      { label: '全员破零率', value: '73.1%', sub: '87 / 119 人', color: '#22c55e', dot: 'dot-green' }
+    ],
+    strategy: buildStrategyHTML_sz,
+    execution: buildExecutionHTML_sz,
+    report: buildReportHTML
+  },
+
+  'i1pro': {
+    id: 'i1pro',
+    name: 'i1pro AI智能套系·爆区打造',
+    period: '2026.6 - 2026.7',
+    status: '进行中🔥',
+    emoji: '🚀',
+    color: '#7c3aed',
+    kpis: [
+      { label: '全国达成', value: '77.4%', sub: '387 / 500 套', color: '#22c55e', dot: 'dot-green' },
+      { label: '参与城市', value: '97', sub: '覆盖100%', color: '#2563eb', dot: 'dot-green' },
+      { label: '优秀爆区', value: '21', sub: '占比21.6%', color: '#22c55e', dot: 'dot-green' },
+      { label: '零进度城市', value: '8', sub: '需紧急跟进', color: '#ef4444', dot: 'dot-red' },
+      { label: '四类认证通关', value: '87%', sub: '3,842人通过', color: '#eab308', dot: 'dot-yellow' }
+    ],
+    strategy: buildStrategyHTML_i1pro,
+    execution: buildExecutionHTML_i1pro,
+    report: buildReportHTML
+  },
+
+  'colmo': {
+    id: 'colmo',
+    name: 'COLMO 6-8月 新媒体运营',
+    period: '2026.6 - 2026.8',
+    status: '进行中🔥',
+    emoji: '📺',
+    color: '#0891b2',
+    kpis: [
+      { label: '成都成交', value: '247w', sub: '活跃中·客资跟进', color: '#22c55e', dot: 'dot-green' },
+      { label: '南昌成交', value: '30w+', sub: 'ROI≈27倍', color: '#22c55e', dot: 'dot-green' },
+      { label: '太原成交', value: '28w', sub: '已启动多门店', color: '#eab308', dot: 'dot-yellow' },
+      { label: '北京直播', value: '14倍', sub: 'ROI ¥624→¥8,798', color: '#eab308', dot: 'dot-yellow' },
+      { label: '石家庄成交', value: '7w', sub: '引流中', color: '#eab308', dot: 'dot-yellow' }
+    ],
+    strategy: buildStrategyHTML_colmo,
+    execution: buildExecutionHTML_colmo,
+    report: buildReportHTML
+  }
+};
+
+// ======================================================================
+// ===== NAVIGATION =====
+// ======================================================================
+let currentProject = null;
+
+function showProjectList() {
+  currentProject = null;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('pageL1').classList.add('active');
+  document.getElementById('navTitle').textContent = 'BB交付中心 · 看版';
+  document.getElementById('navSubtitle').innerHTML = '<span style="font-size:12px;color:#94a3b8;">服务商：贝帮信息科技有限公司</span>';
+  document.getElementById('navBreadcrumb').textContent = '';
+  renderProjectList();
+}
+
+function showProjectDetail(pid) {
+  const p = projects[pid];
+  if (!p) return;
+  currentProject = pid;
+  document.querySelectorAll('.page').forEach(pg => pg.classList.remove('active'));
+  document.getElementById('pageL2').classList.add('active');
+  document.getElementById('navTitle').textContent = p.name;
+  document.getElementById('navSubtitle').innerHTML = '<span style="font-size:12px;color:#94a3b8;">项目周期：' + p.period + ' ｜ 服务商：贝帮信息科技有限公司</span>';
+  document.getElementById('navBreadcrumb').textContent = '';
+  
+  // Build breadcrumb
+  const bc = document.getElementById('navBreadcrumb');
+  bc.innerHTML = '<a href="#" onclick="showProjectList();return false;" style="color:#94a3b8;text-decoration:underline;">全部项目</a><span style="color:#64748b;margin:0 6px;">›</span><span style="color:#cbd5e1;">' + p.name + '</span> &nbsp; ';
+  
+  // Render detail tabs
+  document.getElementById('strategyContent').innerHTML = p.strategy(p);
+  document.getElementById('executionContent').innerHTML = p.execution(p);
+  document.getElementById('reportContent').innerHTML = p.report(p);
+  
+  // Switch to first tab
+  switchDetailTab('tab1');
+}
+
+function switchDetailTab(id) {
+  document.querySelectorAll('#pageL2 .page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('#detailTabs .nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  // find the clicked tab
+  const tabs = document.querySelectorAll('#detailTabs .nav-tab');
+  const tabMap = { 'tab1': 0, 'tab2': 1, 'tab3': 2 };
+  if (tabMap[id] !== undefined) tabs[tabMap[id]].classList.add('active');
+}
+
+// ======================================================================
+// ===== RENDER PROJECT LIST (Layer 1) =====
+// ======================================================================
+function renderProjectList() {
+  const container = document.getElementById('projectList');
+  container.innerHTML = '';
+  Object.keys(projects).forEach(pid => {
+    const p = projects[pid];
+    const card = document.createElement('div');
+    card.className = 'project-card';
+    card.onclick = function() { showProjectDetail(pid); };
+    
+    // Status color
+    let statusColor = '#22c55e';
+    if (p.status.includes('进行中')) statusColor = '#2563eb';
+    if (p.status.includes('暂停')) statusColor = '#ef4444';
+    if (p.status.includes('完成')) statusColor = '#64748b';
+    
+    // Calculate avg KPI for progress
+    let avgVal = 0;
+    p.kpis.forEach(k => {
+      const num = parseFloat(k.value.replace(/[^0-9.]/g, ''));
+      if (!isNaN(num)) avgVal += num;
+    });
+    avgVal = avgVal / p.kpis.length;
+    const progressColor = avgVal >= 70 ? '#22c55e' : avgVal >= 50 ? '#eab308' : '#ef4444';
+    const progressWidth = Math.min(avgVal, 100);
+    
+    card.innerHTML = `
+      <div class="dot-outer" style="background:${p.color}20;color:${p.color};">${p.emoji}</div>
+      <h3>${p.name}</h3>
+      <div class="p-sub">${p.period} · <span style="color:${statusColor};font-weight:600;">${p.status}</span></div>
+      <div class="p-stats">
+        <div class="p-stat">
+          <div class="p-stat-label">综合达成</div>
+          <div class="p-stat-val" style="color:${progressColor}">${avgVal.toFixed(1)}%</div>
+        </div>
+        <div class="p-stat">
+          <div class="p-stat-label">KPI数</div>
+          <div class="p-stat-val">${p.kpis.length}</div>
+        </div>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${progressWidth}%;background:${progressColor};"></div></div>
+      <div class="p-bottom" style="margin-top:12px;">
+        <span style="font-size:12px;color:#2563eb;font-weight:500;">查看详情 ›</span>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+// ======================================================================
+// ===== STRATEGY: 深圳老板电器618 =====
+// ======================================================================
+function buildStrategyHTML_sz(p) {
+  return `
+    <div class="kpi-row">
+      ${p.kpis.map(k => `
+        <div class="kpi-card">
+          <div class="kpi-label">${k.label}</div>
+          <div class="kpi-value" style="color:${k.color};">${k.value}</div>
+          <div class="kpi-sub">${k.sub} <span class="kpi-dot ${k.dot}"></span></div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="grid-2">
+      <div class="section">
+        <div class="section-title">项目逻辑</div>
+        <table>
+          <tr><th style="width:80px;">步骤</th><th>内容</th></tr>
+          <tr><td>①</td><td><strong>客户定位：</strong>深圳全市老板电器经销商 → 提升燃洗配套率</td></tr>
+          <tr><td>②</td><td><strong>现状评估：</strong>燃热同比-12.5% 洗碗机同比-14.3%<br>KA和专卖店双降，家装逆势增长(+21.7%)</td></tr>
+          <tr><td>③</td><td><strong>理想标准：</strong>燃洗配套率≥80% ｜ 三件套占比提升 ｜ 全员破零率≥90%</td></tr>
+          <tr><td>④</td><td><strong>策略方法：</strong>99元预售卡(送黄金+抽茅台) ｜ 四阶段30-20-30-20节奏 ｜ 燃热三一级标识 ｜ 异业+设计师培训</td></tr>
+          <tr><td>⑤</td><td><strong>关键指标：</strong>燃热53%🔴 洗碗63%🟡 i1pro29%🔴 售卡48%🟡 破零73%🟡</td></tr>
+          <tr><td>⑥</td><td><strong>排期分工：</strong>3大渠道 ｜ 7位管干 ｜ 10+业务店总 ｜ 119名门店一线</td></tr>
+          <tr><td>⑦</td><td><strong>跟盯复盘：</strong>4轮阶段总结会 ｜ 每日群内捷报 ｜ 管干负激励(生鸡蛋+黄连粉)</td></tr>
+        </table>
+      </div>
+      <div class="section">
+        <div class="section-title">渠道达成矩阵</div>
+        <table>
+          <tr><th>渠道</th><th>管干</th><th>燃热</th><th>洗碗机</th><th>i1pro</th><th>售卡</th></tr>
+          <tr><td>专卖店</td><td>李洋&肖洁</td><td><span class="badge badge-yellow">52.6%</span></td><td><span class="badge badge-yellow">66.3%</span></td><td><span class="badge badge-red">27.7%</span></td><td>118张</td></tr>
+          <tr><td>KA(京东)</td><td>彭刚</td><td><span class="badge badge-red">39.9%</span></td><td><span class="badge badge-red">44.0%</span></td><td><span class="badge badge-red">30.4%</span></td><td>44张</td></tr>
+          <tr><td>KA(苏宁/顺电)</td><td>卢家宝/黄远兵</td><td><span class="badge badge-red">30.5%</span></td><td><span class="badge badge-red">22.0%</span></td><td><span class="badge badge-yellow">55.0%</span></td><td>22张</td></tr>
+          <tr><td style="font-weight:600;">家装</td><td>司马世泽</td><td><span class="badge badge-green">78.7%</span></td><td><span class="badge badge-green">109.9%</span></td><td><span class="badge badge-yellow">53.3%</span></td><td>53张</td></tr>
+        </table>
+        <div style="margin-top:12px;font-size:12px;color:#64748b;">🟢达标率≥80% &nbsp; 🟡60-80% &nbsp; 🔴&lt;60%</div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="section">
+        <div class="section-title">售卡转化漏斗</div>
+        <div class="funnel">
+          <div class="funnel-step">99元预售卡售出 260 张</div>
+          <div class="funnel-arrow">⬇ 转化率 74.2%</div>
+          <div class="funnel-step" style="background:#3b82f6;">成交 193 单</div>
+          <div class="funnel-arrow">⬇</div>
+          <div class="funnel-step" style="background:#60a5fa;padding:8px;">燃热配套 → 洗碗机配套 → i1pro配套</div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title">售卡来源分布</div>
+        <table>
+          <tr><th>来源</th><th>售卡数</th><th>占比</th></tr>
+          <tr><td>🏪 自然进店</td><td>114</td><td>43.8%</td></tr>
+          <tr><td>🏠 家装</td><td>50</td><td>19.2%</td></tr>
+          <tr><td>🤝 异业</td><td>37</td><td>14.2%</td></tr>
+          <tr><td>✏️ 设计师</td><td>31</td><td>11.9%</td></tr>
+          <tr><td>👥 老客户</td><td>24</td><td>9.2%</td></tr>
+          <tr><td>🏘️ 小区</td><td>4</td><td>1.5%</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="section">
+        <div class="section-title" style="color:#ef4444;">核心问题</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="padding:10px 14px;background:#fef2f2;border-radius:8px;border-left:4px solid #ef4444;"><strong>1. KA燃热破零不足</strong><br>KA 54人中仅37人破零（68.5%），14人全程未开单</div>
+          <div style="padding:10px 14px;background:#fef2f2;border-radius:8px;border-left:4px solid #ef4444;"><strong>2. i1pro极度低</strong><br>全渠道仅35套，达成率28.5%，是最大短板</div>
+          <div style="padding:10px 14px;background:#fef2f2;border-radius:8px;border-left:4px solid #ef4444;"><strong>3. 整体同比下降</strong><br>全渠道燃热同比-12.5%，洗碗机同比-14.3%</div>
+          <div style="padding:10px 14px;background:#fef2f2;border-radius:8px;border-left:4px solid #ef4444;"><strong>4. 售卡转化断层</strong><br>67张未成交(25.8%)，需追访跟进</div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title" style="color:#22c55e;">标杆 & 亮点</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="padding:10px 14px;background:#f0fdf4;border-radius:8px;border-left:4px solid #22c55e;"><strong>🏆 家装渠道全面达标</strong><br>司马世泽团队：燃热78.7% 洗碗机109.9% 破零100%</div>
+          <div style="padding:10px 14px;background:#f0fdf4;border-radius:8px;border-left:4px solid #22c55e;"><strong>🏆 个人标杆</strong><br>燃热：王少音7台、廖建祥11台、吴丽君7台</div>
+          <div style="padding:10px 14px;background:#f0fdf4;border-radius:8px;border-left:4px solid #22c55e;"><strong>🏆 门店标杆</strong><br>宝安华美居：燃热30台+洗碗机30台+i1pro15台</div>
+          <div style="padding:10px 14px;background:#f0fdf4;border-radius:8px;border-left:4px solid #22c55e;"><strong>🏆 售卡转化率高</strong><br>260张售卡→193单成交，转化率74.2%</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ======================================================================
+// ===== STRATEGY: i1pro 爆区打造 =====
+// ======================================================================
+function buildStrategyHTML_i1pro(p) {
+  return `
+    <div class="kpi-row">
+      ${p.kpis.map(k => `
+        <div class="kpi-card">
+          <div class="kpi-label">${k.label}</div>
+          <div class="kpi-value" style="color:${k.color};">${k.value}</div>
+          <div class="kpi-sub">${k.sub} <span class="kpi-dot ${k.dot}"></span></div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="grid-2">
+      <div class="section">
+        <div class="section-title">项目逻辑</div>
+        <table>
+          <tr><th style="width:80px;">步骤</th><th>内容</th></tr>
+          <tr><td>①</td><td><strong>客户定位：</strong>全国97个营销中心 → 打造AI智能套系爆区标杆</td></tr>
+          <tr><td>②</td><td><strong>现状评估：</strong>达成387套(77.4%)，超前时间进度9.4pp。<br>优秀爆区21个(21.6%)，零分区域11个需重点帮扶</td></tr>
+          <tr><td>③</td><td><strong>理想标准：</strong>97城100%覆盖达标，头部城市(深圳/广州/郑州/杭州)超额完成</td></tr>
+          <tr><td>④</td><td><strong>策略方法：</strong>八大核心举措：基础建设→品牌曝光→全员种草→通关认证→科技挑战赛→直播→食神AI争霸赛→爆区赋能</td></tr>
+          <tr><td>⑤</td><td><strong>关键指标：</strong>全国500套 ｜ 97城参与 ｜ 21个优秀爆区 ｜ 8,430w+曝光 ｜ 12,680篇种草帖</td></tr>
+          <tr><td>⑥</td><td><strong>排期分工：</strong>97城营销中心 ｜ 总部策略输出 ｜ 区域执行落地 ｜ 零分区域一对一帮扶</td></tr>
+          <tr><td>⑦</td><td><strong>跟盯复盘：</strong>日数据跟踪 ｜ 周排名通报 ｜ 月度爆区之星评选 ｜ 黄牌红牌约束机制</td></tr>
+        </table>
+      </div>
+      <div class="section">
+        <div class="section-title">Top 10城市排名</div>
+        <table>
+          <tr><th>排名</th><th>城市</th><th>目标</th><th>达成</th><th>达成率</th></tr>
+          <tr><td>1 🥇</td><td>大庆</td><td>20</td><td>22</td><td><span class="badge badge-green">110%</span></td></tr>
+          <tr><td>2</td><td>哈尔滨</td><td>20</td><td>18</td><td><span class="badge badge-green">90%</span></td></tr>
+          <tr><td>3</td><td>深圳</td><td>50</td><td>44</td><td><span class="badge badge-green">88%</span></td></tr>
+          <tr><td>4</td><td>郑州</td><td>40</td><td>32</td><td><span class="badge badge-yellow">80%</span></td></tr>
+          <tr><td>5</td><td>广州</td><td>50</td><td>38</td><td><span class="badge badge-yellow">76%</span></td></tr>
+          <tr><td>6</td><td>杭州</td><td>40</td><td>29</td><td><span class="badge badge-yellow">72.5%</span></td></tr>
+          <tr><td>7</td><td>南京</td><td>35</td><td>24</td><td><span class="badge badge-yellow">68.6%</span></td></tr>
+          <tr><td>8</td><td>成都</td><td>35</td><td>23</td><td><span class="badge badge-yellow">65.7%</span></td></tr>
+          <tr><td>9</td><td>武汉</td><td>30</td><td>19</td><td><span class="badge badge-red">63.3%</span></td></tr>
+          <tr><td>10</td><td>西安</td><td>30</td><td>18</td><td><span class="badge badge-red">60%</span></td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">八大核心举措</div>
+      <table>
+        <tr><th>#</th><th>举措</th><th>进度</th><th>数据</th></tr>
+        <tr><td>1</td><td>🏗️ 基础建设</td><td><span class="badge badge-green">100%</span></td><td>97/97中心完成</td></tr>
+        <tr><td>2</td><td>📢 品牌曝光</td><td><span class="badge badge-green">进行中</span></td><td>2,430w+全网曝光，89城覆盖</td></tr>
+        <tr><td>3</td><td>🌱 全员种草</td><td><span class="badge badge-green">进行中</span></td><td>12,680篇员工种草帖，4,520导购参与</td></tr>
+        <tr><td>4</td><td>🎓 四类人群通关认证</td><td><span class="badge badge-green">87%</span></td><td>3,842人通过</td></tr>
+        <tr><td>5</td><td>🏅 无印科技挑战赛</td><td><span class="badge badge-yellow">进行中</span></td><td>36城已举办，1,200+选手</td></tr>
+        <tr><td>6</td><td>📺 疯狂星期四直播</td><td><span class="badge badge-green">进行中</span></td><td>24期累计，场均8.6w观看</td></tr>
+        <tr><td>7</td><td>🍳 食神AI争霸赛</td><td><span class="badge badge-yellow">进行中</span></td><td>28城，960+参赛家庭</td></tr>
+        <tr><td>8</td><td>💥 爆区打造赋能</td><td><span class="badge badge-yellow">进行中</span></td><td>21优秀爆区，11零分区域一对一帮扶</td></tr>
+      </table>
+    </div>
+    <div class="grid-2">
+      <div class="section">
+        <div class="section-title" style="color:#22c55e;">激励政策</div>
+        <ul style="font-size:13px;line-height:2;padding-left:20px;color:#374151;">
+          <li>🥇 月度爆区之星（冠军3万/亚军2万/季军1万）</li>
+          <li>💰 超额阶梯佣金（100-120%→1.5倍，120%+→2倍）</li>
+          <li>🚀 全通认证奖励+培训基金¥5,000</li>
+          <li>🏆 赛事优胜团队奖（每赛¥50,000）</li>
+        </ul>
+      </div>
+      <div class="section">
+        <div class="section-title" style="color:#ef4444;">约束机制</div>
+        <ul style="font-size:13px;line-height:2;padding-left:20px;color:#374151;">
+          <li>🔴 零分区域黄牌警告（30天整改）</li>
+          <li>📉 连续两月垫底红牌约谈+扣绩效</li>
+          <li>⏱️ 通关率&lt;60%延迟发绩效</li>
+          <li>📋 数据造假一票否决</li>
+        </ul>
+      </div>
+    </div>
+  `;
+}
+
+// ======================================================================
+// ===== STRATEGY: COLMO 6-8月 新媒体运营 =====
+// ======================================================================
+function buildStrategyHTML_colmo(p) {
+  return `
+    <div class="kpi-row">
+      ${p.kpis.map(k => `
+        <div class="kpi-card">
+          <div class="kpi-label">${k.label}</div>
+          <div class="kpi-value" style="color:${k.color};">${k.value}</div>
+          <div class="kpi-sub">${k.sub} <span class="kpi-dot ${k.dot}"></span></div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="grid-2">
+      <div class="section">
+        <div class="section-title">项目逻辑</div>
+        <table>
+          <tr><th style="width:80px;">步骤</th><th>内容</th></tr>
+          <tr><td>①</td><td><strong>客户定位：</strong>COLMO全屋家电新媒体运营 → 抖音+小红书获客成交</td></tr>
+          <tr><td>②</td><td><strong>现状评估：</strong>成都(247w)·南昌(30w+·ROI27倍)已跑通模型；<br>济南/西安ROI极低需调整；石家庄/邯郸/邢台刚启动</td></tr>
+          <tr><td>③</td><td><strong>理想标准：</strong>抖音月均20+场(ROI≥20:1) | 小红书月获客200+ | 客资成本≤80元</td></tr>
+          <tr><td>④</td><td><strong>策略方法：</strong>六大模块：大商共识→基建搭建→直播搭建→抖音策略→小红书策略→运营管理<br>8周规划：W1进场→W2基建→W3首播→W4稳定→W5-6放量→W7-8冲刺</td></tr>
+          <tr><td>⑤</td><td><strong>关键指标：</strong>新开≥3城(单城≥50万) | ROI≥20:1 | 客资成本≤80元 | 成交成本≤160元 | 到店转化≥20%</td></tr>
+          <tr><td>⑥</td><td><strong>排期分工：</strong>每城4人(2主播+1运营+1拍剪) | 执行老师统筹 | 经销商配合</td></tr>
+          <tr><td>⑦</td><td><strong>跟盯复盘：</strong>日播4h+ | 三检客资跟进 | 每日15min复盘 | 30秒语音发工作群 | 投流361策略</td></tr>
+        </table>
+      </div>
+      <div class="section">
+        <div class="section-title">城市运营动态</div>
+        <table>
+          <tr><th>城市</th><th>状态</th><th>关键数据</th></tr>
+          <tr><td>🏙️ 成都</td><td><span class="badge badge-green">活跃中</span></td><td>成交247w，小红书执行群78人</td></tr>
+          <tr><td>🏙️ 太原</td><td><span class="badge badge-yellow">已启动</span></td><td>成交28w，多门店参与</td></tr>
+          <tr><td>🏙️ 邯郸邢台</td><td><span class="badge badge-yellow">首播完成</span></td><td>观看965人，留资11人，线索成本53.8元</td></tr>
+          <tr><td>🏙️ 南昌</td><td><span class="badge badge-green">直播中</span></td><td>成交30w+，ROI≈27倍，观看868人</td></tr>
+          <tr><td>🏙️ 石家庄</td><td><span class="badge badge-yellow">引流中</span></td><td>成交7w，客户跟进中</td></tr>
+          <tr><td>🏙️ 北京</td><td><span class="badge badge-yellow">已播完</span></td><td>ROI≈14倍，观看5,685人</td></tr>
+          <tr><td>🏙️ 济南</td><td><span class="badge badge-red">待优化</span></td><td>ROI≈0，观看594人，投放745→成交0</td></tr>
+          <tr><td>🏙️ 西安</td><td><span class="badge badge-red">待优化</span></td><td>成交20元，观看3,122人，投放561→成交20</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">每日标准动作（W3起执行）</div>
+      <table>
+        <tr><th>时间</th><th>动作</th><th>责任人</th></tr>
+        <tr><td>09:00</td><td>发布直播预热短视频</td><td>拍剪</td></tr>
+        <tr><td>10:00</td><td>核查昨日客资跟进（三检①）</td><td>执行老师</td></tr>
+        <tr><td>13:00</td><td>直播设备检查+贴片调整</td><td>运营</td></tr>
+        <tr><td>14:00</td><td>开播≥4h不间断</td><td>主播+运营</td></tr>
+        <tr><td>15:00</td><td>客资跟进核查（三检②）</td><td>执行老师</td></tr>
+        <tr><td>17:00</td><td>小红书笔记+截流15条</td><td>全员</td></tr>
+        <tr><td>18:00</td><td>下播→数据日报</td><td>主播</td></tr>
+        <tr><td>18:15</td><td>15分钟复盘会</td><td>执行老师</td></tr>
+        <tr><td>18:30</td><td>客资分配至导购（5分钟内）</td><td>运营</td></tr>
+        <tr><td>20:00</td><td>客资跟进核查（三检③）</td><td>执行老师</td></tr>
+        <tr><td>21:00</td><td>30秒语音复盘发工作群</td><td>执行老师</td></tr>
+      </table>
+    </div>
+    <div class="grid-2">
+      <div class="section">
+        <div class="section-title" style="color:#22c55e;">标杆&亮点</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="padding:10px 14px;background:#f0fdf4;border-radius:8px;border-left:4px solid #22c55e;"><strong>🏆 南昌直播ROI 27倍</strong><br>营销消耗630元→成交16,997元</div>
+          <div style="padding:10px 14px;background:#f0fdf4;border-radius:8px;border-left:4px solid #22c55e;"><strong>🏆 成都247w成交</strong><br>私域配合+小红书小红书截流模型验证成功</div>
+          <div style="padding:10px 14px;background:#f0fdf4;border-radius:8px;border-left:4px solid #22c55e;"><strong>🏆 邯郸首播线索成本53.8元</strong><br>低于目标成本80元</div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title" style="color:#ef4444;">待优化项</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="padding:10px 14px;background:#fef2f2;border-radius:8px;border-left:4px solid #ef4444;"><strong>🔴 济南ROI为0</strong><br>投放745元→0成交，需复盘调整策略</div>
+          <div style="padding:10px 14px;background:#fef2f2;border-radius:8px;border-left:4px solid #ef4444;"><strong>🔴 西安仅成交20元</strong><br>曝光进入率虽38%但转化极差</div>
+          <div style="padding:10px 14px;background:#fef2f2;border-radius:8px;border-left:4px solid #ef4444;"><strong>🟡 北京ROI仅14倍</strong><br>未达20:1目标，需优化话术</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ======================================================================
+// ===== EXECUTION: 深圳老板电器618 =====
+// ======================================================================
+function buildExecutionHTML_sz(p) {
+  return `
+    <div class="section">
+      <div class="section-title">📊 今日数据看版</div>
+      <div class="kpi-row">
+        <div class="kpi-card" style="text-align:center;"><div class="kpi-label">今日开单</div><div class="kpi-value" style="font-size:32px;">—</div><div class="kpi-sub">待执行老师上报</div></div>
+        <div class="kpi-card" style="text-align:center;"><div class="kpi-label">今日售卡</div><div class="kpi-value" style="font-size:32px;">—</div><div class="kpi-sub">待执行老师上报</div></div>
+        <div class="kpi-card" style="text-align:center;"><div class="kpi-label">累计破零人数</div><div class="kpi-value" style="font-size:32px;">87</div><div class="kpi-sub">目标占比 73.1%</div></div>
+        <div class="kpi-card" style="text-align:center;"><div class="kpi-label">售卡转化率</div><div class="kpi-value" style="font-size:32px;">74.2%</div><div class="kpi-sub">193/260张已成交</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">各渠道进度条</div>
+      <table>
+        <tr><th>渠道</th><th>燃热达成</th><th>进度</th><th>洗碗机达成</th><th>进度</th><th>i1pro</th><th>售卡</th></tr>
+        <tr><td>专卖店（李洋&肖洁）</td><td><strong>187</strong> / 376</td><td><div class="progress-bar"><div class="progress-fill fill-red" style="width:49.7%"></div></div>49.7%</td><td><strong>249</strong> / 381</td><td><div class="progress-bar"><div class="progress-fill fill-yellow" style="width:65.4%"></div></div>65.4%</td><td>13/52</td><td>118张</td></tr>
+        <tr><td>KA 京东（彭刚）</td><td><strong>35</strong> / 42</td><td><div class="progress-bar"><div class="progress-fill fill-green" style="width:83.3%"></div></div>83.3%</td><td><strong>115</strong> / 98</td><td><div class="progress-bar"><div class="progress-fill fill-green" style="width:117%"></div></div>117.3%</td><td>2/21</td><td>44张</td></tr>
+        <tr><td>KA 苏宁/顺电（卢家宝/黄远兵）</td><td><strong>62</strong> / 201</td><td><div class="progress-bar"><div class="progress-fill fill-red" style="width:30.8%"></div></div>30.8%</td><td><strong>78</strong> / 343</td><td><div class="progress-bar"><div class="progress-fill fill-red" style="width:22.7%"></div></div>22.7%</td><td>12/29</td><td>22张</td></tr>
+        <tr><td>家装（司马世泽）</td><td><strong>96</strong> / 122</td><td><div class="progress-bar"><div class="progress-fill fill-green" style="width:78.7%"></div></div>78.7%</td><td><strong>111</strong> / 101</td><td><div class="progress-bar"><div class="progress-fill fill-green" style="width:110%"></div></div>109.9%</td><td>8/15</td><td>53张</td></tr>
+      </table>
+    </div>
+    <div class="section">
+      <div class="section-title">🏪 核心门店达成明细（Top 10）</div>
+      <div style="overflow-x:auto;">
+      <table>
+        <tr><th>门店</th><th>管干</th><th>燃热</th><th>洗碗机</th><th>i1pro</th><th>售卡</th><th>综合</th></tr>
+        <tr><td>南山京东</td><td>彭刚/冯志</td><td>20/24</td><td>73/36</td><td>0/12</td><td>93张</td><td><span class="badge badge-yellow">🟡</span></td></tr>
+        <tr><td>宝安华美居</td><td>余维斌</td><td>13/68</td><td>30/51</td><td>2/6</td><td>45张</td><td><span class="badge badge-red">🔴</span></td></tr>
+        <tr><td>龙华万众城</td><td>唐敏球</td><td>10/42</td><td>20/56</td><td>4/10</td><td>34张</td><td><span class="badge badge-red">🔴</span></td></tr>
+        <tr><td>宝能第一空间</td><td>李丹</td><td>14/13</td><td>18/17</td><td>0/5</td><td>32张</td><td><span class="badge badge-green">🟢</span></td></tr>
+        <tr><td>群星京东</td><td>彭刚/冯志</td><td>6/7</td><td>24/36</td><td>2/8</td><td>32张</td><td><span class="badge badge-yellow">🟡</span></td></tr>
+        <tr><td>罗湖百安居</td><td>卢家宝</td><td>12/26</td><td>11/40</td><td>3/6</td><td>26张</td><td><span class="badge badge-red">🔴</span></td></tr>
+        <tr><td>龙岗国安居</td><td>彭泽新</td><td>8/10</td><td>13/23</td><td>4/5</td><td>25张</td><td><span class="badge badge-green">🟢</span></td></tr>
+        <tr><td>欧洲城香江家居</td><td>李麟</td><td>8/32</td><td>13/37</td><td>2/8</td><td>23张</td><td><span class="badge badge-red">🔴</span></td></tr>
+        <tr><td>西丽百安居</td><td>卢家宝</td><td>8/16</td><td>9/36</td><td>3/4</td><td>20张</td><td><span class="badge badge-red">🔴</span></td></tr>
+        <tr><td>沙井京东</td><td>彭刚</td><td>6/8</td><td>13/22</td><td>0/2</td><td>19张</td><td><span class="badge badge-yellow">🟡</span></td></tr>
+      </table>
+      </div>
+      <div style="margin-top:8px;font-size:12px;color:#64748b;">🟢达成率≥80% &nbsp; 🟡60-80% &nbsp; 🔴&lt;60% &nbsp; 燃热数据格式：达成/目标</div>
+    </div>
+    <div class="grid-2">
+      <div class="section">
+        <div class="section-title" style="color:#ef4444;">⚠️ 预警事项</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;"><span>🔴 KA燃热未破零人数</span><span style="font-weight:600;">17人</span></div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;"><span>🟡 专卖店i1pro挂零</span><span style="font-weight:600;">多门店0套</span></div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;"><span>🟡 售卡未核销</span><span style="font-weight:600;">67张</span></div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;"><span>🔴 顺电渠道全线挂零</span><span style="font-weight:600;">14家门店</span></div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title">🏅 今日龙虎榜</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;"><span>🥇 燃热先锋</span><span>王少音 7台 / 廖建祥 11台</span></div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;"><span>🥇 洗碗机先锋</span><span>赵建林 21台 / 郑美兰 11台</span></div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;"><span>🥇 售卡TOP</span><span>南山京东 93张</span></div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;"><span>🥇 家装破零率100%</span><span>全员11人破零</span></div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ======================================================================
+// ===== EXECUTION: i1pro 爆区打造 =====
+// ======================================================================
+function buildExecutionHTML_i1pro(p) {
+  return `
+    <div class="section">
+      <div class="section-title">📊 核心数据看版</div>
+      <div class="kpi-row">
+        <div class="kpi-card" style="text-align:center;"><div class="kpi-label">全国达成套数</div><div class="kpi-value" style="font-size:32px;color:#22c55e;">387</div><div class="kpi-sub">目标500套</div></div>
+        <div class="kpi-card" style="text-align:center;"><div class="kpi-label">本周新增</div><div class="kpi-value" style="font-size:32px;color:#2563eb;">+12</div><div class="kpi-sub">周增速</div></div>
+        <div class="kpi-card" style="text-align:center;"><div class="kpi-label">参与城市</div><div class="kpi-value" style="font-size:32px;">97</div><div class="kpi-sub">零进度城市 <span style="color:#ef4444;">8城</span></div></div>
+        <div class="kpi-card" style="text-align:center;"><div class="kpi-label">时间进度</div><div class="kpi-value" style="font-size:32px;color:#22c55e;">68%</div><div class="kpi-sub">达成超前 +9.4pp</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">城市达成分布</div>
+      <table>
+        <tr><th>档次</th><th>城市数</th><th>占比</th><th>进度</th><th>状态</th></tr>
+        <tr><td>🥇 超额（≥100%）</td><td>1</td><td>1.0%</td><td><div class="progress-bar"><div class="progress-fill fill-green" style="width:100%"></div></div></td><td><span class="badge badge-green">优秀</span></td></tr>
+        <tr><td>🥈 达标（≥80%）</td><td>20</td><td>20.6%</td><td><div class="progress-bar"><div class="progress-fill fill-green" style="width:80%"></div></div></td><td><span class="badge badge-green">良好</span></td></tr>
+        <tr><td>🥉 需关注（60-80%）</td><td>65</td><td>67.0%</td><td><div class="progress-bar"><div class="progress-fill fill-yellow" style="width:65%"></div></div></td><td><span class="badge badge-yellow">关注</span></td></tr>
+        <tr><td>🔴 零进度</td><td>11</td><td>11.3%</td><td><div class="progress-bar"><div class="progress-fill fill-red" style="width:10%"></div></div></td><td><span class="badge badge-red">紧急</span></td></tr>
+      </table>
+    </div>
+    <div class="section">
+      <div class="section-title">🏆 月度爆区之星激励</div>
+      <table>
+        <tr><th>奖项</th><th>奖金</th><th>条件</th></tr>
+        <tr><td>🥇 冠军</td><td>¥30,000</td><td>综合评分第一</td></tr>
+        <tr><td>🥈 亚军</td><td>¥20,000</td><td>综合评分第二</td></tr>
+        <tr><td>🥉 季军</td><td>¥10,000</td><td>综合评分第三</td></tr>
+        <tr><td>💰 超额阶梯佣金</td><td>1.5-2倍</td><td>100-120%→1.5倍 / 120%+→2倍</td></tr>
+      </table>
+    </div>
+  `;
+}
+
+// ======================================================================
+// ===== EXECUTION: COLMO 6-8月 =====
+// ======================================================================
+function buildExecutionHTML_colmo(p) {
+  return `
+    <div class="section">
+      <div class="section-title">📊 直播ROI矩阵</div>
+      <table>
+        <tr><th>城市</th><th>投放(元)</th><th>成交(元)</th><th>ROI</th><th>观看人数</th><th>留资</th><th>评分</th></tr>
+        <tr><td>南昌</td><td>630</td><td>16,997</td><td><span class="badge badge-green">27:1</span></td><td>868</td><td>1</td><td>🟢</td></tr>
+        <tr><td>北京</td><td>624</td><td>8,798</td><td><span class="badge badge-yellow">14:1</span></td><td>5,685</td><td>—</td><td>🟡</td></tr>
+        <tr><td>邯郸</td><td>592</td><td>0</td><td><span class="badge badge-yellow">线索53.8元</span></td><td>965</td><td>11</td><td>🟡</td></tr>
+        <tr><td>济南</td><td>745</td><td>0</td><td><span class="badge badge-red">0:1</span></td><td>594</td><td>—</td><td>🔴</td></tr>
+        <tr><td>西安</td><td>561</td><td>20</td><td><span class="badge badge-red">0.04:1</span></td><td>3,122</td><td>—</td><td>🔴</td></tr>
+      </table>
+    </div>
+    <div class="grid-2">
+      <div class="section">
+        <div class="section-title">📅 本周执行追踪</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f1f5f9;"><span>📕 小红书学习</span><span style="color:#64748b;">邯郸对接中</span></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f1f5f9;"><span>💰 投流资金到账</span><span style="color:#22c55e;">¥10,000 ✅</span></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f1f5f9;"><span>🎬 视频脚本</span><span style="color:#eab308;">跟进中</span></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f1f5f9;"><span>⭐ 星耀计划</span><span style="color:#eab308;">跟进中</span></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f1f5f9;"><span>📊 直播复盘</span><span style="color:#64748b;">济南/西安需重点复盘</span></div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title">三个月目标</div>
+        <table>
+          <tr><th>指标</th><th>目标</th></tr>
+          <tr><td>🏙️ 新开城市</td><td>≥3城，单城≥50万</td></tr>
+          <tr><td>📺 抖音直播</td><td>月均20+场，ROI≥20:1</td></tr>
+          <tr><td>📕 小红书截流</td><td>月获客200+，到店转化≥20%</td></tr>
+          <tr><td>💰 客资成本</td><td>≤80元，成交成本≤160元</td></tr>
+          <tr><td>📊 投流预算</td><td>2.5万/月</td></tr>
+          <tr><td>👥 团队配置</td><td>4人/城</td></tr>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+// ======================================================================
+// ===== REPORT (shared for all projects) =====
+// ======================================================================
+function buildReportHTML(p) {
+  return `
+    <div class="section">
+      <div class="section-title">📋 执行老师每日汇报模板</div>
+      <div class="report-form">
+        <div style="display:flex;gap:16px;margin-bottom:16px;">
+          <div style="flex:1;"><div class="form-label">日期</div><div class="form-input">2026年__月__日</div></div>
+          <div style="flex:1;"><div class="form-label">姓名</div><div class="form-input">____________</div></div>
+          <div style="flex:1;"><div class="form-label">项目</div><div class="form-input">${p.name}</div></div>
+        </div>
+        <div class="form-label">一、今日数据</div>
+        <table>
+          <tr><th>指标</th><th>今日目标</th><th>今日实际</th><th>累计达成</th></tr>
+          <tr><td>核心KPI 1</td><td>___</td><td>___</td><td>___</td></tr>
+          <tr><td>核心KPI 2</td><td>___</td><td>___</td><td>___</td></tr>
+          <tr><td>核心KPI 3</td><td>___</td><td>___</td><td>___</td></tr>
+          <tr><td>新增客户/留资</td><td>___</td><td>___</td><td>___</td></tr>
+        </table>
+        <div class="form-label" style="margin-top:16px;">二、今日动作执行</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+          <div class="form-checkbox">☐ 9:00前下发当日工作指令</div>
+          <div class="form-checkbox">☐ 水印相机打卡/晨会</div>
+          <div class="form-checkbox">☐ 客户跟进___次</div>
+          <div class="form-checkbox">☐ 产品体验___次</div>
+          <div class="form-checkbox">☐ 异业/设计师拜访___家</div>
+          <div class="form-checkbox">☐ 社群互动___次</div>
+          <div class="form-checkbox">☐ 群内发战报</div>
+          <div class="form-checkbox">☐ 21:00前完成总结复盘</div>
+        </div>
+        <div class="form-label" style="margin-top:16px;">三、今日聚焦问题</div>
+        <div class="form-input" style="min-height:60px;">________________________</div>
+        <div class="form-label" style="margin-top:16px;">四、明日工作计划</div>
+        <div class="form-input" style="min-height:60px;">________________________</div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="section">
+        <div class="section-title">汇报规范</div>
+        <ul style="font-size:13px;line-height:1.8;padding-left:20px;color:#374151;">
+          <li>每日 9:00 前下发当日工作指令至门店群</li>
+          <li>每日 21:00 前完成汇总并发送至交付管理群</li>
+          <li>水印相机照片需含门店名称+日期</li>
+          <li>执行数据截图需含关键信息</li>
+          <li>群内互动不少于30条/日</li>
+          <li>与核心对接人每日沟通不少于1次</li>
+        </ul>
+      </div>
+      <div class="section">
+        <div class="section-title">负激励规则</div>
+        <ul style="font-size:13px;line-height:1.8;padding-left:20px;color:#374151;">
+          <li>指标未破零 → 抄写指定话术2遍</li>
+          <li>综合达成&lt;80% → 例会负激励</li>
+          <li>连续两场评分&lt;80% → 降职处理</li>
+          <li>管干未按标准反馈活动落地 → 群内通报</li>
+          <li>数据造假 → 一票否决</li>
+          <li>每日必做项达标率&lt;80% → 管干执行负激励</li>
+        </ul>
+      </div>
+    </div>
+  `;
+}
+
+// ======================================================================
+// ===== INIT =====
+// ======================================================================
+renderProjectList();
+</script>
 </body>
 </html>
