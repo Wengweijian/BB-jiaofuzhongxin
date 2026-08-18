@@ -3,9 +3,88 @@
 """
 贵阳8月 · 门店积分统计表 → 看板数据JSON
 用法: python3 guiyang_parse.py <积分表.xlsx> [输出.json]
+      python3 guiyang_parse.py <数据回传表.xlsx> [输出.json]  (自动识别业绩表)
 """
 import openpyxl, json, sys
 from collections import defaultdict
+from datetime import datetime, timedelta
+
+def is_perf_file(xlsx_path):
+    """判断是否为业绩回传表（含'数据回传'或'达成进度'关键字）"""
+    name = xlsx_path.lower()
+    return ('回传' in name or '达成' in name or '进度公示' in name)
+
+def parse_perf(xlsx_path):
+    """解析业绩回传表：目标/完成/完成率/差额/时间进度"""
+    wb = openpyxl.load_workbook(xlsx_path, data_only=True)
+    ws = wb[wb.sheetnames[0]]
+    rows = list(ws.iter_rows(values_only=True))
+    # 找表头行（含'业绩目标'）
+    header_idx = None
+    for i, r in enumerate(rows):
+        if r and any('业绩目标' in str(v) for v in r if v):
+            header_idx = i
+            break
+    if header_idx is None:
+        raise ValueError("未找到业绩表头")
+    header = rows[header_idx]
+    idx = {str(v): j for j, v in enumerate(header) if v}
+    def gi(r, key):
+        j = idx.get(key)
+        return r[j] if j is not None and j < len(r) else None
+
+    perf_rows = []
+    start_d = end_d = None
+    for r in rows[header_idx+1:]:
+        if not r or not any(v is not None for v in r):
+            continue
+        teacher = gi(r, '项目老师')
+        region = gi(r, '负责区域/城市')
+        target = gi(r, '业绩目标')
+        done = gi(r, '完成')
+        rate = gi(r, '完成率')
+        diff = gi(r, '差额')
+        if teacher is None and target is None:
+            continue
+        if not teacher and not region:
+            continue
+        perf_rows.append({
+            'teacher': str(teacher) if teacher else '',
+            'region': str(region) if region else '',
+            'target': float(target) if isinstance(target, (int, float)) else 0,
+            'done': float(done) if isinstance(done, (int, float)) else 0,
+            'rate': float(rate) if isinstance(rate, (int, float)) else (float(done)/float(target) if target else 0),
+            'diff': float(diff) if isinstance(diff, (int, float)) else 0,
+        })
+        # 记录项目起止
+        sd = gi(r, '开始时间')
+        ed = gi(r, '结束时间')
+        if sd and isinstance(sd, (int, float)):
+            start_d = sd
+        if ed and isinstance(ed, (int, float)):
+            end_d = ed
+
+    # 时间进度
+    base = datetime(1899, 12, 30)
+    today = datetime.now()
+    if start_d and end_d:
+        s = base + timedelta(days=start_d)
+        e = base + timedelta(days=end_d)
+        total_days = (e - s).days or 1
+        elapsed = max(0, min((today - s).days, total_days))
+        time_pct = round(elapsed / total_days * 100, 1)
+        remain_days = (e - today).days
+    else:
+        time_pct, remain_days = 0, 0
+
+    total = perf_rows[-1] if perf_rows else None
+    return {
+        'rows': perf_rows,
+        'time_pct': time_pct,
+        'remain_days': max(0, remain_days),
+        'total': total,
+        'updated': today.strftime('%Y-%m-%d %H:%M'),
+    }
 
 def parse(xlsx_path):
     wb = openpyxl.load_workbook(xlsx_path, data_only=True)
@@ -130,8 +209,18 @@ def parse(xlsx_path):
 if __name__ == '__main__':
     src = sys.argv[1]
     out = sys.argv[2] if len(sys.argv) > 2 else 'guiyang_data.json'
-    data = parse(src)
-    with open(out, 'w') as f:
-        json.dump(data, f, ensure_ascii=False)
-    print(f"✅ 解析完成: {len(data['stores_daily'])}家门店, {data['n_days']}天, 总积分{data['total_score']}")
-    print(f"   输出: {out}")
+    if is_perf_file(src):
+        data = parse_perf(src)
+        data['kind'] = 'perf'
+        with open(out, 'w') as f:
+            json.dump(data, f, ensure_ascii=False)
+        t = data['total'] or {}
+        print(f"✅ 业绩表解析完成: 目标{round(t.get('target',0)/10000,1)}万 / 完成{round(t.get('done',0)/10000,1)}万 / 达成率{round(t.get('rate',0)*100,1)}%")
+        print(f"   时间进度: {data['time_pct']}% · 剩余{data['remain_days']}天 · 输出: {out}")
+    else:
+        data = parse(src)
+        data['kind'] = 'points'
+        with open(out, 'w') as f:
+            json.dump(data, f, ensure_ascii=False)
+        print(f"✅ 积分表解析完成: {len(data['stores_daily'])}家门店, {data['n_days']}天, 总积分{data['total_score']}")
+        print(f"   输出: {out}")

@@ -10,9 +10,18 @@
 import json, sys, html as htmlmod
 from collections import defaultdict
 
-def build(data_path, out_path='贵阳8月_门店动作执行看板.html'):
+def build(data_path, perf_path=None, out_path='贵阳8月_门店动作执行看板.html'):
     with open(data_path) as f:
         D = json.load(f)
+    PERF = None
+    if perf_path:
+        try:
+            with open(perf_path) as f:
+                PERF = json.load(f)
+        except Exception:
+            PERF = None
+    has_perf = PERF is not None and PERF.get('rows')
+    off = 1 if has_perf else 0  # 有业绩数据时业绩页占 page0
 
     dates = D['date_labels']
     daily_total = D['daily_total']
@@ -138,15 +147,59 @@ tr:hover td{background:#263348}
 </div>
 
 <div class="nav">
-  <button class="active" onclick="go(0)">🚦 今日战报</button>
-  <button onclick="go(1)">🏆 门店排行</button>
-  <button onclick="go(2)">📅 每日打卡</button>
-  <button onclick="go(3)">💰 积分与奖励</button>
-</div>
 ''')
+    # 导航（有业绩数据时业绩页在前）
+    if has_perf:
+        A.append('  <button class="active" onclick="go(0)">📈 业绩达成</button>')
+    A.append(f'  <button class={"active" if not has_perf else ""} onclick="go({off})">🚦 今日战报</button>')
+    A.append(f'  <button onclick="go({off+1})">🏆 门店排行</button>')
+    A.append(f'  <button onclick="go({off+2})">📅 每日打卡</button>')
+    A.append(f'  <button onclick="go({off+3})">💰 积分与奖励</button>')
+    A.append('</div>')
 
-    # ===== PAGE 0 今日战报 =====
-    A.append('<div id="page0" class="page active">')
+    # ===== 业绩达成页（可选） =====
+    if has_perf:
+        perf_total = PERF.get('total') or {}
+        target = perf_total.get('target', 0)
+        done = perf_total.get('done', 0)
+        rate = perf_total.get('rate', 0)
+        diff = perf_total.get('diff', 0)
+        time_pct = PERF.get('time_pct', 0)
+        remain_days = PERF.get('remain_days', 0)
+        need_daily = diff / remain_days if remain_days > 0 else 0
+        rate_pct = rate * 100
+        rate_color = '#4ade80' if rate_pct >= time_pct else '#f87171'
+        A.append('<div id="page0" class="page active">')
+        A.append(f'''
+<div class="kpi-row">
+  <div class="kpi blue"><div class="lab">🎯 业绩总目标</div><div class="val">{target/10000:.0f}<small> 万</small></div><div class="tip">项目期 8.06-8.31</div></div>
+  <div class="kpi green"><div class="lab">✅ 已完成业绩</div><div class="val" style="color:#4ade80">{done/10000:.1f}<small> 万</small></div><div class="tip">占目标 {rate_pct:.1f}%</div></div>
+  <div class="kpi yellow"><div class="lab">⏳ 时间进度</div><div class="val" style="color:#fbbf24">{time_pct}%</div><div class="tip">剩余 {remain_days} 天</div></div>
+  <div class="kpi red"><div class="lab">📉 还差</div><div class="val" style="color:#f87171">{diff/10000:.1f}<small> 万</small></div><div class="tip">每天要干 {need_daily/10000:.1f} 万才能达标</div></div>
+</div>
+<div class="banner banner-red">🚨 <b>达成率 {rate_pct:.1f}% vs 时间进度 {time_pct}%</b> —— 落后 {max(0,time_pct-rate_pct):.1f} 个百分点，剩下 {remain_days} 天，日均要完成 {need_daily/10000:.1f} 万，冲起来！</div>
+<div class="section"><div class="section-title">📊 业绩达成进度 <span class="tag">绿色=达标 · 红色=落后</span></div>
+  <div style="display:flex;align-items:center;gap:14px;margin-bottom:8px">
+    <div style="width:120px;font-size:13px;color:#94a3b8">📈 达成率</div>
+    <div class="pbar" style="flex:1"><div class="pfill" style="width:{min(rate_pct,100)}%;background:{rate_color}"></div></div>
+    <div style="width:70px;text-align:right;font-weight:800;color:{rate_color}">{rate_pct:.1f}%</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:14px">
+    <div style="width:120px;font-size:13px;color:#94a3b8">⏳ 时间进度</div>
+    <div class="pbar" style="flex:1"><div class="pfill" style="width:{min(time_pct,100)}%;background:#fbbf24"></div></div>
+    <div style="width:70px;text-align:right;font-weight:800;color:#fbbf24">{time_pct}%</div>
+  </div>
+</div>
+<div class="section"><div class="section-title">🏢 渠道业绩达成 <span class="tag">看谁在扛任务</span></div><table><tr><th>负责老师</th><th>区域/渠道</th><th>目标</th><th>已完成</th><th>达成率</th><th>差额</th></tr>''')
+        for r in PERF.get('rows', []):
+            rt = r.get('rate', 0) * 100
+            rc = '#4ade80' if rt >= 50 else ('#fbbf24' if rt >= 30 else '#f87171')
+            A.append(f'<tr><td><b>{r.get("teacher","") or "合计"}</b></td><td>{r.get("region","")}</td><td>{r.get("target",0)/10000:.1f}万</td><td>{r.get("done",0)/10000:.1f}万</td><td><span style="font-weight:800;color:{rc}">{rt:.1f}%</span></td><td style="color:#f87171">{r.get("diff",0)/10000:.1f}万</td></tr>')
+        A.append('</table></div>')
+        A.append('</div>')
+
+    # ===== 今日战报 =====
+    A.append(f'<div id="page{off}" class="page{" active" if not has_perf else ""}">')
     pass_cnt = len(pass_today)
     rate = round(pass_cnt/N*100) if N else 0
     A.append(f'''
@@ -208,8 +261,8 @@ tr:hover td{background:#263348}
         A.append('<div style="color:#4ade80;font-size:14px">🎉 无零分门店！</div>')
     A.append('</div></div></div>')
 
-    # ===== PAGE 1 门店排行 =====
-    A.append('<div id="page1" class="page">')
+    # ===== 门店排行 =====
+    A.append(f'<div id="page{off+1}" class="page">')
     A.append('<div class="search-box"><input id="searchInput" placeholder="🔍 输入门店名称，看你的排名和分数（例如：红星一店）"><button onclick="searchStore()">查我的门店</button></div>')
     A.append('<div id="searchResult" style="margin-bottom:18px"></div>')
     A.append('<div class="grid-3">')
@@ -223,8 +276,8 @@ tr:hover td{background:#263348}
         A.append('</table></div></div>')
     A.append('</div></div>')
 
-    # ===== PAGE 2 每日打卡 =====
-    A.append('<div id="page2" class="page">')
+    # ===== 每日打卡 =====
+    A.append(f'<div id="page{off+2}" class="page">')
     A.append('<div class="section"><div class="section-title">📈 全门店每日总积分走势 <span class="tag">看看大家是不是越干越有劲</span></div><div style="height:260px"><canvas id="trendChart"></canvas></div></div>')
     A.append('<div class="section"><div class="section-title">🗓️ 每日打卡热力图 <span class="tag">绿=做得好 · 红=没做 · 点自己门店那行看</span></div><div class="heat-wrap"><table class="heat-table"><tr><th>门店</th>')
     for d in dates:
@@ -248,8 +301,8 @@ tr:hover td{background:#263348}
     A.append('</table></div></div>')
     A.append('</div>')
 
-    # ===== PAGE 3 积分与奖励 =====
-    A.append('<div id="page3" class="page">')
+    # ===== 积分与奖励 =====
+    A.append(f'<div id="page{off+3}" class="page">')
     A.append('<div class="section"><div class="section-title">💡 积分规则 —— 大白话版 <span class="tag">做了就有分，不做就是0</span></div><div class="grid-2">')
     A.append('''<div>
 <div style="font-size:14px;font-weight:700;margin-bottom:10px">📌 每天必做 8 件事（每天最多 50 分）</div>
@@ -299,7 +352,7 @@ tr:hover td{background:#263348}
     # ===== JS =====
     A.append('''
 <script>
-const pages = ['page0','page1','page2','page3'];
+const pages = ['page0','page1','page2','page3','page4'].slice(0, __NPAGES__);
 function go(i){
   pages.forEach((p,idx)=>{document.getElementById(p).classList.toggle('active',idx===i)});
   document.querySelectorAll('.nav button').forEach((b,idx)=>b.classList.toggle('active',idx===i));
@@ -345,6 +398,7 @@ new Chart(document.getElementById('trendChart'), {
     html_str = ''.join(A)
     html_str = html_str.replace('__DATES__', json.dumps(dates, ensure_ascii=False))
     html_str = html_str.replace('__TOTAL__', json.dumps(daily_total))
+    html_str = html_str.replace('__NPAGES__', str(4 + off))
     with open(out_path, 'w') as f:
         f.write(html_str)
     print(f"✅ 看板已生成: {out_path} ({len(html_str):,} bytes)")
@@ -352,5 +406,6 @@ new Chart(document.getElementById('trendChart'), {
 
 if __name__ == '__main__':
     data_path = sys.argv[1] if len(sys.argv) > 1 else 'guiyang_data.json'
-    out_path = sys.argv[2] if len(sys.argv) > 2 else '贵阳8月_门店动作执行看板.html'
-    build(data_path, out_path)
+    perf_path = sys.argv[2] if len(sys.argv) > 2 else None
+    out_path = sys.argv[3] if len(sys.argv) > 3 else '贵阳8月_门店动作执行看板.html'
+    build(data_path, perf_path, out_path)
