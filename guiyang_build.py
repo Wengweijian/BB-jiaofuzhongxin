@@ -41,10 +41,41 @@ def build(data_path, perf_path=None, rank_path=None, out_path='贵阳8月_门店
     act_done = D['act_done']
     reg_today = D['reg_today']
 
+    # ===== 阶段口径（第二阶段 8.17-8.23） =====
+    PHASE_START = '08/17'
+    phase_idx = next((i for i, d in enumerate(dates) if d >= PHASE_START), None)
+    phase_active = phase_idx is not None and phase_idx > 0
+    phase_dates = dates[phase_idx:] if phase_active else dates
+    phase_n = len(phase_dates)
+    for s in stores_daily:
+        s['phase_total'] = sum(s['daily'][phase_idx:]) if phase_active else s['total']
+        s['phase_avg'] = round(s['phase_total'] / phase_n, 1) if phase_n else 0
+    # 重建排名：按阶段积分（S组前5 / A组前5 / B组前8 有奖金 300/200/100/50）
+    if phase_active:
+        ranks = {}
+        for g in ['S组', 'A组', 'B组']:
+            members = [s for s in stores_daily if s.get('group') == g]
+            members.sort(key=lambda x: -x['phase_total'])
+            arr = []
+            for i, s in enumerate(members):
+                rank = i + 1
+                reward = None
+                if g == 'S组' and rank <= 5:
+                    reward = [300, 200, 100, 50, 50][rank - 1]
+                elif g == 'A组' and rank <= 5:
+                    reward = [300, 200, 100, 50, 50][rank - 1]
+                elif g == 'B组' and rank <= 8:
+                    reward = [300, 200, 100, 50, 50, 50, 50, 50][rank - 1]
+                arr.append({'region': s['region'], 'store': s['store'], 'score': s['phase_total'],
+                            'daily_avg': s['phase_avg'], 'rank': rank, 'reward': reward})
+            ranks[g] = arr
+
     N = len(TODAY)
     zero_today = [t for t in TODAY if t['total'] == 0]
     pass_today = [t for t in TODAY if t['total'] >= 30]
     top_today = sorted(TODAY, key=lambda x: -x['total'])[:5]
+    phase_score = sum(s['phase_total'] for s in stores_daily)
+    phase_end = phase_dates[-1][-2:] if phase_dates else '23'
 
     ACT_ICONS = [('晨会','🌅'),('夕会','🌆'),('每日一读','📖'),('上门量尺','📏'),
                  ('KDS预约','📅'),('新增客资','👤'),('小红书截流','📕'),('捷报','🎉')]
@@ -280,7 +311,7 @@ tr:hover td{background:#263348}
   <div class="kpi green"><div class="lab">今日达标门店（≥30分）</div><div class="val" style="color:#4ade80">{pass_cnt}<small> 家</small></div><div class="tip">达标率 {rate}%</div></div>
   <div class="kpi red"><div class="lab">今日零分门店</div><div class="val" style="color:#f87171">{len(zero_today)}<small> 家</small></div><div class="tip">一项动作都没做 ⚠️</div></div>
   <div class="kpi yellow"><div class="lab">今日动作完成率</div><div class="val" style="color:#fbbf24">{round(sum(t['total'] for t in TODAY)/N/50*100) if N else 0}%</div><div class="tip">日均{round(sum(t['total'] for t in TODAY)/N,1) if N else 0}分 / 满分50分</div></div>
-  <div class="kpi blue"><div class="lab">{D['n_days']}天累计总积分</div><div class="val">{D['total_score']:,}</div><div class="tip">日均 {round(sum(daily_total)/len(daily_total)):,} 分</div></div>
+  <div class="kpi blue"><div class="lab">{phase_n}天阶段累计积分</div><div class="val">{phase_score:,}</div><div class="tip">第二阶段 8.17-8.{phase_end}</div></div>
 </div>''')
     if len(zero_today) > 0:
         names = '、'.join([t['store'] for t in zero_today[:8]])
@@ -354,7 +385,7 @@ tr:hover td{background:#263348}
     A.append('<div class="section"><div class="section-title">🗓️ 每日打卡热力图 <span class="tag">绿=做得好 · 红=没做 · 点自己门店那行看</span></div><div class="heat-wrap"><table class="heat-table"><tr><th>门店</th>')
     for d in dates:
         A.append(f'<th>{d}</th>')
-    A.append('<th>合计</th></tr>')
+    A.append('<th>阶段合计</th></tr>')
     for s in sorted(stores_daily, key=lambda x: -x['total']):
         A.append(f'<tr data-store="{htmlmod.escape(str(s["store"]))}"><td style="text-align:left"><b>{htmlmod.escape(str(s["store"]))}</b> <span style="color:#64748b;font-size:10px">{s["group"]}</span></td>')
         for v in s['daily']:
@@ -367,7 +398,7 @@ tr:hover td{background:#263348}
             elif v <= 110: cls, disp = 'h6', str(v)
             else: cls, disp = 'h7', str(v)
             A.append(f'<td><span class="heat-cell {cls}">{disp}</span></td>')
-        tot = s['total']
+        tot = s['phase_total'] if phase_active else s['total']
         totcls = 'h7' if tot>=400 else ('h5' if tot>=200 else ('h3' if tot>=100 else 'h0'))
         A.append(f'<td><span class="heat-cell {totcls}">{tot}</span></td></tr>')
     A.append('</table></div></div>')
