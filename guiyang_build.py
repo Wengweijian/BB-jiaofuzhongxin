@@ -10,7 +10,7 @@
 import json, sys, html as htmlmod
 from collections import defaultdict
 
-def build(data_path, perf_path=None, out_path='贵阳8月_门店动作执行看板.html'):
+def build(data_path, perf_path=None, rank_path=None, out_path='贵阳8月_门店动作执行看板.html'):
     with open(data_path) as f:
         D = json.load(f)
     PERF = None
@@ -20,7 +20,15 @@ def build(data_path, perf_path=None, out_path='贵阳8月_门店动作执行看�
                 PERF = json.load(f)
         except Exception:
             PERF = None
+    RANK = None
+    if rank_path:
+        try:
+            with open(rank_path) as f:
+                RANK = json.load(f)
+        except Exception:
+            RANK = None
     has_perf = PERF is not None and PERF.get('rows')
+    has_rank = RANK is not None and RANK.get('channels')
     off = 1 if has_perf else 0  # 有业绩数据时业绩页占 page0
 
     dates = D['date_labels']
@@ -215,6 +223,35 @@ tr:hover td{background:#263348}
             rc = '#4ade80' if rt >= 50 else ('#fbbf24' if rt >= 30 else '#f87171')
             A.append(f'<tr><td><b>{r.get("teacher","") or "合计"}</b></td><td>{r.get("region","")}</td><td>{r.get("target",0)/10000:.1f}万</td><td>{r.get("done",0)/10000:.1f}万</td><td><span style="font-weight:800;color:{rc}">{rt:.1f}%</span></td><td style="color:#f87171">{r.get("diff",0)/10000:.1f}万</td></tr>')
         A.append('</table></div>')
+        # ===== 渠道排名 =====
+        if has_rank and RANK.get('channels'):
+            A.append('<div class="section"><div class="section-title">🥇 渠道排名 <span class="tag">按完成率排序</span></div><div class="table-wrap" style="max-height:320px;overflow-y:auto"><table><tr><th>#</th><th>渠道</th><th>目标</th><th>已完成</th><th>完成率</th></tr>')
+            for i, c in enumerate(RANK['channels'][:16], 1):
+                rc = '#4ade80' if c['rate'] >= 0.5 else ('#fbbf24' if c['rate'] >= 0.3 else '#f87171')
+                medal = '🥇' if i == 1 else ('🥈' if i == 2 else ('🥉' if i == 3 else str(i)))
+                A.append(f'<tr><td>{medal}</td><td><b>{c["name"]}</b></td><td>{c["target"]/10000:.1f}万</td><td>{c["done"]/10000:.1f}万</td><td><span style="font-weight:800;color:{rc}">{c["rate"]*100:.1f}%</span></td></tr>')
+            A.append('</table></div></div>')
+        # ===== 门店A组/B组排名 =====
+        if has_rank and (RANK.get('groupA') or RANK.get('groupB')):
+            A.append('<div class="grid-2">')
+            for gname, gkey in [('🏅 门店A组排名', 'groupA'), ('🌱 门店B组排名', 'groupB')]:
+                arr = RANK.get(gkey, [])[:15]
+                A.append(f'<div class="section"><div class="section-title">{gname}<span class="tag">TOP{len(arr)}</span></div><div class="table-wrap" style="max-height:340px;overflow-y:auto"><table><tr><th>#</th><th>门店</th><th>区域</th><th>完成率</th><th>完成/目标</th></tr>')
+                for i, s in enumerate(arr, 1):
+                    rc = '#4ade80' if s['rate'] >= 0.5 else ('#fbbf24' if s['rate'] >= 0.3 else '#f87171')
+                    medal = '🥇' if i == 1 else ('🥈' if i == 2 else ('🥉' if i == 3 else str(i)))
+                    A.append(f'<tr><td>{medal}</td><td><b>{s["store"]}</b></td><td style="font-size:11px;color:#94a3b8">{s.get("region","")}</td><td><span style="font-weight:800;color:{rc}">{s["rate"]*100:.1f}%</span></td><td style="font-size:11px">{s["done"]/10000:.1f}/{s["target"]/10000:.1f}万</td></tr>')
+                A.append('</table></div></div>')
+            A.append('</div>')
+        # ===== 军师长PK =====
+        if has_rank and RANK.get('junshi'):
+            A.append('<div class="section"><div class="section-title">👥 军长/师长 PK <span class="tag">比谁带兵能打</span></div><div class="table-wrap" style="max-height:300px;overflow-y:auto"><table><tr><th>#</th><th>军长</th><th>师长</th><th>渠道</th><th>目标</th><th>已完成</th><th>完成率</th></tr>')
+            js = sorted(RANK['junshi'], key=lambda x: -x['rate'])
+            for i, j in enumerate(js, 1):
+                rc = '#4ade80' if j['rate'] >= 0.5 else ('#fbbf24' if j['rate'] >= 0.3 else '#f87171')
+                medal = '🥇' if i == 1 else ('🥈' if i == 2 else ('🥉' if i == 3 else str(i)))
+                A.append(f'<tr><td>{medal}</td><td><b>{j.get("jun","") or "—"}</b></td><td>{j.get("shi","") or "—"}</td><td>{j.get("ch","")}</td><td>{j["target"]/10000:.1f}万</td><td>{j["done"]/10000:.1f}万</td><td><span style="font-weight:800;color:{rc}">{j["rate"]*100:.1f}%</span></td></tr>')
+            A.append('</table></div></div>')
         A.append('</div>')
 
     # ===== 今日战报 =====

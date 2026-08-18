@@ -14,6 +14,88 @@ def is_perf_file(xlsx_path):
     name = xlsx_path.lower()
     return ('回传' in name or '达成' in name or '进度公示' in name)
 
+def is_rank_file(xlsx_path):
+    """判断是否为业绩排行榜文件（含'排行榜'关键字）"""
+    return '排行' in xlsx_path.lower()
+
+def parse_rank(xlsx_path):
+    """解析业绩排行榜：渠道排名/门店A组B组/军师长PK"""
+    wb = openpyxl.load_workbook(xlsx_path, data_only=True)
+    from collections import defaultdict
+
+    # ===== 数据表：渠道汇总+门店排行 =====
+    channels, store_rank = [], []
+    if '数据表' in wb.sheetnames:
+        ws = wb['数据表']
+        rows = list(ws.iter_rows(values_only=True))
+        stores = []
+        cur_region = cur_jun = cur_shi = cur_ch = None
+        for r in rows[3:]:
+            if not r or not any(v is not None for v in r[:6]):
+                continue
+            region = r[0] if r[0] else cur_region
+            jun = r[1] if r[1] else cur_jun
+            shi = r[2] if r[2] else cur_shi
+            ch = r[3] if r[3] else cur_ch
+            store = r[4]
+            if not store:
+                continue
+            cur_region, cur_jun, cur_shi, cur_ch = region, jun, shi, ch
+            stores.append({
+                'region': region, 'jun': jun, 'shi': shi, 'ch': ch, 'store': store,
+                'target': float(r[5]) if isinstance(r[5], (int, float)) else 0,
+                'done': float(r[6]) if isinstance(r[6], (int, float)) else 0,
+                'rate': float(r[7]) if isinstance(r[7], (int, float)) else 0,
+            })
+        ch_tot = defaultdict(lambda: [0, 0])
+        for s in stores:
+            ch_tot[s['ch']][0] += s['target']
+            ch_tot[s['ch']][1] += s['done']
+        for ch, (t, d) in ch_tot.items():
+            channels.append({'name': ch, 'target': t, 'done': d, 'rate': d/t if t else 0})
+        channels.sort(key=lambda x: -x['rate'])
+        store_rank = [s for s in stores if s['target'] > 0 and s['store'] not in ('其他', '合计', '')]
+        store_rank.sort(key=lambda x: -x['rate'])
+
+    # ===== 门店A/B组排行榜 =====
+    def read_group(sheet):
+        arr = []
+        if sheet not in wb.sheetnames:
+            return arr
+        for r in list(wb[sheet].iter_rows(values_only=True))[3:]:
+            if r and r[4] and isinstance(r[4], str) and isinstance(r[5], (int, float)):
+                arr.append({
+                    'region': r[0], 'jun': r[1], 'shi': r[2], 'ch': r[3], 'store': r[4],
+                    'target': float(r[5]), 'done': float(r[6]), 'rate': float(r[7]),
+                    'rank': r[11], 'note': r[12] if len(r) > 12 else None
+                })
+        return arr
+
+    groupA = read_group('门店A组排行榜')
+    groupB = read_group('门店B组排行榜')
+
+    # ===== 军师长PK =====
+    junshi = []
+    if '军师长PK排行榜' in wb.sheetnames:
+        for r in list(wb['军师长PK排行榜'].iter_rows(values_only=True))[3:]:
+            if r and r[3] and isinstance(r[3], str) and isinstance(r[4], (int, float)):
+                junshi.append({
+                    'region': r[0] or '', 'jun': r[1] or '', 'shi': r[2] or '', 'ch': r[3],
+                    'target': float(r[4]), 'done': float(r[5]), 'rate': float(r[6]),
+                    'rank': r[10] if len(r) > 10 else None
+                })
+
+    return {
+        'kind': 'rank',
+        'channels': channels,
+        'store_rank': store_rank[:30],
+        'store_bottom': store_rank[-15:][::-1],
+        'groupA': groupA,
+        'groupB': groupB,
+        'junshi': junshi,
+        'updated': datetime.now().strftime('%Y-%m-%d %H:%M'),
+    }
+
 def parse_perf(xlsx_path):
     """解析业绩回传表：目标/完成/完成率/差额/时间进度"""
     wb = openpyxl.load_workbook(xlsx_path, data_only=True)
@@ -209,7 +291,13 @@ def parse(xlsx_path):
 if __name__ == '__main__':
     src = sys.argv[1]
     out = sys.argv[2] if len(sys.argv) > 2 else 'guiyang_data.json'
-    if is_perf_file(src):
+    if is_rank_file(src):
+        data = parse_rank(src)
+        with open(out, 'w') as f:
+            json.dump(data, f, ensure_ascii=False)
+        print(f"✅ 排行榜解析完成: {len(data['channels'])}个渠道 / A组{len(data['groupA'])}家 / B组{len(data['groupB'])}家 / 军师长PK {len(data['junshi'])}条")
+        print(f"   输出: {out}")
+    elif is_perf_file(src):
         data = parse_perf(src)
         data['kind'] = 'perf'
         with open(out, 'w') as f:
