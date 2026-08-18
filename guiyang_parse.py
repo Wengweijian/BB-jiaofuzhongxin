@@ -139,7 +139,7 @@ def parse_perf(xlsx_path):
     start_d = end_d = None
     for r in rows[header_idx+1:]:
         if not r or not any(v is not None for v in r):
-            continue
+            break  # 空行分隔：汇总表结束（下方可能是门店明细表）
         teacher = gi(r, '项目老师')
         region = gi(r, '负责区域/城市')
         target = gi(r, '业绩目标')
@@ -149,6 +149,9 @@ def parse_perf(xlsx_path):
         if teacher is None and target is None:
             continue
         if not teacher and not region:
+            continue
+        # 非数值行（如明细表头“总任务/总完成”）跳过
+        if not isinstance(target, (int, float)) or not isinstance(done, (int, float)):
             continue
         perf_rows.append({
             'teacher': str(teacher) if teacher else '',
