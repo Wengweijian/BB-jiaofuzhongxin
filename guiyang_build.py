@@ -145,10 +145,29 @@ tr:hover td{background:#263348}
     <div style="margin-top:6px">统计周期：''' + ' / '.join(dates) + '''（''' + str(D['n_days']) + '''天）｜ 基础项满分 50分/天</div>
   </div>
 </div>
-
-<div class="nav">
 ''')
-    # 导航（有业绩数据时业绩页在前）
+
+    # ===== 全局业绩横幅（每页可见） =====
+    if has_perf:
+        perf_total = PERF.get('total') or {}
+        g_target = perf_total.get('target', 0)
+        g_done = perf_total.get('done', 0)
+        g_rate = perf_total.get('rate', 0) * 100
+        g_time = PERF.get('time_pct', 0)
+        g_diff = perf_total.get('diff', 0)
+        g_remain = PERF.get('remain_days', 0)
+        g_daily = g_diff / g_remain if g_remain > 0 else 0
+        g_color = '#4ade80' if g_rate >= g_time else '#fbbf24'
+        A.append(f'''<div style="background:#1e293b;border:2px solid #334155;border-radius:0;padding:10px 24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;font-size:13px">
+  <span style="color:#94a3b8">📈 业绩达成</span>
+  <span style="font-weight:800;font-size:16px;color:{g_color}">{g_rate:.1f}%</span>
+  <div class="pbar" style="flex:1;min-width:120px"><div class="pfill" style="width:{min(g_rate,100)}%;background:{g_color}"></div></div>
+  <span style="color:#94a3b8">时间进度 <b style="color:#fbbf24">{g_time}%</b></span>
+  <span style="color:#94a3b8">完成 <b style="color:#4ade80">{g_done/10000:.1f}万</b> / 目标 <b style="color:#e2e8f0">{g_target/10000:.1f}万</b></span>
+  <span style="color:#94a3b8">还差 <b style="color:#f87171">{g_diff/10000:.1f}万</b> · 剩{g_remain}天 · 日均需<b style="color:#fbbf24">{g_daily/10000:.1f}万</b></span>
+</div>''')
+
+    A.append('<div class="nav">\n')
     if has_perf:
         A.append('  <button class="active" onclick="go(0)">📈 业绩达成</button>')
     A.append(f'  <button class={"active" if not has_perf else ""} onclick="go({off})">🚦 今日战报</button>')
@@ -346,7 +365,7 @@ tr:hover td{background:#263348}
             medal = '🥇' if i==0 else ('🥈' if i==1 else ('🥉' if i==2 else f'第{i+1}名'))
             A.append(f'<div class="reward-card"><div class="medal">{medal}</div><div class="info"><div class="nm">{htmlmod.escape(str(r["store"]))}</div><div class="ds">{r["score"]}分 · 日均{r["daily_avg"]}</div></div><div class="amt">¥{amt}</div></div>')
         A.append('</div>')
-    A.append('</div><div style="font-size:12px;color:#64748b;margin-top:10px">📌 S组前5名 / A组前5名 / B组前8名有奖励（300/200/100/50元）。每天认真做，下个月就是你！</div></div>')
+    A.append('</div><div style="margin-top:14px;padding:14px 18px;background:linear-gradient(90deg,#422006,#713f12);border:2px solid #f59e0b;border-radius:12px;font-size:15px;font-weight:800;color:#fbbf24;text-align:center">🏆 S组前5 / A组前5 / B组前8 都有奖金（300/200/100/50元）—— 每天认真做，下个月站上领奖台的就是你！💪</div></div>')
     A.append('</div>')
 
     # ===== JS =====
