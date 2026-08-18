@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>贵阳8月 · 策略动作执行看板</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📋</text></svg>">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #f0f2f5; color: #1f2937; }
+  
+  /* Top Nav */
+  .top-nav { background: #1a1a2e; color: #fff; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; }
+  .top-nav h1 { font-size: 18px; font-weight: 600; }
+  .top-nav .subtitle { font-size: 12px; color: #94a3b8; }
+  .nav-tabs { display: flex; background: #fff; border-bottom: 1px solid #e2e8f0; padding: 0 24px; gap: 0; overflow-x: auto; }
+  .nav-tab { padding: 14px 24px; font-size: 14px; font-weight: 500; color: #64748b; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; white-space: nowrap; }
+  .nav-tab:hover { color: #1a1a2e; }
+  .nav-tab.active { color: #2563eb; border-bottom-color: #2563eb; background: #f8fafc; }
+  
+  /* Main Content */
+  .page { display: none; padding: 20px 24px; max-width: 1440px; margin: 0 auto; }
+  .page.active { display: block; }
+  
+  /* KPI Cards */
+  .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 20px; }
+  .kpi-card { background: #fff; border-radius: 12px; padding: 16px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); position: relative; overflow: hidden; }
+  .kpi-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; }
+  .kpi-card.green::before { background: #22c55e; }
+  .kpi-card.yellow::before { background: #eab308; }
+  .kpi-card.red::before { background: #ef4444; }
+  .kpi-card.blue::before { background: #2563eb; }
+  .kpi-label { font-size: 12px; color: #94a3b8; margin-bottom: 4px; }
+  .kpi-value { font-size: 26px; font-weight: 700; }
+  .kpi-sub { font-size: 11px; color: #64748b; margin-top: 4px; }
+  .kpi-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; }
+  .dot-green { background: #22c55e; } .dot-yellow { background: #eab308; } .dot-red { background: #ef4444; }
+  
+  /* Sections */
+  .section { background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .section-title { font-size: 15px; font-weight: 600; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 8px; }
+  
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; padding: 8px 10px; background: #f8fafc; color: #475569; font-weight: 600; border-bottom: 2px solid #e2e8f0; font-size: 12px; }
+  td { padding: 8px 10px; border-bottom: 1px solid #f1f5f9; }
+  tr:hover td { background: #f8fafc; }
+  
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+  .badge-green { background: #dcfce7; color: #16a34a; }
+  .badge-yellow { background: #fef9c3; color: #a16207; }
+  .badge-red { background: #fee2e2; color: #dc2626; }
+  .badge-blue { background: #dbeafe; color: #2563eb; }
+  .badge-gray { background: #f1f5f9; color: #64748b; }
+  
+  /* Progress Bar */
+  .progress-bar { height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 3px; }
+  .fill-green { background: #22c55e; } .fill-yellow { background: #eab308; } .fill-red { background: #ef4444; } .fill-blue { background: #2563eb; }
+  
+  /* Grid layouts */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+  .grid-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+  
+  /* Score heat */
+  .heat-cell { display: inline-block; min-width: 32px; text-align: center; padding: 2px 6px; border-radius: 6px; font-size: 11px; font-weight: 600; }
+  .heat-0 { background: #fee2e2; color: #dc2626; }
+  .heat-low { background: #fef9c3; color: #a16207; }
+  .heat-mid { background: #dbeafe; color: #2563eb; }
+  .heat-high { background: #dcfce7; color: #16a34a; }
+  .heat-top { background: #16a34a; color: #fff; }
+  
+  /* Store card for zero list */
+  .store-tag { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 8px; font-size: 12px; margin: 3px; }
+  .tag-zero { background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; }
+  .tag-low { background: #fef9c3; color: #a16207; border: 1px solid #fde68a; }
+  
+  /* Scrollable table */
+  .table-wrap { max-height: 500px; overflow-y: auto; }
+  .table-wrap table thead { position: sticky; top: 0; z-index: 1; }
+  
+  /* Login */
+  .login-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    display: flex; align-items: center; justify-content: center; z-index: 9999;
+  }
+  .login-box { background: #fff; border-radius: 16px; padding: 40px; width: 380px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); text-align: center; }
+  .login-logo { font-size: 48px; margin-bottom: 8px; }
+  .login-title { font-size: 20px; font-weight: 700; color: #1f2937; margin-bottom: 4px; }
+  .login-sub { font-size: 13px; color: #94a3b8; margin-bottom: 24px; }
+  .login-input { width: 100%; padding: 12px 16px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 16px; text-align: center; letter-spacing: 4px; outline: none; transition: border-color 0.2s; }
+  .login-input:focus { border-color: #2563eb; }
+  .login-btn { width: 100%; padding: 12px; margin-top: 16px; background: #2563eb; color: #fff; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; }
+  .login-btn:hover { background: #1d4ed8; }
+  .login-error { color: #ef4444; font-size: 13px; margin-top: 12px; display: none; }
+  .login-footer { margin-top: 20px; font-size: 11px; color: #94a3b8; }
+  
+  /* Mini sparkline */
+  .spark { display: flex; align-items: flex-end; gap: 1px; height: 20px; }
+  .spark-bar { width: 4px; border-radius: 1px; background: #93c5fd; transition: height 0.3s; }
+  
+  /* Filter */
+  .filter-row { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .filter-btn { padding: 6px 14px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 12px; cursor: pointer; background: #fff; color: #64748b; transition: all 0.2s; }
+  .filter-btn:hover, .filter-btn.active { background: #2563eb; color: #fff; border-color: #2563eb; }
+  
+  /* Update time */
+  .update-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .update-time { font-size: 11px; color: #94a3b8; }
+  .update-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: #22c55e; }
+  .pulse { width: 6px; height: 6px; background: #22c55e; border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  @media (max-width: 768px) {
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .grid-2, .grid-3, .grid-2-1 { grid-template-columns: 1fr; }
+    .nav-tab { padding: 12px 14px; font-size: 13px; }
+    .kpi-value { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN ===== -->
+<div id="loginOverlay" class="login-overlay">
+  <div class="login-box">
+    <div class="login-logo">📋</div>
+    <div class="login-title">贵阳8月 · 策略动作执行看板</div>
+    <div class="login-sub">贝帮交付中心 · 内部使用</div>
+    <input id="loginPassword" class="login-input" type="password" placeholder="请输入密码"
+           onkeydown="if(event.key==='Enter')checkPassword()">
+    <button class="login-btn" onclick="checkPassword()">进入看板</button>
+    <div id="loginError" class="login-error">密码错误，请重试</div>
+    <div class="login-footer">贝帮信息科技有限公司 · 2026</div>
+  </div>
+</div>
+
+<!-- ===== DASHBOARD ===== -->
+<div id="dashboardContent" style="display:none;">
+
+<div class="top-nav">
+  <div>
+    <h1>🏪 贵阳8月老板电器 · 策略动作执行看板</h1>
+    <div class="subtitle">项目周期：2026.08.06 - 08.31 ｜ 统计截至 8月17日 ｜ 服务商：贝帮信息科技有限公司</div>
+  </div>
+  <div style="font-size:12px;color:#94a3b8;">📋 AI交付总监 · <a href="#" onclick="logout()" style="color:#94a3b8;text-decoration:underline;">退出</a></div>
+</div>
+
+<div class="nav-tabs">
+  <div class="nav-tab active" onclick="switchTab('page1')">📊 执行总览</div>
+  <div class="nav-tab" onclick="switchTab('page2')">🏆 门店排名</div>
+  <div class="nav-tab" onclick="switchTab('page3')">📈 趋势分析</div>
+  <div class="nav-tab" onclick="switchTab('page4')">🚨 问题门店</div>
+  <div class="nav-tab" onclick="switchTab('page5')">📋 今日公示</div>
+</div>
+
+<!-- ======= PAGE 1: 执行总览 ======= -->
+<div id="page1" class="page active">
+
+  <div class="update-bar">
+    <div class="update-badge"><span class="pulse"></span> 数据更新至 2026.08.17</div>
+    <div class="update-time">积分统计周期：8/7 - 8/17（11天）· 基础项满分50分/天</div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi-card blue">
+      <div class="kpi-label">参与门店</div>
+      <div class="kpi-value">86<span style="font-size:14px;color:#64748b;"> 家</span></div>
+      <div class="kpi-sub">7大区域 · 7位军长</div>
+    </div>
+    <div class="kpi-card green">
+      <div class="kpi-label">累计总积分</div>
+      <div class="kpi-value" style="color:#22c55e;">27,435</div>
+      <div class="kpi-sub">日均 2,494 · 店均 319</div>
+    </div>
+    <div class="kpi-card yellow">
+      <div class="kpi-label">日均达标率</div>
+      <div class="kpi-value" style="color:#eab308;">58%</div>
+      <div class="kpi-sub">日均29分 / 满分50分</div>
+    </div>
+    <div class="kpi-card red">
+      <div class="kpi-label">当日零分门店</div>
+      <div class="kpi-value" style="color:#ef4444;">18<span style="font-size:14px;color:#64748b;"> 家</span></div>
+      <div class="kpi-sub">占比 21% ⚠️</div>
+    </div>
+    <div class="kpi-card red">
+      <div class="kpi-label">僵尸门店(全程0分)</div>
+      <div class="kpi-value" style="color:#ef4444;">4<span style="font-size:14px;color:#64748b;"> 家</span></div>
+      <div class="kpi-sub">小河天猫/九号家居/麻江/丹寨</div>
+    </div>
+    <div class="kpi-card green">
+      <div class="kpi-label">时间进度</div>
+      <div class="kpi-value" style="color:#22c55e;">46%</div>
+      <div class="kpi-sub">12/26天 · 业绩完成率 33.71%</div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <!-- 区域积分排行 -->
+    <div class="section">
+      <div class="section-title">🗺️ 区域积分排行（11天累计）</div>
+      <table>
+        <tr><th>区域</th><th>军长</th><th>门店</th><th>总积分</th><th>店均</th><th>达标率</th><th>走势</th></tr>
+        <tr>
+          <td><strong>贵阳专卖店</strong></td><td>刘清安</td><td>14</td>
+          <td><span class="heat-cell heat-top">7,807</span></td>
+          <td><strong>557.6</strong></td>
+          <td><div class="progress-bar" style="width:80px;"><div class="progress-fill fill-green" style="width:75%;"></div></div><span style="font-size:11px;color:#22c55e;"> 75%</span></td>
+          <td><div class="spark" id="spark-gy1"></div></td>
+        </tr>
+        <tr>
+          <td><strong>贵阳家装</strong></td><td>肖发芳</td><td>5</td>
+          <td><span class="heat-cell heat-top">2,679</span></td>
+          <td><strong>535.8</strong></td>
+          <td><div class="progress-bar" style="width:80px;"><div class="progress-fill fill-green" style="width:72%;"></div></div><span style="font-size:11px;color:#22c55e;"> 72%</span></td>
+          <td><div class="spark" id="spark-gy2"></div></td>
+        </tr>
+        <tr>
+          <td>黔南</td><td>韦开健</td><td>9</td>
+          <td><span class="heat-cell heat-mid">3,051</span></td>
+          <td>339.0</td>
+          <td><div class="progress-bar" style="width:80px;"><div class="progress-fill fill-yellow" style="width:45%;"></div></div><span style="font-size:11px;color:#a16207;"> 45%</span></td>
+          <td><div class="spark" id="spark-qn"></div></td>
+        </tr>
+        <tr>
+          <td>遵义</td><td>聂全</td><td>21</td>
+          <td><span class="heat-cell heat-mid">6,046</span></td>
+          <td>287.9</td>
+          <td><div class="progress-bar" style="width:80px;"><div class="progress-fill fill-yellow" style="width:39%;"></div></div><span style="font-size:11px;color:#a16207;"> 39%</span></td>
+          <td><div class="spark" id="spark-zy"></div></td>
+        </tr>
+        <tr>
+          <td>全省KA</td><td>左红</td><td>16</td>
+          <td><span class="heat-cell heat-mid">4,582</span></td>
+          <td>286.4</td>
+          <td><div class="progress-bar" style="width:80px;"><div class="progress-fill fill-yellow" style="width:38%;"></div></div><span style="font-size:11px;color:#a16207;"> 38%</span></td>
+          <td><div class="spark" id="spark-ka"></div></td>
+        </tr>
+        <tr>
+          <td>黔东南</td><td>王元磊</td><td>10</td>
+          <td><span class="heat-cell heat-low">1,751</span></td>
+          <td>175.1</td>
+          <td><div class="progress-bar" style="width:80px;"><div class="progress-fill fill-red" style="width:24%;"></div></div><span style="font-size:11px;color:#dc2626;"> 24%</span></td>
+          <td><div class="spark" id="spark-qdn"></div></td>
+        </tr>
+        <tr>
+          <td>铜仁</td><td>张明</td><td>11</td>
+          <td><span class="heat-cell heat-0">1,519</span></td>
+          <td><strong style="color:#dc2626;">138.1</strong></td>
+          <td><div class="progress-bar" style="width:80px;"><div class="progress-fill fill-red" style="width:19%;"></div></div><span style="font-size:11px;color:#dc2626;"> 19%</span></td>
+          <td><div class="spark" id="spark-tr"></div></td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- 积分规则 + 奖励设置 -->
+    <div class="section">
+      <div class="section-title">📐 积分规则</div>
+      <table>
+        <tr><th colspan="2">每日必做项</th><th>分值</th></tr>
+        <tr><td>🌅 晨会</td><td>每日打卡</td><td><span class="badge badge-blue">5分/天</span></td></tr>
+        <tr><td>🌆 夕会</td><td>每日打卡</td><td><span class="badge badge-blue">5分/天</span></td></tr>
+        <tr><td>📖 每日一读</td><td>阅读学习</td><td><span class="badge badge-blue">5分/天</span></td></tr>
+        <tr><td>📏 上门量尺</td><td>量尺记录</td><td><span class="badge badge-blue">10分/组</span></td></tr>
+        <tr><td>📅 KDS预约</td><td>预约客户</td><td><span class="badge badge-blue">10分/组</span></td></tr>
+        <tr><td>👤 新增客资</td><td>客户信息</td><td><span class="badge badge-blue">5分/组</span></td></tr>
+        <tr><td>📕 小红书截流</td><td>获客截流</td><td><span class="badge badge-blue">10分/人</span></td></tr>
+        <tr><td>🎉 捷报</td><td>成交报喜</td><td><span class="badge badge-blue">2分/品类</span></td></tr>
+      </table>
+      <table style="margin-top:12px;">
+        <tr><th colspan="2">周度动作</th><th>分值</th></tr>
+        <tr><td>🎬 抖音宣发</td><td>周二/周四</td><td><span class="badge badge-green">+10分/条</span></td></tr>
+        <tr><td>📕 小红书发布</td><td>周二</td><td><span class="badge badge-green">+10分/条</span></td></tr>
+        <tr><td>📞 老用户回访</td><td>周三/周五</td><td><span class="badge badge-green">+5分/人</span></td></tr>
+        <tr><td>🎪 周末活动落地</td><td>周末</td><td><span class="badge badge-green">+20分</span></td></tr>
+        <tr><td>🤝 渠道活动落地</td><td>周中</td><td><span class="badge badge-green">+20分</span></td></tr>
+      </table>
+      <div style="margin-top:16px;padding:12px;background:#f0f9ff;border-radius:8px;font-size:12px;color:#1e40af;">
+        💡 <strong>理论日满分：</strong>基础项 50分/天（不含捷报+周度加分）<br>
+        🏆 <strong>奖励：</strong>S组前5 · A组前5 · B组前8（300/200/100/50元）
+      </div>
+    </div>
+  </div>
+
+  <!-- 区域 vs 业绩关联 -->
+  <div class="section">
+    <div class="section-title">🔗 动作执行 ↔ 业绩完成率 关联分析</div>
+    <div style="display:flex;gap:20px;overflow-x:auto;padding-bottom:8px;">
+      <div style="min-width:120px;text-align:center;padding:16px;background:#f0fdf4;border-radius:12px;border:2px solid #bbf7d0;">
+        <div style="font-size:12px;color:#16a34a;">贵阳专卖店</div>
+        <div style="font-size:24px;font-weight:700;color:#16a34a;">557.6</div>
+        <div style="font-size:11px;color:#64748b;">均分/店</div>
+        <div style="font-size:18px;font-weight:700;margin-top:4px;">42.4%</div>
+        <div style="font-size:11px;color:#64748b;">业绩完成率</div>
+        <div style="font-size:10px;color:#16a34a;margin-top:4px;">✅ 市区线领跑</div>
+      </div>
+      <div style="min-width:120px;text-align:center;padding:16px;background:#fffbeb;border-radius:12px;border:2px solid #fde68a;">
+        <div style="font-size:12px;color:#a16207;">黔南</div>
+        <div style="font-size:24px;font-weight:700;color:#a16207;">339.0</div>
+        <div style="font-size:11px;color:#64748b;">均分/店</div>
+        <div style="font-size:18px;font-weight:700;margin-top:4px;">—</div>
+        <div style="font-size:11px;color:#64748b;">业绩待拆</div>
+        <div style="font-size:10px;color:#a16207;margin-top:4px;">⚡ 都匀云都标杆</div>
+      </div>
+      <div style="min-width:120px;text-align:center;padding:16px;background:#fffbeb;border-radius:12px;border:2px solid #fde68a;">
+        <div style="font-size:12px;color:#a16207;">遵义</div>
+        <div style="font-size:24px;font-weight:700;color:#a16207;">287.9</div>
+        <div style="font-size:11px;color:#64748b;">均分/店</div>
+        <div style="font-size:18px;font-weight:700;margin-top:4px;">—</div>
+        <div style="font-size:11px;color:#64748b;">业绩待拆</div>
+        <div style="font-size:10px;color:#a16207;margin-top:4px;">⚡ 习水突出</div>
+      </div>
+      <div style="min-width:120px;text-align:center;padding:16px;background:#fef2f2;border-radius:12px;border:2px solid #fecaca;">
+        <div style="font-size:12px;color:#dc2626;">黔东南</div>
+        <div style="font-size:24px;font-weight:700;color:#dc2626;">175.1</div>
+        <div style="font-size:11px;color:#64748b;">均分/店</div>
+        <div style="font-size:18px;font-weight:700;margin-top:4px;">—</div>
+        <div style="font-size:11px;color:#64748b;">业绩待拆</div>
+        <div style="font-size:10px;color:#dc2626;margin-top:4px;">🔴 外围拖累</div>
+      </div>
+      <div style="min-width:120px;text-align:center;padding:16px;background:#fef2f2;border-radius:12px;border:2px solid #fecaca;">
+        <div style="font-size:12px;color:#dc2626;">铜仁</div>
+        <div style="font-size:24px;font-weight:700;color:#dc2626;">138.1</div>
+        <div style="font-size:11px;color:#64748b;">均分/店</div>
+        <div style="font-size:18px;font-weight:700;margin-top:4px;">—</div>
+        <div style="font-size:11px;color:#64748b;">业绩待拆</div>
+        <div style="font-size:10px;color:#dc2626;margin-top:4px;">🔴 最弱区域</div>
+      </div>
+      <div style="display:flex;align-items:center;font-size:28px;color:#94a3b8;">→</div>
+      <div style="min-width:160px;padding:16px;background:#f8fafc;border-radius:12px;border:2px dashed #cbd5e1;">
+        <div style="font-size:13px;font-weight:700;color:#1f2937;margin-bottom:8px;">核心结论</div>
+        <div style="font-size:12px;color:#475569;line-height:1.6;">
+          动作做得好 → 业绩就是好<br>
+          <strong style="color:#dc2626;">铜仁/黔东南</strong> 动作+业绩双垫底<br>
+          需专项帮扶/跑通带单政策
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======= PAGE 2: 门店排名 ======= -->
+<div id="page2" class="page">
+  <div class="grid-3">
+    <!-- S组 -->
+    <div class="section">
+      <div class="section-title">⭐ S组（22家）</div>
+      <table>
+        <tr><th>#</th><th>区域</th><th>门店</th><th>10天积分</th><th>日均</th><th>奖励</th></tr>
+        <tr><td>🥇</td><td>专卖店</td><td><strong>红星一店</strong></td><td><span class="heat-cell heat-top">1,326</span></td><td>132.6</td><td><span class="badge badge-green">300元</span></td></tr>
+        <tr><td>🥈</td><td>专卖店</td><td><strong>西南家具城</strong></td><td><span class="heat-cell heat-top">982</span></td><td>98.2</td><td><span class="badge badge-green">200元</span></td></tr>
+        <tr><td>🥉</td><td>家装</td><td><strong>遵义路喜百年</strong></td><td><span class="heat-cell heat-high">937</span></td><td>93.7</td><td><span class="badge badge-green">100元</span></td></tr>
+        <tr><td>4</td

@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>深圳老板电器618燃洗提升 · 交付看版</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #f0f2f5; color: #1f2937; }
+  
+  /* Top Nav */
+  .top-nav { background: #1a1a2e; color: #fff; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; }
+  .top-nav h1 { font-size: 18px; font-weight: 600; }
+  .top-nav .subtitle { font-size: 12px; color: #94a3b8; }
+  .nav-tabs { display: flex; background: #fff; border-bottom: 1px solid #e2e8f0; padding: 0 24px; gap: 0; }
+  .nav-tab { padding: 14px 24px; font-size: 14px; font-weight: 500; color: #64748b; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; }
+  .nav-tab:hover { color: #1a1a2e; }
+  .nav-tab.active { color: #2563eb; border-bottom-color: #2563eb; background: #f8fafc; }
+  
+  /* Main Content */
+  .page { display: none; padding: 20px 24px; max-width: 1440px; margin: 0 auto; }
+  .page.active { display: block; }
+  
+  /* KPI Cards Row */
+  .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 20px; }
+  .kpi-card { background: #fff; border-radius: 12px; padding: 18px 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .kpi-label { font-size: 12px; color: #94a3b8; margin-bottom: 6px; }
+  .kpi-value { font-size: 28px; font-weight: 700; }
+  .kpi-sub { font-size: 12px; color: #64748b; margin-top: 4px; }
+  .kpi-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
+  .dot-green { background: #22c55e; } .dot-yellow { background: #eab308; } .dot-red { background: #ef4444; }
+  
+  /* Sections */
+  .section { background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .section-title { font-size: 15px; font-weight: 600; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 8px; }
+  
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; padding: 10px 12px; background: #f8fafc; color: #475569; font-weight: 600; border-bottom: 2px solid #e2e8f0; }
+  td { padding: 10px 12px; border-bottom: 1px solid #f1f5f9; }
+  tr:hover td { background: #f8fafc; }
+  
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+  .badge-green { background: #dcfce7; color: #16a34a; }
+  .badge-yellow { background: #fef9c3; color: #a16207; }
+  .badge-red { background: #fee2e2; color: #dc2626; }
+  
+  /* Progress Bar */
+  .progress-bar { height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; margin-top: 4px; }
+  .progress-fill { height: 100%; border-radius: 4px; transition: width 0.5s; }
+  .fill-green { background: #22c55e; } .fill-yellow { background: #eab308; } .fill-red { background: #ef4444; }
+  
+  /* Grid layouts */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+  
+  /* Funnel */
+  .funnel { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .funnel-step { width: 100%; background: #2563eb; color: #fff; text-align: center; padding: 12px; border-radius: 8px; font-weight: 600; }
+  .funnel-step:nth-child(1) { background: #2563eb; width: 100%; }
+  .funnel-step:nth-child(2) { background: #3b82f6; width: 74%; }
+  .funnel-step:nth-child(3) { background: #60a5fa; width: 50%; font-size: 12px; }
+  .funnel-arrow { color: #94a3b8; font-size: 18px; }
+  
+  /* Channel Matrix */
+  .channel-card { padding: 14px; border-radius: 10px; border: 1px solid #e2e8f0; background: #fff; }
+  .channel-row { display: grid; grid-template-columns: 120px 1fr; gap: 12px; align-items: center; padding: 8px 0; }
+  
+  /* Metric boxes */
+  .metric-sm { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; }
+  
+  /* Report Template */
+  .report-form { max-width: 700px; margin: 0 auto; }
+  .form-group { margin-bottom: 16px; }
+  .form-label { font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px; display: block; }
+  .form-input { width: 100%; padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 13px; }
+  .form-checkbox { display: flex; align-items: center; gap: 8px; padding: 6px 0; }
+  
+  /* Two column */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  
+  @media (max-width: 768px) {
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .grid-2, .grid-3, .two-col { grid-template-columns: 1fr; }
+    .nav-tab { padding: 12px 14px; font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-nav">
+  <div>
+    <h1>深圳老板电器618 · 燃洗提升项目看版</h1>
+    <div class="subtitle">项目周期：5.21 - 6.30 ｜ 服务商：贝帮信息科技有限公司</div>
+  </div>
+  <div style="font-size:12px;color:#94a3b8;">📋 AI交付总监 · 数据驱动</div>
+</div>
+
+<div class="nav-tabs">
+  <div class="nav-tab active" onclick="switchTab('page1')">策略一页纸</div>
+  <div class="nav-tab" onclick="switchTab('page2')">执行落地看版</div>
+  <div class="nav-tab" onclick="switchTab('page3')">执行老师汇报通路</div>
+</div>
+
+<!-- ======= PAGE 1: 策略一页纸看版 ======= -->
+<div id="page1" class="page active">
+
+  <!-- KPI Cards -->
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-label">燃热达成</div>
+      <div class="kpi-value" style="color:#ef4444;">53.6%</div>
+      <div class="kpi-sub">380 / 709 台 <span class="kpi-dot dot-red"></span>同比-12.5%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">洗碗机达成</div>
+      <div class="kpi-value" style="color:#eab308;">62.9%</div>
+      <div class="kpi-sub">553 / 879 台 <span class="kpi-dot dot-yellow"></span>同比-14.3%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">i1pro达成</div>
+      <div class="kpi-value" style="color:#ef4444;">28.5%</div>
+      <div class="kpi-sub">35 / 123 套 <span class="kpi-dot dot-red"></span>严重缺口</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">99元售卡</div>
+      <div class="kpi-value" style="color:#eab308;">47.7%</div>
+      <div class="kpi-sub">260 / 545 张 <span class="kpi-dot dot-yellow"></span>成交193张·转化率74.2%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">全员破零率</div>
+      <div class="kpi-value" style="color:#22c55e;">73.1%</div>
+      <div class="kpi-sub">87 / 119 人 已破零 <span class="kpi-dot dot-yellow"></span></div>
+    </div>
+  </div>
+
+  <!-- 项目逻辑 & 策略 -->
+  <div class="grid-2">
+    <div class="section">
+      <div class="section-title">项目逻辑</div>
+      <table>
+        <tr><th style="width:80px;">步骤</th><th>内容</th></tr>
+        <tr><td>①</td><td><strong>客户定位：</strong>深圳全市老板电器经销商 → 提升燃洗配套率</td></tr>
+        <tr><td>②</td><td><strong>现状评估：</strong>燃热同比-12.5% 洗碗机同比-14.3%<br>KA和专卖店双降，家装逆势增长(+21.7%)</td></tr>
+        <tr><td>③</td><td><strong>理想标准：</strong>燃洗配套率≥80% ｜ 三件套占比提升 ｜ 全员破零率≥90%</td></tr>
+        <tr><td>④</td><td><strong>策略方法：</strong>99元预售卡(送黄金+抽茅台) ｜ 四阶段30-20-30-20节奏 ｜ 燃热三一级标识 ｜ 异业+设计师培训</td></tr>
+        <tr><td>⑤</td><td><strong>关键指标：</strong>燃热53%🔴 洗碗63%🟡 i1pro29%🔴 售卡48%🟡 破零73%🟡</td></tr>
+        <tr><td>⑥</td><td><strong>排期分工：</strong>3大渠道 ｜ 7位管干 ｜ 10+业务店总 ｜ 119名门店一线</td></tr>
+        <tr><td>⑦</td><td><strong>跟盯复盘：</strong>4轮阶段总结会 ｜ 每日群内捷报 ｜ 管干负激励(生鸡蛋+黄连粉)</td></tr>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title">渠道达成矩阵</div>
+      <table>
+        <tr><th>渠道</th><th>管干</th><th>燃热</th><th>洗碗机</th><th>i1pro</th><th>售卡</th></tr>
+        <tr>
+          <td>专卖店</td><td>李洋&肖洁</td>
+          <td><span class="badge badge-yellow">52.6%</span></td>
+          <td><span class="badge badge-yellow">66.3%</span></td>
+          <td><span class="badge badge-red">27.7%</span></td>
+          <td>118张</td>
+        </tr>
+        <tr>
+          <td>KA(京东)</td><td>彭刚</td>
+          <td><span class="badge badge-red">39.9%</span></td>
+          <td><span class="badge badge-red">44.0%</span></td>
+          <td><span class="badge badge-red">30.4%</span></td>
+          <td>44张</td>
+        </tr>
+        <tr>
+          <td>KA(苏宁/顺电)</td><td>卢家宝/黄远兵</td>
+          <td><span class="badge badge-red">30.5%</span></td>
+          <td><span class="badge badge-red">22.0%</span></td>
+          <td><span class="badge badge-yellow">55.0%</span></td>
+          <td>22张</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600;">家装</td><td>司马世泽</td>
+          <td><span class="badge badge-green">78.7%</span></td>
+          <td><span class="badge badge-green">109.9%</span></td>
+          <td><span class="badge badge-yellow">53.3%</span></td>
+          <td>53张</td>
+        </tr>
+      </table>
+      <div style="margin-top:12px;font-size:12px;color:#64748b;">
+        🟢达标率≥80% &nbsp; 🟡60-80% &nbsp; 🔴<60%
+      </div>
+    </div>
+  </div>
+
+  <!-- 售卡漏斗 + 来源分布 -->
+  <div class="grid-2">
+    <div class="section">
+      <div class="section-title">售卡转化漏斗</div>
+      <div class="funnel">
+        <div class="funnel-step">99元预售卡售出 260 张</div>
+        <div class="funnel-arrow">⬇ 转化率 74.2%</div>
+        <div class="funnel-step" style="background:#3b82f6;">成交 193 单</div>
+        <div class="funnel-arrow">⬇</div>
+        <div class="funnel-step" style="background:#60a5fa;padding:8px;">燃热配套 → 洗碗机配套 → i1pro配套</div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">售卡来源分布</div>
+      <table>
+        <tr><th>来源</th><th>售卡数</th><th>占比</th></tr>
+        <tr><td>🏪 自然进店</td><td>114</td><td>43.8%</td></tr>
+        <tr><td>🏠 家装</td><td>50</td><td>19.2%</td></tr>
+        <tr><td>🤝 异业</td><td>37</td><td>14.2%</td></tr>
+        <tr><td>✏️ 设计师</td><td>31</td><td>11.9%</td></tr>
+        <tr><td>👥 老客户</td><td>24</td><td>9.2%</td></tr>
+        <tr><td>🏘️ 小区</td><td>4</td><td>1.5%</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 核心问题 & 标杆 -->
+  <div class="grid-2">
+    <div class="section">
+      <div class="section-title">核心问题</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="padding:10px 14px;background:#fef2f2;border-radius:8px;border-left:4px solid #ef4444;">
+          <strong>1. KA燃热破零不足</strong><br>
+          KA 54人中仅37人破零（68.5%），14人全程未开单
+        </div>
+        <div style="padding:10px 14px;background:#fef2f2;border-radius:8px;border-left:4px solid #ef4444;">
+          <strong>2. i1pro极度低</strong><br>
+          全渠道仅35套，达成率28.5%，是最大短板
+        </div>
+        <div style="padding:10px 14px;background:#fef2f2;border-radius:8px;border-left:4px solid #ef4444;">
+          <strong>3. 整体同比下降</strong><br>
+          全渠道燃热同比-12.5%，洗碗机同比-14.3%
+        </div>
+        <div style="padding:10px 14px;background:#fef2f2;border-radius:8px;border-left:4px solid #ef4444;">
+          <strong>4. 售卡转化断层</strong><br>
+          67张未成交(25.8%)，需追访跟进
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">标杆 & 亮点</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="padding:10px 14px;background:#f0fdf4;border-radius:8px;border-left:4px solid #22c55e;">
+          <strong>🏆 家装渠道全面达标</strong><br>
+          司马世泽团队：燃热78.7% 洗碗机109.9% 破零100%
+        </div>
+        <div style="padding:10px 14px;background:#f0fdf4;border-radius:8px;border-left:4px solid #22c55e;">
+          <strong>🏆 个人标杆</strong><br>
+          燃热：王少音7台、廖建祥11台、吴丽君7台
+        </div>
+        <div style="padding:10px 14px;background:#f0fdf4;border-radius:8px;border-left:4px solid #22c55e;">
+          <strong>🏆 门店标杆</strong><br>
+          宝安华美居：燃热30台+洗碗机30台+i1pro15台
+        </div>
+        <div style="padding:10px 14px;background:#f0fdf4;border-radius:8px;border-left:4px solid #22c55e;">
+          <strong>🏆 售卡转化率高</strong><br>
+          260张售卡→193单成交，转化率74.2%
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======= PAGE 2: 执行落地看版 ======= -->
+<div id="page2" class="page">
+
+  <!-- 今日数据 KPI -->
+  <div class="section">
+    <div class="section-title">📊 今日数据看版</div>
+    <div class="kpi-row">
+      <div class="kpi-card" style="text-align:center;">
+        <div class="kpi-label">今日开单</div>
+        <div class="kpi-value" style="font-size:32px;">—</div>
+        <div class="kpi-sub">待执行老师上报</div>
+      </div>
+      <div class="kpi-card" style="text-align:center;">
+        <div class="kpi-label">今日售卡</div>
+        <div class="kpi-value" style="font-size:32px;">—</div>
+        <div class="kpi-sub">待执行老师上报</div>
+      </div>
+      <div class="kpi-card" style="text-align:center;">
+        <div class="kpi-label">累计破零人数</div>
+        <div class="kpi-value" style="font-size:32px;">87</div>
+        <div class="kpi-sub">目标占比 73.1%</div>
+      </div>
+      <div class="kpi-card" style="text-align:center;">
+        <div class="kpi-label">售卡转化率</div>
+        <div class="kpi-value" style="font-size:32px;">74.2%</div>
+        <div class="kpi-sub">193/260张已成交</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 各渠道进度 -->
+  <div class="section">
+    <div class="section-title">各渠道进度条</div>
+    <table>
+      <tr><th>渠道</th><th>燃热达成</th><th>进度</th><th>洗碗机达成</th><th>进度</th><th>i1pro</th><th>售卡</th></tr>
+      <tr>
+        <td>专卖店（李洋&肖洁）</td>
+        <td><strong>187</strong> / 376</td>
+        <td><div class="progress-bar"><div class="progress-fill fill-red" style="width:49.7%"></div></div>49.7%</td>
+        <td><strong>249</strong> / 381</td>
+        <td><div class="progress-bar"><div class="progress-fill fill-yellow" style="width:65.4%"></div></div>65.4%</td>
+        <td>13/52</td>
+        <td>118张</td>
+      </tr>
+      <tr>
+        <td>KA 京东（彭刚）</td>
+        <td><strong>35</strong> / 42</td>
+        <td><div class="progress-bar"><div class="progress-fill fill-green" style="width:83.3%"></div></div>83.3%</td>
+        <td><strong>115</strong> / 98</td>
+        <td><div class="progress-bar"><div class="progress-fill fill-green" style="width:117%"></div></div>117.3%</td>
+        <td>2/21</td>
+        <td>44张</td>
+      </tr>
+      <tr>
+        <td>KA 苏宁/顺电（卢家宝/黄远兵）</td>
+        <td><strong>62</strong> / 201</td>
+        <td><div class="progress-bar"><div class="progress-fill fill-red" style="width:30.8%"></div></div>30.8%</td>
+        <td><strong>78</strong> / 343</td>
+        <td><div class="progress-bar"><div class="progress-fill fill-red" style="width:22.7%"></div></div>22.7%</td>
+        <td>12/29</td>
+        <td>22张</td>
+      </tr>
+      <tr>
+        <td>家装（司马世泽）</td>
+        <td><strong>96</strong> / 122</td>
+        <td><div class="progress-bar"><div class="progress-fill fill-green" style="width:78.7%"></div></div>78.7%</td>
+        <td><strong>111</strong> / 101</td>
+        <td><div class="progress-bar"><div class="progress-fill fill-green" style="width:110%"></div></div>109.9%</td>
+        <td>8/15</td>
+        <td>53张</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- 门店明细表 -->
+  <div class="section">
+    <div class="section-title">🏪 核心门店达成明细（Top 20）</div>
+    <div style="overflow-x:auto;">
+    <table>
+      <tr>
+        <th>门店</th><th>管干</th><th>燃热</th><th>洗碗机</th><th>i1pro</th><th>售卡</th><th>综合</th>
+      </tr>
+      <tr>
+        <td>南山京东</td><td>彭刚/冯志</td><td>20/24</td><td>73/36</td><td>0/12</td><td>93张</td><td><span class="badge badge-yellow">🟡</span></td>
+      </tr>
+      <tr>
+        <td>宝安华美居</td><td>余维斌</td><td>13/68</td><td>30/51</td><td>2/6</td><td>45张</td><td><span class="badge badge-red">🔴</span></td>
+      </tr>
+      <tr>
+        <td>龙华万众城</td><td>唐敏球</td><td>10/42</td><td>20/56</td><td>4/10</td><td>34张</td><td><span class="badge badge-red">🔴</span></td>
+      </tr>
+      <tr>
+        <td>宝能第一空间</td><td>李丹</td><td>14/13</td><td>18/17</td><td>0/5</td><td>32张</td><td><span class="badge badge-green">🟢</span></td>
+      </tr>
+      <tr>
+        <td>群星京东</td><td>彭刚/冯志</td><td>6/7</td><td>24/36</td><td>2/8</td><td>32张</td><td><span class="badge badge-yellow">🟡</span></td>
+      </tr>
+      <tr>
+        <td>罗湖百安居</td><td>卢家宝</td><td>12/26</td><td>11/40</td><td>3/6</td><td>26张</td><td><span class="badge badge-red">🔴</span></td>
+      </tr>
+      <tr>
+        <td>龙岗国安居</td><td>彭泽新</td><td>8/10</td><td>13/23</td><td>4/5</td><td>25张</td><td><span class="badge badge-green">🟢</span></td>
+      </tr>
+      <tr>
+        <td>欧洲城香江家居</td><td>李麟</td><td>8/32</td><td>13/37</td><td>2/8</td><td>23张</td><td><span class="badge badge-red">🔴</span></td>
+      </tr>
+      <tr>
+        <td>西丽百安居</td><td>卢家宝</td><td>8/16</td><td>9/36</td><td>3/4</td><td>20张</td><td><span class="badge badge-red">🔴</span></td>
+      </tr>
+      <tr>
+        <td>沙井京东</td><td>彭刚</td><td>6/8</td><td>13/22</td><td>0/2</td><td>19张</td><td><span class="badge badge-yellow">🟡</span></td>
+      </tr>
+    </table>
+    </div>
+    <div style="margin-top:8px;font-size:12px;color:#64748b;">
+      🟢达成率≥80% &nbsp; 🟡60-80% &nbsp; 🔴&lt;60% &nbsp; 燃热数据格式：达成/目标
+    </div>
+  </div>
+
+  <!-- 预警栏 -->
+  <div class="grid-2">
+    <div class="section">
+      <div class="section-title" style="color:#ef4444;">⚠️ 预警事项</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;">
+          <span>🔴 KA燃热未破零人数</span>
+          <span style="font-weight:600;">17人</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;">
+          <span>🟡 专卖店i1pro挂零</span>
+          <span style="font-weight:600;">多门店0套</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;">
+          <span>🟡 售卡未核销</span>
+          <span style="font-weight:600;">67张</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;">
+          <span>🔴 顺电渠道全线挂零</span>
+          <span style="font-weight:600;">14家门店</span>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">🏅 今日龙虎榜</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;">
+          <span>🥇 燃热先锋</span>
+          <span>王少音 7台 / 廖建祥 11台</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;">
+          <span>🥇 洗碗机先锋</span>
+          <span>赵建林 21台 / 郑美兰 11台</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;">
+          <span>🥇 售卡TOP</span>
+          <span>南山京东 93张</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;">
+          <span>🥇 家装破零率100%</span>
+          <span>全员11人破零</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======= PAGE 3: 执行老师汇报通路 ======= -->
+<div id="page3" class="page">
+  <div class="section">
+    <div class="section-title">📋 执行老师每日汇报模板</div>
+    <div class="report-form">
+      <div style="display:flex;gap:16px;margin-bottom:16px;">
+        <div style="flex:1;"><div class="form-label">日期</div><div class="form-input">2026年__月__日</div></div>
+        <div style="flex:1;"><div class="form-label">姓名</div><div class="form-input">____________</div></div>
+        <div style="flex:1;"><div class="form-label">渠道</div><div class="form-input">专卖店 / KA / 家装</div></div>
+      </div>
+
+      <div class="form-label">一、今日数据</div>
+      <table>
+        <tr><th>产品</th><th>今日目标</th><th>今日实际</th><th>累计达成</th></tr>
+        <tr><td>燃热销售（台）</td><td>___</td><td>___</td><td>___</td></tr>
+        <tr><td>洗碗机销售（台）</td><td>___</td><td>___</td><td>___</td></tr>
+        <tr><td>i1pro销售（套）</td><td>___</td><td>___</td><td>___</td></tr>
+        <tr><td>售卡（张）</td><td>___</td><td>___</td><td>___</td></tr>
+        <tr><td>新增客户</td><td>___</td><td>___</td><td>___</td></tr>
+      </table>
+
+      <div class="form-label" style="margin-top:16px;">二、今日动作执行</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+        <div class="form-checkbox">☐ 9:00前下发当日工作指令</div>
+        <div class="form-checkbox">☐ 水印相机打卡/晨会</div>
+        <div class="form-checkbox">☐ 客户体验燃热___次</div>
+        <div class="form-checkbox">☐ 客户体验洗碗机___次</div>
+        <div class="form-checkbox">☐ 异业/设计师拜访___家</div>
+        <div class="form-checkbox">☐ 售卡___张（附截图）</div>
+        <div class="form-checkbox">☐ 群内发战报</div>
+        <div class="form-checkbox">☐ 21:00前完成总结复盘</div>
+      </div>
+
+      <div class="form-label" style="margin-top:16px;">三、今日聚焦问题</div>
+      <div class="form-input" style="min-height:60px;">________________________</div>
+
+      <div class="form-label" style="margin-top:16px;">四、明日工作计划</div>
+      <div class="form-input" style="min-height:60px;">________________________</div>
+    </div>
+  </div>
+
+  <!-- 汇报注意事项 -->
+  <div class="grid-2">
+    <div class="section">
+      <div class="section-title">汇报规范</div>
+      <ul style="font-size:13px;line-height:1.8;padding-left:20px;color:#374151;">
+        <li>每日 9:00 前下发当日工作指令至门店群</li>
+        <li>每日 21:00 前完成汇总并发送至交付管理群</li>
+        <li>水印相机照片需含门店名称+日期</li>
+        <li>售卡截图需含客户信息+VIP卡号</li>
+        <li>群内互动不少于30条/日</li>
+        <li>与核心对接人每日沟通不少于1次</li>
+      </ul>
+    </div>
+    <div class="section">
+      <div class="section-title">负激励规则</div>
+      <ul style="font-size:13px;line-height:1.8;padding-left:20px;color:#374151;">
+        <li>燃热未破零 → 抄写指定话术2遍</li>
+        <li>燃洗综合达成&lt;80% → 例会吃生鸡蛋+黄连粉</li>
+        <li>连续两场评分&lt;80% → 降职处理</li>
+        <li>管干未按标准反馈活动落地 → 群内通报</li>
+        <li>数据造假 → 一票否决</li>
+        <li>每日必做项达标率&lt;80% → 管干执行负激励</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+function switchTab(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+
+</body>
+</html>
