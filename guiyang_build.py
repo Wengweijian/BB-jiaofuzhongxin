@@ -223,6 +223,22 @@ tr:hover td{background:#263348}
             rc = '#4ade80' if rt >= 50 else ('#fbbf24' if rt >= 30 else '#f87171')
             A.append(f'<tr><td><b>{r.get("teacher","") or "合计"}</b></td><td>{r.get("region","")}</td><td>{r.get("target",0)/10000:.1f}万</td><td>{r.get("done",0)/10000:.1f}万</td><td><span style="font-weight:800;color:{rc}">{rt:.1f}%</span></td><td style="color:#f87171">{r.get("diff",0)/10000:.1f}万</td></tr>')
         A.append('</table></div>')
+        # ===== 区域排名 =====
+        if has_rank and RANK.get('regions'):
+            A.append('<div class="section"><div class="section-title">🗺️ 区域排名 <span class="tag">按完成率排序</span></div><div class="table-wrap" style="max-height:300px;overflow-y:auto"><table><tr><th>#</th><th>区域</th><th>目标</th><th>已完成</th><th>完成率</th></tr>')
+            for i, c in enumerate(RANK['regions'][:10], 1):
+                rc = '#4ade80' if c['rate'] >= 0.5 else ('#fbbf24' if c['rate'] >= 0.3 else '#f87171')
+                medal = '🥇' if i == 1 else ('🥈' if i == 2 else ('🥉' if i == 3 else str(i)))
+                A.append(f'<tr><td>{medal}</td><td><b>{c["name"]}</b></td><td>{c["target"]/10000:.1f}万</td><td>{c["done"]/10000:.1f}万</td><td><span style="font-weight:800;color:{rc}">{c["rate"]*100:.1f}%</span></td></tr>')
+            A.append('</table></div></div>')
+        # ===== 军长排名 =====
+        if has_rank and RANK.get('juns'):
+            A.append('<div class="section"><div class="section-title">👑 军长排名 <span class="tag">按完成率排序</span></div><div class="table-wrap" style="max-height:260px;overflow-y:auto"><table><tr><th>#</th><th>军长</th><th>目标</th><th>已完成</th><th>完成率</th></tr>')
+            for i, c in enumerate(RANK['juns'][:10], 1):
+                rc = '#4ade80' if c['rate'] >= 0.5 else ('#fbbf24' if c['rate'] >= 0.3 else '#f87171')
+                medal = '🥇' if i == 1 else ('🥈' if i == 2 else ('🥉' if i == 3 else str(i)))
+                A.append(f'<tr><td>{medal}</td><td><b>{c["name"]}</b></td><td>{c["target"]/10000:.1f}万</td><td>{c["done"]/10000:.1f}万</td><td><span style="font-weight:800;color:{rc}">{c["rate"]*100:.1f}%</span></td></tr>')
+            A.append('</table></div></div>')
         # ===== 渠道排名 =====
         if has_rank and RANK.get('channels'):
             A.append('<div class="section"><div class="section-title">🥇 渠道排名 <span class="tag">按完成率排序</span></div><div class="table-wrap" style="max-height:320px;overflow-y:auto"><table><tr><th>#</th><th>渠道</th><th>目标</th><th>已完成</th><th>完成率</th></tr>')

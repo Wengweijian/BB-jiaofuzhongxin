@@ -54,6 +54,24 @@ def parse_rank(xlsx_path):
         for ch, (t, d) in ch_tot.items():
             channels.append({'name': ch, 'target': t, 'done': d, 'rate': d/t if t else 0})
         channels.sort(key=lambda x: -x['rate'])
+        # 区域聚合
+        reg_tot = defaultdict(lambda: [0, 0])
+        for s in stores:
+            reg_tot[s['region']][0] += s['target']
+            reg_tot[s['region']][1] += s['done']
+        regions = []
+        for reg, (t, d) in reg_tot.items():
+            regions.append({'name': reg, 'target': t, 'done': d, 'rate': d/t if t else 0})
+        regions.sort(key=lambda x: -x['rate'])
+        # 军长聚合
+        jun_tot = defaultdict(lambda: [0, 0])
+        for s in stores:
+            jun_tot[s['jun']][0] += s['target']
+            jun_tot[s['jun']][1] += s['done']
+        juns = []
+        for j, (t, d) in jun_tot.items():
+            juns.append({'name': j, 'target': t, 'done': d, 'rate': d/t if t else 0})
+        juns.sort(key=lambda x: -x['rate'])
         store_rank = [s for s in stores if s['target'] > 0 and s['store'] not in ('其他', '合计', '')]
         store_rank.sort(key=lambda x: -x['rate'])
 
@@ -88,6 +106,8 @@ def parse_rank(xlsx_path):
     return {
         'kind': 'rank',
         'channels': channels,
+        'regions': regions,
+        'juns': juns,
         'store_rank': store_rank[:30],
         'store_bottom': store_rank[-15:][::-1],
         'groupA': groupA,
