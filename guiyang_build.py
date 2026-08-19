@@ -53,8 +53,9 @@ def build(data_path, perf_path=None, rank_path=None, out_path='贵阳8月_门店
     # 重建排名：按阶段积分（S组前5 / A组前5 / B组前8 有奖金 300/200/100/50）
     if phase_active:
         ranks = {}
+        group_key = {'S组': 'S', 'A组': 'A', 'B组': 'B'}  # 数据里分组为 S/A/B
         for g in ['S组', 'A组', 'B组']:
-            members = [s for s in stores_daily if s.get('group') == g]
+            members = [s for s in stores_daily if s.get('group') == group_key.get(g)]
             members.sort(key=lambda x: -x['phase_total'])
             arr = []
             for i, s in enumerate(members):
