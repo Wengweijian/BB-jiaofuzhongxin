@@ -23,16 +23,22 @@ PERF_ARG=""
 if [ -n "$PERF_XLSX" ] && [ -f "$PERF_XLSX" ]; then
   echo "📥 数据回传表: $PERF_XLSX"
   echo "② 解析业绩数据..."
-  python3 guiyang_parse.py "$PERF_XLSX" "/tmp/guiyang_perf.json"
-  PERF_ARG="/tmp/guiyang_perf.json"
+  python3 guiyang_parse.py "$PERF_XLSX" "guiyang_perf.json"
+  PERF_ARG="guiyang_perf.json"
+elif [ -f "guiyang_perf.json" ]; then
+  echo "📥 未提供新业绩表，沿用已固化业绩数据 guiyang_perf.json"
+  PERF_ARG="guiyang_perf.json"
 fi
 
 RANK_ARG=""
 if [ -n "$RANK_XLSX" ] && [ -f "$RANK_XLSX" ]; then
   echo "📥 业绩排行榜: $RANK_XLSX"
   echo "③ 解析排行榜数据..."
-  python3 guiyang_parse.py "$RANK_XLSX" "/tmp/guiyang_rank.json"
-  RANK_ARG="/tmp/guiyang_rank.json"
+  python3 guiyang_parse.py "$RANK_XLSX" "guiyang_rank.json"
+  RANK_ARG="guiyang_rank.json"
+elif [ -f "guiyang_rank.json" ]; then
+  echo "📥 未提供新排行榜，沿用已固化排行榜数据 guiyang_rank.json"
+  RANK_ARG="guiyang_rank.json"
 fi
 
 echo "④ 生成看板（业绩+积分+排行结合）..."
