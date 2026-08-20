@@ -210,7 +210,8 @@ tr:hover td{background:#263348}
     A.append('<div class="nav">\n')
     if has_perf:
         A.append('  <button class="active" onclick="go(0)">📈 业绩达成</button>')
-    A.append(f'  <button class={"active" if not has_perf else ""} onclick="go({off})">🚦 今日战报</button>')
+    tb_cls = 'active' if not has_perf else ''
+    A.append(f'  <button class="{tb_cls}" onclick="go({off})">🚦 今日战报</button>')
     A.append(f'  <button onclick="go({off+1})">🏆 门店排行</button>')
     A.append(f'  <button onclick="go({off+2})">📅 每日打卡</button>')
     A.append(f'  <button onclick="go({off+3})">💰 积分与奖励</button>')
