@@ -75,6 +75,22 @@ def build(data_path, perf_path=None, rank_path=None, out_path='贵阳8月_门店
     zero_today = [t for t in TODAY if t['total'] == 0]
     pass_today = [t for t in TODAY if t['total'] >= 30]
     top_today = sorted(TODAY, key=lambda x: -x['total'])[:5]
+
+    # ===== 门店趋势：进步/退步（前后半段日均对比） =====
+    def _avg(vals):
+        return sum(vals) / len(vals) if vals else 0
+    trends = []
+    for s in stores_daily:
+        daily = s['daily']
+        n = len(daily)
+        half = n // 2
+        f_avg = _avg(daily[:half])
+        l_avg = _avg(daily[half:])
+        trends.append({'store': s['store'], 'change': round(l_avg - f_avg, 1),
+                       'f': round(f_avg, 1), 'l': round(l_avg, 1)})
+    trends.sort(key=lambda x: -x['change'])
+    progress_stores = [t for t in trends if t['change'] > 5][:8]   # 进步前8
+    decline_stores = [t for t in trends[::-1] if t['change'] < -3][:8]  # 退步前8
     phase_score = sum(s['phase_total'] for s in stores_daily)
     phase_end = phase_dates[-1][-2:] if phase_dates else '23'
 
@@ -364,7 +380,27 @@ tr:hover td{background:#263348}
             A.append(f'<span class="store-tag st-red">❌ {t["store"]}</span>')
     else:
         A.append('<div style="color:#4ade80;font-size:14px">🎉 无零分门店！</div>')
-    A.append('</div></div></div>')
+    A.append('</div></div>')
+
+    # 进步门店 / 退步门店
+    A.append('<div class="grid-2">')
+    A.append('<div class="section"><div class="section-title">🟢 进步的门店 <span class="tag">越来越好 ↑</span></div>')
+    if progress_stores:
+        for t in progress_stores:
+            A.append(f'<span class="store-tag st-green">↑ {t["store"]} <span style="opacity:.7">+{t["change"]}</span></span>')
+        A.append('<div style="font-size:11px;color:#64748b;margin-top:8px">对比：前后半段日均积分上升 &gt;5分</div>')
+    else:
+        A.append('<div style="color:#4ade80;font-size:14px">暂无显著进步门店</div>')
+    A.append('</div>')
+    A.append('<div class="section"><div class="section-title">🔴 退步的门店 <span class="tag">越来越差 ↓</span></div>')
+    if decline_stores:
+        for t in decline_stores:
+            A.append(f'<span class="store-tag st-red">↓ {t["store"]} <span style="opacity:.7">{t["change"]}</span></span>')
+        A.append('<div style="font-size:11px;color:#64748b;margin-top:8px">对比：前后半段日均积分下降 &gt;3分</div>')
+    else:
+        A.append('<div style="color:#4ade80;font-size:14px">暂无显著退步门店</div>')
+    A.append('</div></div>')
+    A.append('</div>')
 
     # ===== 门店排行 =====
     A.append(f'<div id="page{off+1}" class="page">')
