@@ -383,6 +383,12 @@ tr:hover td{background:#263348}
 
     # ===== 每日打卡 =====
     A.append(f'<div id="page{off+2}" class="page">')
+    # 核心策略落地情况（内容推广条数 + 活动落地场次）
+    strat = D.get('strategy_daily') or {}
+    strat_labels = strat.get('labels', dates)
+    strat_content = strat.get('content', [0]*len(dates))
+    strat_activity = strat.get('activity', [0]*len(dates))
+    A.append('<div class="section"><div class="section-title">🎯 核心策略落地情况 <span class="tag">内容推广条数 + 活动落地场次 · 核心策略＝内容推广＋活动落地</span></div><div style="height:240px"><canvas id="strategyChart"></canvas></div></div>')
     A.append('<div class="section"><div class="section-title">📈 全门店每日总积分走势 <span class="tag">看看大家是不是越干越有劲</span></div><div style="height:260px"><canvas id="trendChart"></canvas></div></div>')
     A.append('<div class="section"><div class="section-title">🗓️ 每日打卡热力图 <span class="tag">绿=做得好 · 红=没做 · 点自己门店那行看</span></div><div class="heat-wrap"><table class="heat-table"><tr><th>门店</th>')
     for d in dates:
@@ -480,6 +486,20 @@ function searchStore(){
     res.innerHTML = `<div class="banner banner-red">❌ 没找到「${q}」，检查一下名字，或直接看下面排行榜/热力图</div>`;
   }
 }
+new Chart(document.getElementById('strategyChart'), {
+  type:'bar',
+  data:{labels:__STRAT_LABELS__, datasets:[
+    {label:'内容推广条数', data:__CONTENT__, backgroundColor:'rgba(139,92,246,0.7)', borderRadius:4},
+    {label:'活动落地场次', data:__ACTIVITY__, backgroundColor:'rgba(251,191,36,0.7)', borderRadius:4}
+  ]},
+  options:{
+    plugins:{legend:{labels:{color:'#94a3b8'}}},
+    scales:{
+      y:{beginAtZero:true, grid:{color:'#334155'}, ticks:{color:'#94a3b8'}},
+      x:{grid:{color:'#334155'}, ticks:{color:'#94a3b8'}}
+    }
+  }
+});
 new Chart(document.getElementById('trendChart'), {
   type:'line',
   data:{labels:__DATES__, datasets:[{
@@ -503,6 +523,9 @@ new Chart(document.getElementById('trendChart'), {
     html_str = ''.join(A)
     html_str = html_str.replace('__DATES__', json.dumps(dates, ensure_ascii=False))
     html_str = html_str.replace('__TOTAL__', json.dumps(daily_total))
+    html_str = html_str.replace('__STRAT_LABELS__', json.dumps(strat_labels, ensure_ascii=False))
+    html_str = html_str.replace('__CONTENT__', json.dumps(strat_content))
+    html_str = html_str.replace('__ACTIVITY__', json.dumps(strat_activity))
     html_str = html_str.replace('__NPAGES__', str(4 + off))
     with open(out_path, 'w') as f:
         f.write(html_str)

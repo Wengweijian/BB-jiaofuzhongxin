@@ -194,16 +194,18 @@ def parse_perf(xlsx_path):
 def parse(xlsx_path):
     wb = openpyxl.load_workbook(xlsx_path, data_only=True)
 
-    # ============ 每日存根：11+N天积分 ============
+    # ============ 每日存根：N天积分 ============
     ws = wb['每日存根']
     rows = list(ws.iter_rows(values_only=True))
-    # 表头: 0区域 1军长 2师长 3渠道 4门店分组 5匹配词 6门店 7..17日期 18合计
-    # 动态识别日期列
+    # 表头: 0区域 1军长 2师长 3渠道 4门店分组 5匹配词 6门店 7.. 日期 合计
+    # 动态识别日期列（不限定12天）
     header = rows[2]
     dates = []
-    for v in header[7:19]:
+    for v in header[7:]:
         if isinstance(v, (int, float)) and v > 40000:
             dates.append(v)
+        elif v is not None and str(v).strip() == '合计':
+            break
     n_days = len(dates)
     date_labels = []
     from datetime import datetime, timedelta
@@ -280,6 +282,57 @@ def parse(xlsx_path):
             acts = {a: 1 if s['daily'][-1] >= 5 else 0 for a in ACTIONS[:8]}
             today.append({'region': s['region'], 'store': s['store'], 'acts': acts, 'total': s['daily'][-1]})
 
+    # ============ 核心策略落地情况：每日内容推广条数 + 活动落地场次 ============
+    # 明细存根按日分组，每组表头：… 15抖音宣发 16小红书发布 17老用户回访 18周末活动落地 19渠道活动落地
+    try:
+        wsd = wb['明细存根']
+        rowsd = list(wsd.iter_rows(values_only=True))
+        # 定位每天的分组起始行（标题行含'贵阳8月门店积分'）
+        day_start = []
+        for i, r in enumerate(rowsd):
+            if r and r[0] and '贵阳8月' in str(r[0]):
+                day_start.append(i)
+        # 解析每天的日期（标题如 '贵阳8月门店积分动作统计表8.7'）
+        import re
+        day_dates = []
+        for i in day_start:
+            title = str(rowsd[i][0])
+            m = re.search(r'(\d+)\.(\d+)', title)
+            if m:
+                day_dates.append(f'{int(m.group(1)):02d}/{int(m.group(2)):02d}')
+            else:
+                day_dates.append(None)
+        # 无日期的组按顺序补日期（如 8.13）
+        for i, d in enumerate(day_dates):
+            if d is None and i > 0:
+                prev = day_dates[i-1]
+                if prev:
+                    mm, dd = int(prev[:2]), int(prev[3:]) + 1
+                    day_dates[i] = f'{mm:02d}/{dd:02d}'
+        content_by_day = defaultdict(int)
+        activity_by_day = defaultdict(int)
+        for gi, g0 in enumerate(day_start):
+            g1 = day_start[gi+1] if gi+1 < len(day_start) else len(rowsd)
+            dl = day_dates[gi]
+            if not dl:
+                continue
+            for r in rowsd[g0+4:g1]:
+                if not r or not r[6]:
+                    continue
+                dv = r[15] if len(r) > 15 and isinstance(r[15], (int, float)) else 0
+                xhs = r[16] if len(r) > 16 and isinstance(r[16], (int, float)) else 0
+                wk = r[18] if len(r) > 18 and isinstance(r[18], (int, float)) else 0
+                qd = r[19] if len(r) > 19 and isinstance(r[19], (int, float)) else 0
+                content_by_day[dl] += dv + xhs
+                activity_by_day[dl] += wk + qd
+        # 对齐每日存根日期，缺失补0
+        strategy_daily = {'labels': date_labels,
+                          'content': [content_by_day.get(d, 0) for d in date_labels],
+                          'activity': [activity_by_day.get(d, 0) for d in date_labels]}
+    except Exception as e:
+        strategy_daily = {'labels': date_labels, 'content': [0]*n_days, 'activity': [0]*n_days}
+        print('⚠️ 核心策略解析失败，置0:', e)
+
     # 今日动作完成率
     act_done = defaultdict(int)
     for t in today:
@@ -308,6 +361,7 @@ def parse(xlsx_path):
         'reg_today': {k: v for k, v in reg_today.items()},
         'total_stores': len(stores_daily),
         'total_score': sum(s['total'] for s in stores_daily),
+        'strategy_daily': strategy_daily,
     }
     return data
 
