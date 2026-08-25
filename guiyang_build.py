@@ -229,7 +229,7 @@ tr:hover td{background:#263348}
     tb_cls = 'active' if not has_perf else ''
     A.append(f'  <button class="{tb_cls}" onclick="go({off})">🚦 今日战报</button>')
     A.append(f'  <button onclick="go({off+1})">🏆 门店排行</button>')
-    A.append(f'  <button onclick="go({off+2})">📅 每日打卡</button>')
+    A.append(f'  <button onclick="go({off+2})">🎯 核心策略落地情况</button>')
     A.append(f'  <button onclick="go({off+3})">💰 积分与奖励</button>')
     A.append('</div>')
 
