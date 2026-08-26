@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>深圳样板 · 燃热750交付看板</title>
+<script src="chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;background:#0f172a;color:#e2e8f0}
+.hero{background:linear-gradient(135deg,#7c2d12 0%,#ea580c 60%,#f97316 100%);padding:22px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.hero h1{font-size:24px;font-weight:800;letter-spacing:1px;color:#fff}
+.hero .sub{font-size:13px;color:#ffedd5;margin-top:4px}
+.hero-right{text-align:right;font-size:12px;color:#ffedd5}
+.update-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.15);padding:4px 12px;border-radius:20px;font-size:12px;color:#fff}
+.pulse{width:8px;height:8px;background:#4ade80;border-radius:50%;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.page{padding:20px;max-width:1400px;margin:0 auto}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:18px}
+.kpi{background:#1e293b;border-radius:14px;padding:18px 16px;border:1px solid #334155;position:relative;overflow:hidden}
+.kpi .lab{font-size:12px;color:#94a3b8;margin-bottom:6px}
+.kpi .val{font-size:30px;font-weight:800}
+.kpi .val small{font-size:13px;color:#64748b;font-weight:600}
+.kpi .tip{font-size:11px;color:#64748b;margin-top:6px}
+.kpi::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px}
+.kpi.green::before{background:#22c55e}.kpi.yellow::before{background:#eab308}.kpi.red::before{background:#ef4444}.kpi.blue::before{background:#3b82f6}.kpi.orange::before{background:#f97316}
+.section{background:#1e293b;border-radius:14px;padding:20px;margin-bottom:18px;border:1px solid #334155}
+.section-title{font-size:16px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;color:#f1f5f9}
+.section-title .tag{font-size:11px;background:#f97316;color:#fff;padding:2px 10px;border-radius:12px;font-weight:600}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:9px 10px;background:#0f172a;color:#94a3b8;font-weight:600;border-bottom:1px solid #334155;font-size:12px;position:sticky;top:0}
+td{padding:9px 10px;border-bottom:1px solid #2d3a4e}
+tr:hover td{background:#263348}
+.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700}
+.bg-green{background:#16a34a33;color:#4ade80}.bg-red{background:#dc262633;color:#f87171}.bg-yellow{background:#ca8a0433;color:#fbbf24}.bg-blue{background:#3b82f633;color:#60a5fa}.bg-orange{background:#ea580c33;color:#fb923c}
+.pbar{height:10px;background:#334155;border-radius:6px;overflow:hidden}
+.pfill{height:100%;border-radius:6px;transition:width .6s}
+.act-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.act-card{background:#0f172a;border-radius:12px;padding:14px;text-align:center;border:1px solid #334155}
+.act-card .icon{font-size:26px}
+.act-card .name{font-size:13px;color:#94a3b8;margin:6px 0 2px}
+.act-card .rate{font-size:22px;font-weight:800}
+.act-card .done{font-size:11px;color:#64748b}
+.milestone{display:flex;gap:12px;flex-wrap:wrap}
+.mstone{flex:1;min-width:200px;background:#0f172a;border-radius:12px;padding:16px;border:1px solid #334155;border-top:4px solid #f97316}
+.mstone .md{font-size:13px;font-weight:800;color:#fb923c}
+.mstone .mt{font-size:15px;font-weight:800;margin:6px 0 4px;color:#f1f5f9}
+.mstone .ms{font-size:12px;color:#94a3b8}
+.banner{border-radius:12px;padding:14px 18px;margin-bottom:18px;font-size:14px;display:flex;align-items:center;gap:10px}
+.banner-orange{background:#ea580c33;border:1px solid #ea580c66;color:#fed7aa}
+.banner-blue{background:#3b82f633;border:1px solid #3b82f666;color:#bfdbfe}
+@media(max-width:768px){.grid-2,.grid-3{grid-template-columns:1fr}.hero{flex-direction:column;text-align:center}.hero-right{text-align:center}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div>
+    <h1>🔥 深圳样板城市 · 燃热750交付看板</h1>
+    <div class="sub">项目周期 9.01-9.30 ｜ HT750-18 目标130台（占燃热总量≥30%）｜ 沉淀可复制打法+工具包</div>
+  </div>
+  <div class="hero-right">
+    <div class="update-badge"><span class="pulse"></span> 数据更新至 2026-08-26（框架版·待9月动销数据录入）</div>
+    <div style="margin-top:6px">项目状态：筹备期（8/26-9/1）→ 打样期（9/2-9/30）</div>
+  </div>
+</div>
+
+<div class="page">
+
+<div class="banner banner-orange">🎯 <b>目标：</b>9月深圳样板市场 HT750-18 出货突破 <b>130台</b>（占燃热总量约30%）—— 专卖店52台 / KA 52台 / 家装26台，沉淀1套可全国复制的样板运营打法+终端工具包</div>
+
+<!-- ===== KPI总览 ===== -->
+<div class="kpi-row">
+  <div class="kpi blue"><div class="lab">🎯 总目标</div><div class="val">130 <small>台</small></div><div class="tip">HT750-18 专项出货</div></div>
+  <div class="kpi green"><div class="lab">✅ 已完成</div><div class="val" id="kDone">0 <small>台</small></div><div class="tip">动销数据录入后更新</div></div>
+  <div class="kpi yellow"><div class="lab">📈 达成率</div><div class="val" id="kRate">0<small>%</small></div><div class="tip">目标130台</div></div>
+  <div class="kpi orange"><div class="lab">🔥 18L占比</div><div class="val" id="kShare">--<small>%</small></div><div class="tip">目标 ≥30%（占燃热总量）</div></div>
+  <div class="kpi blue"><div class="lab">📅 剩余天数</div><div class="val" id="kDays">-- <small>天</small></div><div class="tip">9.01-9.30 打样期</div></div>
+  <div class="kpi red"><div class="lab">⚡ 日均需销</div><div class="val" id="kDaily">4.3 <small>台/天</small></div><div class="tip">130台 ÷ 30天</div></div>
+</div>
+
+<!-- ===== 总进度 ===== -->
+<div class="section">
+  <div class="section-title">📊 130台总进度 <span class="tag">里程碑：9/13前60台 → 9/21前90台 → 9/30前130台</span></div>
+  <div class="pbar" style="height:16px"><div class="pfill" id="barTotal" style="width:0%;background:linear-gradient(90deg,#f97316,#fb923c)"></div></div>
+  <div style="display:flex;justify-content:space-between;font-size:12px;color:#94a3b8;margin-top:6px">
+    <span>0台</span><span style="color:#fb923c">◆ 9/13：60台</span><span style="color:#fb923c">◆ 9/21：90台</span><span>130台</span>
+  </div>
+</div>
+
+<!-- ===== 渠道分解 ===== -->
+<div class="grid-3">
+  <div class="section">
+    <div class="section-title">🏬 专卖店渠道 <span class="tag">40%</span></div>
+    <div style="font-size:34px;font-weight:800;color:#4ade80" id="ch1v">0<small style="font-size:16px;color:#64748b"> / 52台</small></div>
+    <div class="pbar" style="margin:10px 0"><div class="pfill" id="ch1b" style="width:0%;background:#22c55e"></div></div>
+    <div style="font-size:12px;color:#94a3b8">达成率 <b id="ch1r" style="color:#f1f5f9">0%</b>｜核心：场景体验+主推考核+高频活动<br>出样：A类门店100%（9/20前验收）</div>
+  </div>
+  <div class="section">
+    <div class="section-title">🏢 KA渠道 <span class="tag">40%</span></div>
+    <div style="font-size:34px;font-weight:800;color:#60a5fa" id="ch2v">0<small style="font-size:16px;color:#64748b"> / 52台</small></div>
+    <div class="pbar" style="margin:10px 0"><div class="pfill" id="ch2b" style="width:0%;background:#3b82f6"></div></div>
+    <div style="font-size:12px;color:#94a3b8">达成率 <b id="ch2r" style="color:#f1f5f9">0%</b>｜核心：签约联合主推对赌+早餐会<br>签约书回传：9/7前</div>
+  </div>
+  <div class="section">
+    <div class="section-title">🏠 家装渠道 <span class="tag">20%</span></div>
+    <div style="font-size:34px;font-weight:800;color:#fbbf24" id="ch3v">0<small style="font-size:16px;color:#64748b"> / 26台</small></div>
+    <div class="pbar" style="margin:10px 0"><div class="pfill" id="ch3b" style="width:0%;background:#eab308"></div></div>
+    <div style="font-size:12px;color:#94a3b8">达成率 <b id="ch3r" style="color:#f1f5f9">0%</b>｜核心：设计师沙龙+前置触达<br>沙龙每周≥4场｜展厅100%上样</div>
+  </div>
+</div>
+
+<!-- ===== 里程碑 ===== -->
+<div class="section">
+  <div class="section-title">🗓️ 关键里程碑 <span class="tag">按节点验收</span></div>
+  <div class="milestone">
+    <div class="mstone"><div class="md">📅 8/26-9/2</div><div class="mt">筹备期 · 话术沉淀</div><div class="ms">群策群力→《18L介绍话术1.0》+《异议应对1.0》→9/2启动会手册V1.0定稿</div></div>
+    <div class="mstone"><div class="md">📅 9/3-9/5</div><div class="mt">每日一读</div><div class="ms">全员晨读18L话术，录制视频反馈，打卡率100%</div></div>
+    <div class="mstone"><div class="md">📅 9/5-9/10</div><div class="mt">全员通关</div><div class="ms">老师随机到店按SOP评分，重点考"烟灶客户开口推燃热"</div></div>
+    <div class="mstone"><div class="md">📅 9/7</div><div class="mt">KA签约书回传</div><div class="ms">京东/苏宁/顺电/百安居联合主推对赌签约</div></div>
+    <div class="mstone"><div class="md">📅 9/13</div><div class="mt">里程碑① 累计60台</div><div class="ms">前两周蓄能期，日均4.3台节奏验证</div></div>
+    <div class="mstone"><div class="md">📅 9/20</div><div class="mt">出样验收</div><div class="ms">专卖店A类100%出样+经销商上样完成</div></div>
+    <div class="mstone"><div class="md">📅 9/21</div><div class="mt">里程碑② 累计90台</div><div class="ms">冲刺期前完成69%目标</div></div>
+    <div class="mstone"><div class="md">📅 9/17-9/21</div><div class="mt">短视频大赛</div><div class="ms">下发脚本+拍摄指导+报名，门店终端参与</div></div>
+    <div class="mstone"><div class="md">📅 9/30</div><div class="mt">收官 130台</div><div class="ms">结案沉淀打法+工具包，月度话术迭代</div></div>
+  </div>
+</div>
+
+<!-- ===== 过程动作检查 ===== -->
+<div class="section">
+  <div class="section-title">✅ 过程动作检查 <span class="tag">每周复盘 · 交付中心跟盯</span></div>
+  <div class="act-grid">
+    <div class="act-card"><div class="icon">🛏️</div><div class="name">晨读打卡</div><div class="rate" id="a1">待录</div><div class="done">标准：11:00前100%</div></div>
+    <div class="act-card"><div class="icon">📷</div><div class="name">客户体验18L照片</div><div class="rate" id="a2">待录</div><div class="done">标准：≥1张/店/天</div></div>
+    <div class="act-card"><div class="icon">🎉</div><div class="name">订单捷报</div><div class="rate" id="a3">待录</div><div class="done">标准：每台成交即报</div></div>
+    <div class="act-card"><div class="icon">🏬</div><div class="name">落地/异业活动</div><div class="rate" id="a4">待录</div><div class="done">标准：≥1场/店/周</div></div>
+    <div class="act-card"><div class="icon">🎨</div><div class="name">设计师沙龙</div><div class="rate" id="a5">待录</div><div class="done">标准：≥4场/周（家装）</div></div>
+    <div class="act-card"><div class="icon">📋</div><div class="name">KA签约书</div><div class="rate" id="a6">待录</div><div class="done">标准：9/7前回传</div></div>
+    <div class="act-card"><div class="icon">📦</div><div class="name">出样率</div><div class="rate" id="a7">待录</div><div class="done">标准：A类100%（9/20）</div></div>
+    <div class="act-card"><div class="icon">🎓</div><div class="name">通关率</div><div class="rate" id="a8">待录</div><div class="done">标准：9/5-9/10全员</div></div>
+  </div>
+</div>
+
+<!-- ===== 激励规则 ===== -->
+<div class="grid-2">
+  <div class="section">
+    <div class="section-title">💰 激励规则 <span class="tag">多卖多得</span></div>
+    <table>
+      <tr><th>激励项</th><th>规则</th><th>兑现</th></tr>
+      <tr><td><b>单品对赌奖</b></td><td>每人按任务量上交20元/台对赌金；每完成1台返还50元（含本金）；超额部分追加100元/台</td><td>月度结算即返</td></tr>
+      <tr><td><b>部门团建奖</b></td><td>部门完成燃热目标且18L及以上大升数占比≥30% → 一次性奖励2000元</td><td>月度</td></tr>
+      <tr><td><b>积分周排名</b></td><td>终端一页纸积分：晨读10分/日、体验照片10分/日、新增客户10分/户、订单晒单20分/单、门店落地30分/次等</td><td>周排名公示</td></tr>
+    </table>
+  </div>
+  <div class="section">
+    <div class="section-title">🎯 核心爆点 <span class="tag">终端话术主线</span></div>
+    <div style="font-size:15px;font-weight:800;color:#fb923c;margin-bottom:10px">老板18L燃热，双卫家庭最优的用水方案</div>
+    <table>
+      <tr><th>卖点</th><th>一句话</th></tr>
+      <tr><td><b>18L大水量</b></td><td>双卫同洗、厨房同步用水互不干扰</td></tr>
+      <tr><td><b>免改表</b></td><td>适配G2.5气表直接装，省改表+管路+报批几百上千元</td></tr>
+      <tr><td><b>恒温稳</b></td><td>AI水伺服0.1℃精准控温，多点同开水温水量双稳</td></tr>
+      <tr><td><b>价格打</b></td><td>终端4000元内/加价购约3500元，对比竞品18L普遍6000-8000+</td></tr>
+      <tr><td><b>政策钩子</b></td><td>买老板电器产品即可加价购18L燃热（约3500元）</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ===== 数据说明 ===== -->
+<div class="banner banner-blue">📌 <b>数据机制：</b>9月启动后，每日动销数据由交付中心汇总录入（按渠道：专卖店/KA/家装台量 + 燃热总量算18L占比），每周复盘对照里程碑；占比未达30%的渠道专项纠偏。当前为框架版，动销数据9/2起录入。</div>
+
+</div>
+
+<script>
+// ===== 深圳样板 · 数据区（每日动销录入处） =====
+var DATA = {
+  updated: '2026-08-26',        // 数据日期
+  phase: '筹备期',              // 筹备期/打样期
+  done: 0,                      // 已完成HT750-18台数
+  heatTotal: null,              // 燃热总量（算18L占比用，null=未录）
+  share: null,                  // 18L占比%
+  channels: { zhuanmai: 0, ka: 0, jiazhuang: 0 },  // 分渠道台数
+  actions: {                    // 过程动作（百分比或次数，null=待录）
+    chen: null, tiyan: null, jiebao: null, huodong: null, shalong: null, qianyue: null, chuyang: null, tongguan: null
+  },
+  daily: []                     // 每日动销 [{d:'09/02',v:3},...] 用于趋势图
+};
+
+function fmtPct(n){ return n==null ? '--' : n+'%'; }
+function fill(id, w, color){ var e=document.getElementById(id); e.style.width=Math.min(100,w)+'%'; if(color) e.style.background=color; }
+
+var D = DATA;
+var rate = D.done>0 ? (D.done/130*100).toFixed(1) : 0;
+document.getElementById('kDone').innerHTML = D.done + ' <small>台</small>';
+document.getElementById('kRate').innerHTML = rate + '<small>%</small>';
+document.getElementById('kShare').innerHTML = fmtPct(D.share);
+fill('barTotal', rate);
+// 渠道
+var chs = [['ch1', D.channels.zhuanmai, 52], ['ch2', D.channels.ka, 52], ['ch3', D.channels.jiazhuang, 26]];
+chs.forEach(function(c){
+  var done=c[1], goal=c[2], r = goal>0 ? (done/goal*100).toFixed(1) : 0;
+  document.getElementById(c[0]+'v').innerHTML = done + '<small style="font-size:16px;color:#64748b"> / '+goal+'台</small>';
+  document.getElementById(c[0]+'r').innerHTML = r + '%';
+  fill(c[0]+'b', r);
+});
+// 过程动作
+var acts = { a1:'chen', a2:'tiyan', a3:'jiebao', a4:'huodong', a5:'shalong', a6:'qianyue', a7:'chuyang', a8:'tongguan' };
+for (var k in acts){ var v = D.actions[acts[k]]; document.getElementById(k).innerHTML = v==null ? '待录' : (typeof v==='number' && v>100 ? v : v+'%'); }
+// 剩余天数（9/1-9/30）
+document.getElementById('kDays').innerHTML = '30 <small>天</small>';
+</script>
+</body>
+</html>
