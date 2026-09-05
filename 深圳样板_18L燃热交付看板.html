@@ -281,13 +281,13 @@ var DATA = {
   phase: '执行中',              // 状态
   heatGoal: 300,                // 燃热总量目标
   goal: 100,                    // 18L专项目标（保底80）
-  heatDone: null,               // 燃热累计（含16L/18L全量，null=待录）
-  done: null,                   // 18L及以上已完成台数
+  heatDone: 8,                  // 燃热累计（含16L/18L全量，9/3-9/4捷报）
+  done: 3,                      // 18L及以上已完成台数（9/3三台：i1pro×1+750-18×2）
   channels: { ka: null, zhuanmai: null, jia: null, jxs: null },  // 分渠道18L台数
   actions: {                    // 过程动作达成（null=待录）
     dushu: null, tiyan: null, tongguan: null, chuyang: null, huodong: null
   },
-  daily: []                     // 每日动销 [{d:'09/02',heat:0,v:0},...] heat=燃热当日 v=18L当日
+  daily: [{d:'09/03',heat:5,v:3},{d:'09/04',heat:3,v:0}]
 };
 
 function fmtPct(n){ return n==null ? '--' : n+'%'; }
