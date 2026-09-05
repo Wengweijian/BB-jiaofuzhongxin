@@ -199,6 +199,7 @@ tr:hover td{background:#263348}
   <div class="hero-right">
     <div class="update-badge"><span class="pulse"></span> 数据更新至 ''' + D['updated'] + '''</div>
     <div style="margin-top:6px">统计周期：''' + ' / '.join(dates) + '''（''' + str(D['n_days']) + '''天）｜ 基础项满分 50分/天</div>
+    <div style="margin-top:6px"><a href="深圳样板_18L燃热交付看板.html" style="color:#dbeafe;text-decoration:underline">🔥 深圳样板18L燃热看板</a> ｜ <a href="BB-jiaofuzhongxin.html" style="color:#dbeafe;text-decoration:underline">📋 交付中心首页</a></div>
   </div>
 </div>
 ''')
