@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>深圳样板 · 18L燃热交付看板</title>
+<script src="chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;background:#0f172a;color:#e2e8f0}
+.hero{background:linear-gradient(135deg,#7c2d12 0%,#ea580c 60%,#f97316 100%);padding:22px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.hero h1{font-size:24px;font-weight:800;letter-spacing:1px;color:#fff}
+.hero .sub{font-size:13px;color:#ffedd5;margin-top:4px}
+.hero-right{text-align:right;font-size:12px;color:#ffedd5}
+.update-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.15);padding:4px 12px;border-radius:20px;font-size:12px;color:#fff}
+.pulse{width:8px;height:8px;background:#4ade80;border-radius:50%;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.page{padding:20px;max-width:1400px;margin:0 auto}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:18px}
+.kpi{background:#1e293b;border-radius:14px;padding:18px 16px;border:1px solid #334155;position:relative;overflow:hidden}
+.kpi .lab{font-size:12px;color:#94a3b8;margin-bottom:6px}
+.kpi .val{font-size:28px;font-weight:800}
+.kpi .val small{font-size:13px;color:#64748b;font-weight:600}
+.kpi .tip{font-size:11px;color:#64748b;margin-top:6px}
+.kpi::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px}
+.kpi.green::before{background:#22c55e}.kpi.yellow::before{background:#eab308}.kpi.red::before{background:#ef4444}.kpi.blue::before{background:#3b82f6}.kpi.orange::before{background:#f97316}.kpi.purple::before{background:#a855f7}
+.section{background:#1e293b;border-radius:14px;padding:20px;margin-bottom:18px;border:1px solid #334155}
+.section-title{font-size:16px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;color:#f1f5f9;flex-wrap:wrap}
+.section-title .tag{font-size:11px;background:#f97316;color:#fff;padding:2px 10px;border-radius:12px;font-weight:600}
+.section-title .tag.blue{background:#3b82f6}.section-title .tag.green{background:#16a34a}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+.grid-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:9px 10px;background:#0f172a;color:#94a3b8;font-weight:600;border-bottom:1px solid #334155;font-size:12px;position:sticky;top:0}
+td{padding:9px 10px;border-bottom:1px solid #2d3a4e}
+tr:hover td{background:#263348}
+.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700}
+.bg-green{background:#16a34a33;color:#4ade80}.bg-red{background:#dc262633;color:#f87171}.bg-yellow{background:#ca8a0433;color:#fbbf24}.bg-blue{background:#3b82f633;color:#60a5fa}.bg-orange{background:#ea580c33;color:#fb923c}.bg-purple{background:#a855f733;color:#c084fc}
+.pbar{height:10px;background:#334155;border-radius:6px;overflow:hidden}
+.pfill{height:100%;border-radius:6px;transition:width .6s}
+.act-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.act-card{background:#0f172a;border-radius:12px;padding:14px;text-align:center;border:1px solid #334155}
+.act-card .icon{font-size:26px}
+.act-card .name{font-size:13px;color:#94a3b8;margin:6px 0 2px}
+.act-card .rate{font-size:22px;font-weight:800}
+.act-card .done{font-size:11px;color:#64748b}
+.milestone{display:flex;gap:12px;flex-wrap:wrap}
+.mstone{flex:1;min-width:200px;background:#0f172a;border-radius:12px;padding:16px;border:1px solid #334155;border-top:4px solid #f97316}
+.mstone.done{border-top-color:#22c55e}
+.mstone.now{border-top-color:#eab308;box-shadow:0 0 0 1px #eab30866}
+.mstone .md{font-size:13px;font-weight:800;color:#fb923c}
+.mstone.done .md{color:#4ade80}
+.mstone.now .md{color:#fbbf24}
+.mstone .mt{font-size:15px;font-weight:800;margin:6px 0 4px;color:#f1f5f9}
+.mstone .ms{font-size:12px;color:#94a3b8}
+.banner{border-radius:12px;padding:14px 18px;margin-bottom:18px;font-size:14px;display:flex;align-items:center;gap:10px}
+.banner-orange{background:#ea580c33;border:1px solid #ea580c66;color:#fed7aa}
+.banner-blue{background:#3b82f633;border:1px solid #3b82f666;color:#bfdbfe}
+.banner-green{background:#16a34a33;border:1px solid #16a34a66;color:#bbf7d0}
+.ch-card{background:#0f172a;border-radius:12px;padding:16px;border:1px solid #334155;border-top:4px solid #3b82f6}
+.ch-card.ka{border-top-color:#3b82f6}
+.ch-card.zhuan{border-top-color:#22c55e}
+.ch-card.jia{border-top-color:#eab308}
+.ch-card.jxs{border-top-color:#a855f7}
+.ch-card h3{font-size:15px;font-weight:800;margin-bottom:6px;color:#f1f5f9}
+.ch-card .core{font-size:13px;font-weight:700;color:#fb923c;margin-bottom:8px}
+.ch-card ul{list-style:none;font-size:12px;color:#cbd5e1;line-height:1.9}
+.ch-card ul li::before{content:'▸ ';color:#64748b}
+.rank-note{font-size:11px;color:#64748b;margin-top:6px}
+@media(max-width:768px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}.hero{flex-direction:column;text-align:center}.hero-right{text-align:center}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div>
+    <h1>🔥 深圳样板城市 · 18L燃热交付看板</h1>
+    <div class="sub">打样期 9.2-10.7 ｜ 双层目标：全渠道燃热 ≥300台 ＋ 18L及以上专项 100台（保底80） ｜ 沉淀可全国复制的样板打法+终端工具包</div>
+  </div>
+  <div class="hero-right">
+    <div class="update-badge"><span class="pulse"></span> 数据更新至 <span id="updDate">2026-09-05</span>（打样期 D4）</div>
+    <div style="margin-top:6px">项目状态：<span id="phaseTag">执行中（每日一读→全员通关）</span></div>
+  </div>
+</div>
+
+<div class="page">
+
+<div class="banner banner-orange">🎯 <b>主目标：</b>9月深圳全渠道燃热销量突破 <b>300台</b>；其中 <b>HT750-18 / HT8-i1Pro 等18L及以上大升数专项100台（保底80台）</b>，18L及以上占燃热总量 <b>≥30%</b>。总原则：不搞流量——聚焦现有渠道客户<b>“多买一件燃热、16升升级18升”</b>。</div>
+
+<!-- ===== KPI总览 ===== -->
+<div class="kpi-row">
+  <div class="kpi blue"><div class="lab">🔥 燃热总量目标</div><div class="val" id="kHeatGoal">300 <small>台</small></div><div class="tip">全渠道 · 9月</div></div>
+  <div class="kpi orange"><div class="lab">✅ 18L专项目标</div><div class="val" id="kGoal">100 <small>台</small></div><div class="tip">HT750-18/i1Pro 保底80</div></div>
+  <div class="kpi green"><div class="lab">📈 18L已完成</div><div class="val" id="kDone">-- <small>台</small></div><div class="tip">每日动销录入后更新</div></div>
+  <div class="kpi yellow"><div class="lab">🎯 18L达成率</div><div class="val" id="kRate">--<small>%</small></div><div class="tip">目标100台</div></div>
+  <div class="kpi purple"><div class="lab">📊 燃热累计</div><div class="val" id="kHeat">-- <small>台</small></div><div class="tip">含16L/18L全量</div></div>
+  <div class="kpi red"><div class="lab">📈 18L占比</div><div class="val" id="kShare">--<small>%</small></div><div class="tip">目标 ≥30%</div></div>
+  <div class="kpi blue"><div class="lab">📅 剩余天数</div><div class="val" id="kDays">-- <small>天</small></div><div class="tip">打样期 9.2-10.7</div></div>
+</div>
+
+<!-- ===== 双层进度 ===== -->
+<div class="section">
+  <div class="section-title">📊 双层目标进度 <span class="tag green">燃热大盘</span><span class="tag">18L结构升级</span></div>
+  <div style="font-size:12px;color:#94a3b8;margin-bottom:6px">① 全渠道燃热总量 ≥300台（做大品类盘）</div>
+  <div class="pbar" style="height:14px"><div class="pfill" id="barHeat" style="width:0%;background:linear-gradient(90deg,#3b82f6,#60a5fa)"></div></div>
+  <div style="display:flex;justify-content:space-between;font-size:12px;color:#94a3b8;margin:4px 0 16px"><span>0台</span><span id="heatLabel">0 / 300台</span></div>
+  <div style="font-size:12px;color:#94a3b8;margin-bottom:6px">② 18L及以上大升数专项 100台（保底80，占燃热≥30%）</div>
+  <div class="pbar" style="height:14px"><div class="pfill" id="barTotal" style="width:0%;background:linear-gradient(90deg,#f97316,#fb923c)"></div></div>
+  <div style="display:flex;justify-content:space-between;font-size:12px;color:#94a3b8;margin-top:4px">
+    <span>0台</span><span style="color:#fb923c">◆ 9/13前 45台（已定）</span><span style="color:#fb923c">◆ 10/7 收官 100台</span>
+  </div>
+</div>
+
+<!-- ===== 四渠道策略 ===== -->
+<div class="section">
+  <div class="section-title">🏗️ 四渠道策略打法 <span class="tag">KA / 专卖店 / 家装 / 经销商</span></div>
+  <div class="grid-4">
+    <div class="ch-card ka">
+      <h3>🏢 KA渠道（核心：京东）</h3>
+      <div class="core">核心增量：跨品牌微联盟 · 全屋家电套餐</div>
+      <ul>
+        <li>自主组局：联合空调/冰洗/彩电/厨电各1头部品牌，18L热水器作套餐核心件植入（参考：松下/格力）</li>
+        <li>套餐两档：老房换新29800元 / 精装全屋39800元（≈常规成交价9折，各品牌各让4点+商场6点）</li>
+        <li>试点：8个核心商场，15-18天覆盖3周末，国庆前完成；每周品牌复盘</li>
+        <li>激励：开单奖 3000以下50元/3000以上100元不封顶；39800档套餐1000元/套按金额占比分摊</li>
+        <li>存量转化：烟灶客户加购燃热话术+16升升级18升；提案师带单加码</li>
+        <li>预期：每品牌月5单套餐 ≈ 带来18L新增约15台</li>
+      </ul>
+      <div class="rank-note">反馈：套餐落地场次/开单数（周汇总）+ 竞品带单机制 + 每日体验照片</div>
+    </div>
+    <div class="ch-card zhuan">
+      <h3>🏬 专卖店渠道（核心主阵地）</h3>
+      <div class="core">场景体验 + 主推考核 + 高频活动</div>
+      <ul>
+        <li>店内“双卫用水”体验区：两花洒同开演示，建立双卫心智</li>
+        <li>上样：A类门店出样率100%（9/20前验收），出样困难店物料演示兜底</li>
+        <li>每日晨读18L话术；每人每天≥1张客户体验18L照片至总群</li>
+        <li>每周≥1场客户落地/异业体验活动（含18L体验环节）</li>
+        <li>套系优先：烟灶+18L燃热成套报价，18L作默认推荐型号</li>
+        <li>周公示18L占比，未达30%门店专项复盘纠偏</li>
+      </ul>
+      <div class="rank-note">反馈：出样验收照/晨读打卡/体验照片/动销数据（日）</div>
+    </div>
+    <div class="ch-card jia">
+      <h3>🏠 家装渠道</h3>
+      <div class="core">设计师认知传递 + 分层运营 + 体验式触达</div>
+      <ul>
+        <li>分层：独家合作装企→设计师主推18L；非独家→配套带单激励</li>
+        <li>触达：体验式互动活动 + 一句话术“18L可同时让两个卫生间洗澡”</li>
+        <li>物料：KT板 / 实测演示视频 / 体验道具</li>
+        <li>前置：量尺/设计阶段介入，水电定位前锁定燃热（前置越早越稳）</li>
+        <li>展厅：合作装企展厅100%上样+演示</li>
+        <li>带单激励与18L挂钩，带18L单奖励上浮</li>
+      </ul>
+      <div class="rank-note">反馈：活动落地场次/物料投放门店数/设计师带单</div>
+    </div>
+    <div class="ch-card jxs">
+      <h3>🚚 经销商渠道</h3>
+      <div class="core">上样破零 + 晒单返利（当前18L零上样）</div>
+      <ul>
+        <li>上样：空壳机不到位→申请真机出样补贴或物料出样（总部/地区沟通中）</li>
+        <li>培训：经销商门店18L产品培训，每个业务≥3场门店培训</li>
+        <li>晒单奖励先行兑现，月底未提货从返利中扣回（防刷单）</li>
+        <li>上样推进计划回传（9/20前）</li>
+        <li>晒单-提货核销台账月度核对</li>
+      </ul>
+      <div class="rank-note">卡点：空壳机缺货+快速上样难 → 补贴政策兜底推进中</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 核心门店 ===== -->
+<div class="section">
+  <div class="section-title">📍 18L专项核心门店（燃热配套率稳定20%以上） <span class="tag blue">7家核心</span></div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap">
+    <span class="badge bg-blue">南山京东</span>
+    <span class="badge bg-blue">宝安华美居</span>
+    <span class="badge bg-blue">龙华万众城</span>
+    <span class="badge bg-blue">西丽百安居</span>
+    <span class="badge bg-blue">罗湖百安居</span>
+    <span class="badge bg-blue">南山泰百</span>
+    <span class="badge bg-blue">福田山姆</span>
+  </div>
+  <div style="font-size:12px;color:#94a3b8;margin-top:10px">打法：核心门店把入门款（630/631）客户向 HT750-18 引导，实现 18L及以上占燃热总量 ≥30%；KA跨品牌套餐优先从核心大店试跑。</div>
+</div>
+
+<!-- ===== 里程碑 ===== -->
+<div class="section">
+  <div class="section-title">🗓️ 关键里程碑 <span class="tag">按节点验收</span></div>
+  <div class="milestone">
+    <div class="mstone done"><div class="md">✅ 8/26-9/2</div><div class="mt">筹备 · 话术沉淀</div><div class="ms">群策群力会（8/27）→《18L介绍话术1.0》+《异议应对1.0》→ 9/2启动会手册V1.0定稿+全员培训</div></div>
+    <div class="mstone done"><div class="md">✅ 9/2</div><div class="mt">项目启动会</div><div class="ms">启动会召开+冬冬老师产品培训；终端执行一页纸宣贯</div></div>
+    <div class="mstone now"><div class="md">📌 9/3-9/5</div><div class="mt">每日一读</div><div class="ms">全员每日晨读18L话术，录视频反馈总群，打卡率100%</div></div>
+    <div class="mstone"><div class="md">📅 9/5-9/10</div><div class="mt">全员通关</div><div class="ms">老师随机到店按SOP评分表听真实讲解打分，重点“烟灶客户开口推燃热”</div></div>
+    <div class="mstone"><div class="md">📅 9/13</div><div class="mt">里程碑① 18L累计45台</div><div class="ms">专项爬坡期过半目标验证（已定）</div></div>
+    <div class="mstone"><div class="md">📅 9/17-9/21</div><div class="mt">短视频大赛</div><div class="ms">下发视频脚本+拍摄指导+报名，门店终端参与</div></div>
+    <div class="mstone"><div class="md">📅 9/20</div><div class="mt">出样验收</div><div class="ms">专卖店A类100%出样+经销商上样计划回传验收</div></div>
+    <div class="mstone"><div class="md">📅 10/7</div><div class="mt">收官 18L 100台</div><div class="ms">燃热300台+18L专项100台双目标收官；结案沉淀样板打法+工具包</div></div>
+  </div>
+</div>
+
+<!-- ===== 终端执行一页纸·积分 ===== -->
+<div class="section">
+  <div class="section-title">✅ 终端执行一页纸（积分制） <span class="tag green">每日动作 · 群内反馈</span></div>
+  <div class="grid-2">
+    <div>
+      <table>
+        <tr><th>每日必做</th><th>执行标准</th><th>反馈时间</th><th>积分</th></tr>
+        <tr><td>📖 每日晨读</td><td>11:00前依照群内下发指令及18L话术晨读，备注“每日晨读”</td><td>每日19:00前</td><td><b>10分/日</b></td></tr>
+        <tr><td>📷 客户体验18L</td><td>每天≥1张客户体验18L照片至总群，备注“客户体验18L”</td><td>每日19:00前</td><td><b>10分/日</b></td></tr>
+        <tr><td>➕ 新增客户</td><td>每天新增1户客户，加微信并发18L产品介绍，截图反馈</td><td>每日19:00前</td><td><b>10分/户</b>（日3次）</td></tr>
+        <tr><td>🔁 异业朋友圈转发</td><td>每天邀请异业帮忙转发18L朋友圈，截图反馈</td><td>每日19:00前</td><td><b>10分/次</b></td></tr>
+        <tr><td>📝 每日计划/总结</td><td>按标准日清模板反馈当日总结（≥200字）</td><td>每日19:00前</td><td><b>5分/日</b></td></tr>
+      </table>
+    </div>
+    <div>
+      <table>
+        <tr><th>加分项</th><th>执行标准</th><th>反馈时间</th><th>积分</th></tr>
+        <tr><td>🏆 订单晒单</td><td>每售一台HT750/18L在门店群按捷报模板反馈成交捷报</td><td>实时</td><td><b>20分/单</b></td></tr>
+        <tr><td>🎉 门店落地</td><td>渠道/客户活动（氛围布置/横幅/18L体验），水印相机+战报反馈</td><td>实时</td><td><b>30分/次</b></td></tr>
+        <tr><td>🚗 上门服务</td><td>客户家上门量尺设计/开机服务，水印相机反馈</td><td>每日1次</td><td><b>10分/次</b></td></tr>
+      </table>
+      <div style="font-size:12px;color:#94a3b8;margin-top:8px">🏅 积分周榜：多人门店取门店平均分、单人门店取门店总分，分赛道排名奖励前10（详见下方激励）。积分由项目组每日从群记录统计，周度公示。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 激励规则 + 核心爆点 ===== -->
+<div class="grid-2">
+  <div class="section">
+    <div class="section-title">💰 激励规则 <span class="tag">多卖多得</span></div>
+    <table>
+      <tr><th>激励项</th><th>规则</th><th>兑现</th></tr>
+      <tr><td><b>单品对赌奖</b></td><td>直营门店个人开单18L对赌：按任务量交20元/台；每完成1台返50元（含本金）；超额+100元/台；未达成不返还。<br><span style="color:#64748b">例：任务5台交100元，达成返250元（净赚150）；完成6台再+100=350元</span></td><td>月度即返</td></tr>
+      <tr><td><b>部门团建奖</b></td><td>部门完成燃热目标且18L及以上占比≥30% → 一次性奖励2000元团建基金</td><td>月度</td></tr>
+      <tr><td><b>终端积分周榜</b></td><td>多人门店前10：300/200/100/80元（4-10名）；单人门店前10：150/100/80/50元（4-10名）</td><td>周度公示</td></tr>
+      <tr><td><b>即时激励</b></td><td>预算10000元：活动爆破/每日开单/多件套/优秀标杆/大单奖励等</td><td>即时</td></tr>
+      <tr><td><b>优秀案例奖</b></td><td>每周优秀成交案例提报，额外奖励</td><td>周度</td></tr>
+    </table>
+  </div>
+  <div class="section">
+    <div class="section-title">🎯 核心爆点 <span class="tag">终端话术主线</span></div>
+    <div style="font-size:15px;font-weight:800;color:#fb923c;margin-bottom:10px">老板18L燃热，双卫家庭最优的用水方案</div>
+    <div style="font-size:12px;color:#94a3b8;margin-bottom:8px">辅助传播语：多点同开 · 水量不减 · 恒温舒适</div>
+    <table>
+      <tr><th>卖点</th><th>一句话</th></tr>
+      <tr><td><b>18L大水量</b></td><td>双卫同洗、厨房同步用水互不干扰（16L只支持1厨1卫）</td></tr>
+      <tr><td><b>免改表核心机会</b></td><td>18L适配G2.5气表直接装；20L+需换G4气表+管路改造+报批，成本大几千</td></tr>
+      <tr><td><b>恒温稳</b></td><td>AI水伺服0.1℃控温 + 赛车级预混舱，多点同开水温水量双稳</td></tr>
+      <tr><td><b>价格打</b></td><td>横向对标林内/能率/史密斯（18L普遍6000-8000+），同价位少见18L大水量+恒温配置</td></tr>
+      <tr><td><b>政策钩子</b></td><td>购老板产品即享半价购/加价购：<b>3599元加购HT750-18L</b>、<b>4299元加购HT8-i1Pro</b></td></tr>
+      <tr><td><b>讲解逻辑</b></td><td>先讲为什么最优（双卫）→ 再讲什么支撑（AI水伺服+预混舱）→ 最后打价格（不对标16L基础款）</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ===== 分工 ===== -->
+<div class="section">
+  <div class="section-title">👥 人员分工与职责 <span class="tag blue">项目组</span></div>
+  <table>
+    <tr><th>角色</th><th>核心职责</th></tr>
+    <tr><td><b>销售总监 · 李双文</b></td><td>总体策略与方向纠偏 ｜ 落后渠道负责人沟通 ｜ 参与每周复盘会</td></tr>
+    <tr><td><b>主控老师 · 何京学</b></td><td>总体策略执行与方向纠偏 ｜ 每日数据看板与进度监控 ｜ 排期/机制/激励设计 ｜ 每周复盘会</td></tr>
+    <tr><td><b>内容官 · 赖圆章</b></td><td>话术手册/异议手册撰写与迭代 ｜ 客户上门采访与案例沉淀 ｜ 交付课件沉淀</td></tr>
+    <tr><td><b>市场培训老师</b></td><td>到店产品培训 ｜ 通关考核 ｜ 协助话术及销售流程SOP撰写</td></tr>
+    <tr><td><b>市场部</b></td><td>物料设计支持 ｜ 数据更新 ｜ 奖励预算申请 ｜ 活动落地统计</td></tr>
+    <tr><td><b>渠道负责人</b></td><td>本渠道目标拆到店到人 ｜ 上样验收跟进 ｜ 活动落地执行（早餐会/沙龙/落地）｜ 每日动销数据汇总 ｜ 终端动作检查 ｜ 每周复盘汇报</td></tr>
+  </table>
+</div>
+
+<!-- ===== 数据说明 ===== -->
+<div class="banner banner-blue">📌 <b>数据机制：</b>每日动销数据（燃热总量/18L分渠道台量）由渠道负责人汇总→主控老师审核→录入本看板；每周复盘对照里程碑，18L占比未达30%的渠道专项纠偏。当前为框架版，9/2启动会已开，动销数据录入启动中。</div>
+
+</div>
+
+<script>
+// ===== 深圳样板 · 数据区（每日动销录入处） =====
+var DATA = {
+  updated: '2026-09-05',        // 数据日期
+  phase: '执行中',              // 状态
+  heatGoal: 300,                // 燃热总量目标
+  goal: 100,                    // 18L专项目标（保底80）
+  heatDone: null,               // 燃热累计（含16L/18L全量，null=待录）
+  done: null,                   // 18L及以上已完成台数
+  channels: { ka: null, zhuanmai: null, jia: null, jxs: null },  // 分渠道18L台数
+  actions: {                    // 过程动作达成（null=待录）
+    dushu: null, tiyan: null, tongguan: null, chuyang: null, huodong: null
+  },
+  daily: []                     // 每日动销 [{d:'09/02',heat:0,v:0},...] heat=燃热当日 v=18L当日
+};
+
+function fmtPct(n){ return n==null ? '--' : n+'%'; }
+function fill(id, w, color){ var e=document.getElementById(id); e.style.width=Math.min(100,w)+'%'; if(color) e.style.background=color; }
+
+var D = DATA;
+document.getElementById('updDate').textContent = D.updated;
+if(D.done!=null){
+  var rate = (D.done/D.goal*100).toFixed(1);
+  document.getElementById('kDone').innerHTML = D.done + ' <small>台</small>';
+  document.getElementById('kRate').innerHTML = rate + '<small>%</small>';
+  fill('barTotal', rate);
+}
+if(D.heatDone!=null){
+  var hr = (D.heatDone/D.heatGoal*100).toFixed(1);
+  document.getElementById('kHeat').innerHTML = D.heatDone + ' <small>台</small>';
+  document.getElementById('heatLabel').textContent = D.heatDone + ' / ' + D.heatGoal + '台';
+  fill('barHeat', hr);
+}
+if(D.heatDone!=null && D.done!=null){
+  var share = (D.done/D.heatDone*100).toFixed(1);
+  document.getElementById('kShare').innerHTML = share + '<small>%</small>';
+}
+// 剩余天数：9/2 - 10/7（36天），按今天动态算（若日期在周期内）
+var today = new Date();
+var start = new Date(2026, 8, 2), end = new Date(2026, 9, 7); // 注意JS月份0基：9=10月
+var daysLeft = Math.max(0, Math.ceil((end - today) / 86400000));
+if(daysLeft > 0 && daysLeft < 36){ document.getElementById('kDays').innerHTML = daysLeft + ' <small>天</small>'; }
+else if(daysLeft >= 36){ document.getElementById('kDays').innerHTML = '36 <small>天</small>'; }
+else { document.getElementById('kDays').innerHTML = '已收官'; }
+</script>
+</body>
+</html>
