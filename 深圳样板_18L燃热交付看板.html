@@ -79,7 +79,7 @@ tr:hover td{background:#263348}
     <div class="sub">打样期 9.2-10.7 ｜ 双层目标：全渠道燃热 ≥300台 ＋ 18L及以上专项 100台（保底80） ｜ 沉淀可全国复制的样板打法+终端工具包</div>
   </div>
   <div class="hero-right">
-    <div class="update-badge"><span class="pulse"></span> 数据更新至 <span id="updDate">2026-09-05</span>（打样期 D4）</div>
+    <div class="update-badge"><span class="pulse"></span> 数据更新至 <span id="updDate">2026-09-06</span>（打样期 D5）</div>
     <div style="margin-top:6px">项目状态：<span id="phaseTag">执行中（每日一读→全员通关）</span></div>
   </div>
 </div>
@@ -277,17 +277,17 @@ tr:hover td{background:#263348}
 <script>
 // ===== 深圳样板 · 数据区（每日动销录入处） =====
 var DATA = {
-  updated: '2026-09-05',        // 数据日期
+  updated: '2026-09-06',        // 数据日期（更新动作；捷报覆盖9/3-9/5）
   phase: '执行中',              // 状态
   heatGoal: 300,                // 燃热总量目标
   goal: 100,                    // 18L专项目标（保底80）
-  heatDone: 8,                  // 燃热累计（含16L/18L全量，9/3-9/4捷报）
-  done: 3,                      // 18L及以上已完成台数（9/3三台：i1pro×1+750-18×2）
-  channels: { ka: null, zhuanmai: null, jia: null, jxs: null },  // 分渠道18L台数
+  heatDone: 32,                 // 燃热累计（含16L/18L全量，9/3-9/5捷报）
+  done: 7,                      // 18L及以上已完成台数（9/3:3台 + 9/4:1台 + 9/5:3台）
+  channels: { ka: null, zhuanmai: null, jia: null, jxs: null },  // 分渠道18L台数（待渠道口径）
   actions: {                    // 过程动作达成（null=待录）
     dushu: null, tiyan: null, tongguan: null, chuyang: null, huodong: null
   },
-  daily: [{d:'09/03',heat:5,v:3},{d:'09/04',heat:3,v:0}]
+  daily: [{d:'09/03',heat:6,v:3},{d:'09/04',heat:4,v:1},{d:'09/05',heat:22,v:3}]
 };
 
 function fmtPct(n){ return n==null ? '--' : n+'%'; }
