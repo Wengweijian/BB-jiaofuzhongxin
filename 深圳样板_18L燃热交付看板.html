@@ -277,17 +277,17 @@ tr:hover td{background:#263348}
 <script>
 // ===== 深圳样板 · 数据区（每日动销录入处） =====
 var DATA = {
-  updated: '2026-09-06',        // 数据日期（更新动作；捷报覆盖9/3-9/5）
+  updated: '2026-09-07',        // 数据日期（更新动作；捷报覆盖9/3-9/6）
   phase: '执行中',              // 状态
   heatGoal: 300,                // 燃热总量目标
   goal: 100,                    // 18L专项目标（保底80）
-  heatDone: 32,                 // 燃热累计（含16L/18L全量，9/3-9/5捷报）
-  done: 7,                      // 18L及以上已完成台数（9/3:3台 + 9/4:1台 + 9/5:3台）
+  heatDone: 48,                 // 燃热累计（含16L/18L全量，9/3-9/6捷报）
+  done: 11,                     // 18L及以上已完成台数（9/3:3台 + 9/4:1台 + 9/5:3台 + 9/6:4台）
   channels: { ka: null, zhuanmai: null, jia: null, jxs: null },  // 分渠道18L台数（待渠道口径）
   actions: {                    // 过程动作达成（null=待录）
     dushu: null, tiyan: null, tongguan: null, chuyang: null, huodong: null
   },
-  daily: [{d:'09/03',heat:6,v:3},{d:'09/04',heat:4,v:1},{d:'09/05',heat:22,v:3}]
+  daily: [{d:'09/03',heat:6,v:3},{d:'09/04',heat:4,v:1},{d:'09/05',heat:22,v:3},{d:'09/06',heat:16,v:4}]
 };
 
 function fmtPct(n){ return n==null ? '--' : n+'%'; }
