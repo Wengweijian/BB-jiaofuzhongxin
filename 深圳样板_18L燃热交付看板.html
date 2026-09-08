@@ -91,7 +91,7 @@ tr:hover td{background:#263348}
 <div class="tabnav">
   <button class="tabbtn active" id="tbMain" onclick="showTab('main')">📊 交付总览</button>
   <button class="tabbtn" id="tbAssets" onclick="showTab('assets')">📦 沉淀资产 · 工具包</button>
-  <button class="tabbtn" id="tbKpi" onclick="showTab('kpi')">🎯 核心指标落地</button>
+  <button class="tabbtn" id="tbKpi" onclick="showTab('kpi')">🎯 核心策略指标</button>
 </div>
 <div class="page" id="view-main">
 
@@ -201,11 +201,11 @@ tr:hover td{background:#263348}
     <div class="mstone done"><div class="md">✅ 8/26-9/2</div><div class="mt">筹备 · 话术沉淀</div><div class="ms">群策群力会（8/27）→《18L介绍话术1.0》+《异议应对1.0》→ 9/2启动会手册V1.0定稿+全员培训</div></div>
     <div class="mstone done"><div class="md">✅ 9/2</div><div class="mt">项目启动会</div><div class="ms">启动会召开+冬冬老师产品培训；终端执行一页纸宣贯</div></div>
     <div class="mstone now"><div class="md">📌 9/3-9/5</div><div class="mt">每日一读</div><div class="ms">全员每日晨读18L话术，录视频反馈总群，打卡率100%</div></div>
-    <div class="mstone"><div class="md">📅 9/5-9/10</div><div class="mt">全员通关</div><div class="ms">老师随机到店按SOP评分表听真实讲解打分，重点“烟灶客户开口推燃热”</div></div>
-    <div class="mstone"><div class="md">📅 9/13</div><div class="mt">里程碑① 18L累计45台</div><div class="ms">专项爬坡期目标验证（已定·数值待新周期复核）</div></div>
+    <div class="mstone"><div class="md">📅 9/5-9/10</div><div class="mt">全员通关</div><div class="ms">老师随机到店按SOP评分表听真实讲解打分，重点“烟灶客户开口推燃热” ｜ 已完成通关 <b style="color:#4ade80"><span id="msPassCur">--</span></b> 人</div></div>
+    <div class="mstone"><div class="md">📅 9/13</div><div class="mt">里程碑① 18L累计45台</div><div class="ms">专项爬坡期目标验证 —— 当前 18L <b style="color:#fb923c"><span id="ms13cur">--</span></b> / 45台（差 <span id="ms13gap">--</span> 台）</div></div>
     <div class="mstone"><div class="md">📅 9/17-9/21</div><div class="mt">短视频大赛</div><div class="ms">下发视频脚本+拍摄指导+报名，门店终端参与</div></div>
     <div class="mstone"><div class="md">📅 9/20</div><div class="mt">出样验收</div><div class="ms">专卖店A类100%出样+经销商上样计划回传验收</div></div>
-    <div class="mstone"><div class="md">📅 9/30</div><div class="mt">收官 18L 100台</div><div class="ms">燃热320台+18L专项100台双目标收官；结案沉淀样板打法+工具包</div></div>
+    <div class="mstone"><div class="md">📅 9/30</div><div class="mt">收官 18L 100台</div><div class="ms">燃热 <b style="color:#60a5fa"><span id="ms30heat">--</span></b>/320台 ＋ 18L <b style="color:#fb923c"><span id="ms30done">--</span></b>/100台 双目标收官；结案沉淀样板打法+工具包</div></div>
   </div>
 </div>
 
@@ -398,28 +398,23 @@ tr:hover td{background:#263348}
 <!-- ================= 核心指标落地 · 积分动作 标签页 ================= -->
 <div class="page" id="view-kpi" style="display:none">
 
-<div class="banner banner-blue">🎯 <b>核心指标落地：</b>打样期 9.2-9.30 双目标 — 全渠道燃热 <b>320台</b>（现 <span id="kpHeatT">--</span>）＋ 18L及以上专项 <b>100台</b>（现 <span id="kpDoneT">--</span>）｜ 18L占比 <b>≥30%</b>（现 <span id="kpShareT">--</span>）。本页同步呈现<b>积分动作完成情况</b>（终端执行一页纸·每日统计·周度公示）。</div>
+<div class="banner banner-blue">🎯 <b>核心策略指标：</b>集中呈现<b>执行/过程类指标</b> —— 全员通关、每日积分动作、门店积分周榜。销量核心指标（燃热320台 / 18L专项100台 / 占比≥30%）的落地进度，见<b>「交付总览」页 · 关键里程碑</b>（按节点验收，实时联动）。话术/工具沉淀见「沉淀资产 · 工具包」页。</div>
 
-<!-- 核心指标速览 -->
+<!-- 核心策略速览 -->
 <div class="kpi-row">
-  <div class="kpi green"><div class="lab">🔥 燃热总量落地</div><div class="val" id="kpHeatV">--</div><div class="tip">目标 320台</div></div>
-  <div class="kpi orange"><div class="lab">✅ 18L专项落地</div><div class="val" id="kpDoneV">--</div><div class="tip">目标 100台（保底80）</div></div>
-  <div class="kpi red"><div class="lab">📈 18L占比</div><div class="val" id="kpShareV">--</div><div class="tip">目标 ≥30%</div></div>
-  <div class="kpi yellow"><div class="lab">📍 9/13里程碑</div><div class="val" id="kpMstoneV">--</div><div class="tip">9/13前 18L累计45台</div></div>
+  <div class="kpi green"><div class="lab">🎓 已完成通关</div><div class="val" id="kpPassV">待统计</div><div class="tip">通关期 9/5-9/10 · 老师到店SOP评分</div></div>
+  <div class="kpi blue"><div class="lab">📈 通关率</div><div class="val" id="kpPassRateV">--</div><div class="tip">应通关人数统计后核算</div></div>
+  <div class="kpi yellow"><div class="lab">📋 每日积分动作</div><div class="val" id="kpActV">待积分表</div><div class="tip">8项每日动作 · 周度汇总</div></div>
   <div class="kpi purple"><div class="lab">🏅 积分周榜</div><div class="val" id="kpScoreV">待公示</div><div class="tip">分赛道 · 前10名奖励</div></div>
+  <div class="kpi red"><div class="lab">📅 通关周期</div><div class="val">9/5-9/10</div><div class="tip">随里程碑推进验收</div></div>
 </div>
 
+<!-- 全员通关进度 -->
 <div class="section">
-  <div class="section-title">📊 核心指标进度 <span class="tag">双目标 + 结构占比</span></div>
-  <div style="font-size:12px;color:#94a3b8;margin-bottom:6px">① 全渠道燃热总量 ≥320台（现 <span id="lHeat">--</span>）</div>
-  <div class="pbar" style="height:14px"><div class="pfill" id="barKpHeat" style="width:0%;background:linear-gradient(90deg,#22c55e,#4ade80)"></div></div>
-  <div style="font-size:11px;color:#64748b;margin:3px 0 14px">达成率 <span id="rHeat">--</span> ｜ 距320台还差 <span id="gHeat">--</span> 台</div>
-  <div style="font-size:12px;color:#94a3b8;margin-bottom:6px">② 18L及以上专项 100台（现 <span id="lDone">--</span>，保底80）</div>
-  <div class="pbar" style="height:14px"><div class="pfill" id="barKpDone" style="width:0%;background:linear-gradient(90deg,#f97316,#fb923c)"></div></div>
-  <div style="font-size:11px;color:#64748b;margin:3px 0 14px">达成率 <span id="rDone">--</span> ｜ 9/13里程碑45台缺口 <span id="gMstone">--</span> 台</div>
-  <div style="font-size:12px;color:#94a3b8;margin-bottom:6px">③ 18L占燃热总量 ≥30%（现 <span id="lShare">--</span>）</div>
-  <div class="pbar" style="height:14px"><div class="pfill" id="barKpShare" style="width:0%;background:linear-gradient(90deg,#3b82f6,#60a5fa)"></div></div>
-  <div style="font-size:11px;color:#64748b;margin:3px 0 0">达成进度 <span id="rShare">--</span>（当前占比/30%）｜ 未达标门店专项纠偏</div>
+  <div class="section-title">🎓 全员通关进度 <span class="tag green">通关期 9/5-9/10</span></div>
+  <div style="font-size:12px;color:#94a3b8;margin-bottom:6px">已完成通关 <span id="lPass">--</span> 人 ｜ 通关率 <span id="rPass">--</span></div>
+  <div class="pbar" style="height:14px"><div class="pfill" id="barPass" style="width:0%;background:linear-gradient(90deg,#22c55e,#4ade80)"></div></div>
+  <div class="rank-note">📌 通关标准：老师随机到店按SOP评分表听真实讲解打分，重点“烟灶客户开口推燃热”。通关人数由项目组按通关评分统计，<b>通关名单/统计表回传后即录入本页</b>（当前待首次通关统计）。</div>
 </div>
 
 <!-- 积分动作完成情况 -->
@@ -471,6 +466,7 @@ var DATA = {
   heatDone: 50,                 // 燃热累计（含16L/18L全量，9/3-9/7捷报）
   done: 12,                     // 18L及以上已完成台数（9/3:3台 + 9/4:1台 + 9/5:3台 + 9/6:4台 + 9/7:1台）
   channels: { ka: null, zhuanmai: null, jia: null, jxs: null },  // 分渠道18L台数（待渠道口径）
+  pass: { done: null, total: null },   // 全员通关（通关期9/5-9/10·老师SOP到店评分·人数由项目组统计回传后录入）
   actions: {                    // 过程动作达成（null=待录）
     dushu: null, tiyan: null, tongguan: null, chuyang: null, huodong: null
   },
@@ -506,27 +502,25 @@ if(daysLeft > 0 && daysLeft < 28){ document.getElementById('kDays').innerHTML = 
 else if(daysLeft >= 28){ document.getElementById('kDays').innerHTML = '28 <small>天</small>'; }
 else { document.getElementById('kDays').innerHTML = '已收官'; }
 
-// ===== 页3：核心指标落地·积分动作 渲染（数据源=DATA） =====
+// ===== 页1里程碑实时联动 + 核心策略指标渲染（数据源=DATA） =====
 (function(){
-  var $=function(id){var e=document.getElementById(id); if(e) e.textContent='--'; return e;};
   var set=function(id,t){var e=document.getElementById(id); if(e) e.innerHTML=t;};
-  var fmt=function(v){ return (v!=null && !isNaN(v)) ? v : '--'; };
-  var heat=D.heatDone, done=D.done, share=(done!=null&&heat)? (done/heat*100).toFixed(1) : null;
-  set('kpHeatT', heat!=null? heat+' 台':'--');
-  set('kpDoneT', done!=null? done+' 台':'--');
-  set('kpShareT', share!=null? share+'%':'--');
-  if(heat!=null) set('kpHeatV', heat+' <small>/ 320台</small>');
-  if(done!=null) set('kpDoneV', done+' <small>/ 100台</small>');
-  if(share!=null) set('kpShareV', share+'<small>%</small>');
-  if(done!=null) set('kpMstoneV', done+' <small>/ 45台</small>');
-  set('lHeat',  heat!=null? heat+' / 320台':'--');
-  set('lDone',  done!=null? done+' / 100台':'--');
-  set('lShare', share!=null? share+'%':'--');
-  if(heat!=null){ set('rHeat', (heat/D.heatGoal*100).toFixed(1)+'%'); set('gHeat', Math.max(0,D.heatGoal-heat)); var e1=document.getElementById('barKpHeat'); if(e1) e1.style.width=Math.min(100,heat/D.heatGoal*100)+'%'; }
-  if(done!=null){ set('rDone', (done/D.goal*100).toFixed(1)+'%'); set('gMstone', Math.max(0,45-done)); var e2=document.getElementById('barKpDone'); if(e2) e2.style.width=Math.min(100,done/D.goal*100)+'%'; }
-  if(share!=null){ set('rShare', (share/30*100).toFixed(1)+'%'); var e3=document.getElementById('barKpShare'); if(e3) e3.style.width=Math.min(100,share/30*100)+'%'; }
+  var heat=D.heatDone, done=D.done;
+  var share=(done!=null&&heat)?(done/heat*100).toFixed(1):null;
+  // 第一页 关键里程碑卡 = 销量核心指标落地（实时）
+  if(heat!=null) set('ms30heat', heat+' 台');
+  if(done!=null){ set('ms13cur', done+' 台'); set('ms13gap', Math.max(0,45-done)); set('ms30done', done+' 台'); }
+  if(D.pass && D.pass.done!=null) set('msPassCur', D.pass.done);
+  // 页3 核心策略指标（通关）
+  if(D.pass && D.pass.done!=null){ set('kpPassV', D.pass.done+' <small>人</small>'); set('lPass', D.pass.done); }
+  if(D.pass && D.pass.done!=null && D.pass.total){
+    var pr=Math.min(100, D.pass.done/D.pass.total*100);
+    set('lPass', D.pass.done+' / '+D.pass.total);
+    set('rPass', pr.toFixed(0)+'%');
+    set('kpPassRateV', pr.toFixed(0)+'<small>%</small>');
+    var e=document.getElementById('barPass'); if(e) e.style.width=pr+'%';
+  }
 })();
-
 </script>
 </body>
 </html>
