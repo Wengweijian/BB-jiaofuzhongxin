@@ -119,6 +119,17 @@ td.nm{{font-weight:600;color:#dbe6fb;white-space:normal}}
     H.append(store_table(top, '🥇 门店达成率 TOP15', 'top'))
     H.append(store_table(bottom, '🔴 门店达成率待跟进（后15）', 'bottom'))
 
+    # 门店明细全量（对齐“门店动销数据看板”列：军长|师长|渠道|门店|目标|完成|达成率|差额）
+    allrows = sorted([s for s in stores if s['t9'] > 0], key=lambda x: -x['r9'])
+    h = ['<div class="section"><div class="section-title">📋 门店明细（全量·按达成率排序）<span class="tag">' + str(len(allrows)) + '家</span></div><div class="table-wrap"><table>',
+         '<tr><th>#</th><th>门店</th><th>军长</th><th>师长</th><th>渠道</th><th>9月目标</th><th>已完成</th><th>达成率</th><th>差额</th></tr>']
+    for i, x in enumerate(allrows, 1):
+        h.append(f'<tr><td>{i}</td><td class="nm">{x["store"]}</td><td>{x["jun"] or ""}</td><td>{x["shi"] or ""}</td>'
+                 f'<td>{x["ch"] or ""}</td><td>{w(x["t9"])}万</td><td>{w(x["d9"])}万</td>'
+                 f'<td class="{rcls(x["r9"])}">{pct(x["r9"])}</td><td>{w(x["t9"]-x["d9"])}万</td></tr>')
+    h.append('</table></div></div>')
+    H.append(''.join(h))
+
     H.append(f'<div class="foot">数据来源：金九银十贵阳老板电器 · 项目数据回传表（9/12）<br>'
              f'口径：①项目总目标 {w(o["target"])}万 / 累计完成 {w(o["done"])}万（与群内口径一致）；②门店明细口径合计 {w(d["detail_total"])}万 / 完成 {w(d["detail_done"])}万<br>'
              f'自动生成：AI交付总监 · {d["updated"]}</div>')
