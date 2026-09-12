@@ -538,18 +538,18 @@ function showTab(name){
 }
 
 var DATA = {
-  updated: '2026-09-11',        // 数据日期（9/11晚更新·录入9/11捷报·燃热68/18L15）
+  updated: '2026-09-12',        // 数据日期（9/12更新·录入9/12捷报·燃热88/18L22）
   phase: '执行中',              // 状态
   heatGoal: 320,                // 燃热总量目标
   goal: 100,                    // 18L专项目标（保底80）
-  heatDone: 68,                 // 燃热累计（含16L/18L全量，9/3-9/11捷报）
-  done: 15,                     // 18L及以上已完成台数（9/3:3 + 9/4:1 + 9/5:3 + 9/6:4 + 9/7:1 + 9/8:2 + 9/9:0 + 9/10:0 + 9/11:1）
+  heatDone: 88,                 // 燃热累计（含16L/18L全量，9/3-9/12捷报）
+  done: 22,                     // 18L及以上已完成台数（9/3:3 + 9/4:1 + 9/5:4 + 9/6:4 + 9/7:1 + 9/8:2 + 9/9:0 + 9/10:0 + 9/11:1 + 9/12:6）
   channels: { ka: null, zhuanmai: null, jia: null, jxs: null },  // 分渠道18L台数（待渠道口径）
   pass: { done: null, total: null },   // 全员通关（通关期9/5-9/10·老师SOP到店评分·人数由项目组统计回传后录入）
   actions: {                    // 过程动作达成（null=待录）
     dushu: null, tiyan: null, tongguan: null, chuyang: null, huodong: null
   },
-  daily: [{d:'09/03',heat:6,v:3},{d:'09/04',heat:4,v:1},{d:'09/05',heat:22,v:3},{d:'09/06',heat:16,v:4},{d:'09/07',heat:3,v:1},{d:'09/08',heat:3,v:2},{d:'09/09',heat:4,v:0},{d:'09/10',heat:4,v:0},{d:'09/11',heat:6,v:1}]
+  daily: [{d:'09/03',heat:6,v:3},{d:'09/04',heat:5,v:1},{d:'09/05',heat:24,v:4},{d:'09/06',heat:16,v:4},{d:'09/07',heat:3,v:1},{d:'09/08',heat:3,v:2},{d:'09/09',heat:4,v:0},{d:'09/10',heat:4,v:0},{d:'09/11',heat:7,v:1},{d:'09/12',heat:16,v:6}]
 };
 
 function fmtPct(n){ return n==null ? '--' : n+'%'; }
